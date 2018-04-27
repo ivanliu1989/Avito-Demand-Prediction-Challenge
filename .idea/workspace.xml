@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9304468b-c0da-42f7-8553-53256bc4e77e" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/util/target_encoding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/2_Target_Encoding_for_Categorical_Features-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/2_Target_Encoding_for_Categorical_Features-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/0_Exploration.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0_Exploration_detailed.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/1_Benchmark_LightGBM.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2_Target_Encoding_for_Categorical_Features.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/0_Exploration.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/0_Exploration.ipynb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,8 +16,8 @@
       <file leaf-file-name="target_encoding.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/util/target_encoding.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="816">
-              <caret line="48" column="52" lean-forward="true" selection-start-line="48" selection-start-column="52" selection-end-line="48" selection-end-column="52" />
+            <state relative-caret-position="799">
+              <caret line="48" column="52" selection-start-line="48" selection-start-column="52" selection-end-line="48" selection-end-column="52" />
             </state>
           </provider>
         </entry>
@@ -61,7 +56,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="1">
     <option name="x" value="-7" />
     <option name="width" value="1936" />
     <option name="height" value="2127" />
@@ -115,6 +110,9 @@
       </list>
     </option>
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="9304468b-c0da-42f7-8553-53256bc4e77e" name="Default" comment="" />
@@ -137,6 +135,7 @@
       <window_info anchor="bottom" id="Python Console" />
       <window_info anchor="bottom" id="Terminal" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2912673" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="right" id="Database" />
       <window_info anchor="right" id="SciView" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -151,6 +150,12 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
     </layout>
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/0_Exploration.ipynb">
       <provider selected="true" editor-type-id="ipnb-editor">
@@ -161,8 +166,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/util/target_encoding.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="48" column="52" lean-forward="true" selection-start-line="48" selection-start-column="52" selection-end-line="48" selection-end-column="52" />
+        <state relative-caret-position="799">
+          <caret line="48" column="52" selection-start-line="48" selection-start-column="52" selection-end-line="48" selection-end-column="52" />
         </state>
       </provider>
     </entry>
