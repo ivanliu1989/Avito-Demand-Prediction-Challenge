@@ -12,7 +12,10 @@
 - Activation_date -> Weekdays, Weekends, Holidays
 - Users shopping behaviour -> overlapping users, shopped categories, frequency, monetary, recency etc.
 - Ads title/description text mining -> TF-IDF, top SVD components
-- Target encoding: https://www.kaggle.com/ogrellier/python-target-encoding-for-categorical-features
+- Target encoding (e.g. category and deal class, price buckets to deal class): https://www.kaggle.com/ogrellier/python-target-encoding-for-categorical-features
+- Param 1/2/3
+- ngrams
+- sentiment score
 
 ### Inferences:
 - So the dates are not different between train and test sets. So we need to be careful while doing our validation. May be time based validation is a good option.
@@ -22,3 +25,5 @@
 - 68k users are overlapping between test and train
 - 64k ads titles are common to train and test
 - The top SVD components capture quite an amount of variation in the data. So this might be helpful features in our modeling process.
+- From the deal probability distribution graph, it is clear that majority of the items have exteremely low deal probability, ie. about 78%, while very few values have the deal probability of 0.7 or larger.
+- A very small tower is observed near the deal probability of 1.0, indicating that there are some items in the dataset having very high value of deal probability.
