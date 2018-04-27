@@ -27,3 +27,8 @@
 - The top SVD components capture quite an amount of variation in the data. So this might be helpful features in our modeling process.
 - From the deal probability distribution graph, it is clear that majority of the items have exteremely low deal probability, ie. about 78%, while very few values have the deal probability of 0.7 or larger.
 - A very small tower is observed near the deal probability of 1.0, indicating that there are some items in the dataset having very high value of deal probability.
+
+### Steps
+- Russian to Email
+- Text mining features
+- Image Features
