@@ -16,6 +16,8 @@
 - Param 1/2/3
 - ngrams
 - sentiment score
+- top words - possibility
+- meta feature - binary, regression, multi-classification, pca, clustering
 
 ### Inferences:
 - So the dates are not different between train and test sets. So we need to be careful while doing our validation. May be time based validation is a good option.
