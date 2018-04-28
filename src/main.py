@@ -32,12 +32,15 @@ def ads_periods_feature_engineering(dat):
     return dat
 
 
+# Basic date gap features
+ads_periods['promotion_periods'] = ads_periods['date_to'] - ads_periods['date_from']
+ads_periods['activation_gap'] = ads_periods['date_from'] - ads_periods['activation_date']
 
-ads_periods
+# Aggregated features
 ads_periods_grp = ads_periods.groupby('item_id')
-ads_periods_grouped = ads_periods_grp.agg({"activation_date": ["nunique"],
-                                           "date_from": ["nunique"],
-                                           "date_to": ["nunique"]
+ads_periods_grouped = ads_periods_grp.agg({"activation_date": ["nunique", "min", "max"],
+                                           "date_from": ["nunique", "min", "max"],
+                                           "date_to": ["nunique", "min", "max"]
                                            })
 
 ads_periods_grouped.head()
