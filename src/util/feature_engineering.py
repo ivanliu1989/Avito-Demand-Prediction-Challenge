@@ -12,9 +12,10 @@ def load_ads_data(path=None):
     if path is None:
         # Load Data
         print("Reading periods_train...")
+        # (16687412, 5)
         ads_periods_train = pd.read_csv("../data/periods_train.csv",
                                         parse_dates=["activation_date", "date_from", "date_to"])
-
+        # (13724922, 5)
         print("Reading periods_test...")
         ads_periods_test = pd.read_csv("../data/periods_test.csv",
                                        parse_dates=["activation_date", "date_from", "date_to"])

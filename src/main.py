@@ -27,11 +27,16 @@ if __name__ == '__main__':
     ### 3. Merge with Cstr Txns Data
     ads_periods = load_ads_data("../data/periods_all_v1.csv")
     ads_periods.head()
-    train_dat = pd.read_csv("../data/train.csv", parse_dates=["activation_date"])
-    test_dat = pd.read_csv("../data/test.csv", parse_dates=["activation_date"])
+    train_dat = pd.read_csv("../data/train.csv", parse_dates=["activation_date"]) # (1503424, 18)
+    test_dat = pd.read_csv("../data/test.csv", parse_dates=["activation_date"]) # (508438, 17)
     print('train data shape: ', train_dat.shape)
-    print('train data shape: ', test_dat.shape)
-    dat = pd.merge(train_dat, ads_periods, how="left", on=["item_id", "activation_date"])
+    print('test data shape: ', test_dat.shape)
+    # (16687412, 21)
+    train_dat = pd.merge(train_dat, ads_periods[ads_periods.tr_te == 1],
+                         how="left", on=["item_id", "activation_date"]) # (1503424, 37)
+    # (13724922, 21)
+    test_dat = pd.merge(test_dat, ads_periods[ads_periods.tr_te == 0],
+                        how="left", on=["item_id", "activation_date"]) # (508438, 36)
     dat.head()
 
     # By customer/region/category etc.
