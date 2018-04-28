@@ -1,87 +1,97 @@
 from util import feature_engineering
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder
 from tqdm import tqdm
 import gc
 from collections import Counter
 
-train_dat = pd.read_csv("../data/train.csv", parse_dates=["activation_date"])
-ads_periods = pd.read_csv("../data/periods_train.csv", parse_dates=["activation_date", "date_from", "date_to"])
-print('train data shape: ', train_dat.shape)
-print('ads periods data shape: ', ads_periods.shape)
-gc.collect()
+pd.options.display.max_columns = 999
+
+
+def load_ads_data():
+    """
+    Loading and cleaning Ads Periods data
+    :return:
+    """
+    # Load Data
+    print("Reading periods_train...")
+    ads_periods_train = pd.read_csv("../data/periods_train.csv",
+                                    parse_dates=["activation_date", "date_from", "date_to"])
+
+    print("Reading periods_test...")
+    ads_periods_test = pd.read_csv("../data/periods_test.csv", parse_dates=["activation_date", "date_from", "date_to"])
+
+    print("Assigning train/test flag...")
+    ads_periods_train['tr_te'] = 1
+    ads_periods_test['tr_te'] = 0
+
+    print("Concatenating...")
+    ads_periods = pd.concat([ads_periods_train, ads_periods_test], axis=0)
+    print('Ads Periods data shape: ', ads_periods.shape)
+    gc.collect()
+
+    return ads_periods
 
 
 # Data Cleaning for Ads Periods
-def get_day_features(dat, cols):
+def generate_ads_features(dat, cols):
+    """
+    Generating Ads Periods Features
+    :param dat:
+    :param cols:
+    :return:
+    """
+    print("Sorting by dates...")
+    dat = dat.sort_values(by=['item_id', 'activation_date'])
+
     for c in tqdm(cols):
+        print("Normal Date Transformation - {0}...".format(c))
         dat[c + '_dayofweek'] = dat[c].dt.weekday_name
         dat[c + '_dayofmonth'] = dat[c].dt.day
         dat[c + '_weekend'] = np.where(dat[c + '_dayofweek'].isin(['Saturday', 'Sunday']), 1, 0)
+
+        print("Lagged Features - {0}...".format(c))
         dat[c + '_lag'] = dat.groupby(['item_id'])[c].shift(1)
 
+        print("Aggregated Features - {0}...".format(c))
+        dat[c + '_cnt'] = dat.groupby(['item_id'])[c].count()
+        dat[c + '_max'] = dat.groupby(['item_id'])[c].max()
+        dat[c + '_min'] = dat.groupby(['item_id'])[c].min()
+
+    print("Derived Features - promotion_periods...")
+    dat['promotion_periods'] = dat['date_to'] - dat['date_from']
+
+    print("Derived Features - activation_gap...")
+    dat['activation_gap'] = dat['date_from'] - dat['activation_date']
+
+    print("Derived Features - days_since_last_promotion...")
+    dat['days_since_last_promotion'] = dat['date_from'] - dat['date_to_lag']
+
+    print("Derived Features - total_promotion_periods...")
+    dat['total_promotion_periods'] = dat.groupby(['item_id'])['promotion_periods'].sum()
+
+    print("Derived Features - avg_promotion_periods...")
+    dat['avg_promotion_periods'] = dat.groupby(['item_id'])['promotion_periods'].mean()
+
+    # Drop columns
+    print("Dropping Columns not required...")
+
+    gc.collect()
+
     return dat
 
 
+ads_periods = load_ads_data()
+ads_periods = generate_ads_features(ads_periods, ["activation_date", "date_from", "date_to"])
 ads_periods.head()
-ads_periods = get_day_features(ads_periods, ["activation_date", "date_from", "date_to"])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Feature engineering for Ads Periods
-def ads_periods_feature_engineering(dat):
-    return dat
-
-
-# Basic date gap & lagged features
-ads_periods['promotion_periods'] = ads_periods['date_to'] - ads_periods['date_from']
-ads_periods['activation_gap'] = ads_periods['date_from'] - ads_periods['activation_date']
-
-
-
-# Aggregated features
-ads_periods_grp = ads_periods.groupby('item_id')
-ads_periods_grouped = ads_periods_grp.agg({"activation_date": ["nunique", "min", "max"],
-                                           "date_from": ["nunique", "min", "max"],
-                                           "date_to": ["nunique", "min", "max"]
-                                           })
-ads_periods_grouped.columns = ["_".join(x) for x in ads_periods_grouped.columns.ravel()]
-ads_periods_grouped.head()
-ads_periods_grouped['activation_date_gap'] = ads_periods_grouped['activation_date_max'] - ads_periods_grouped['activation_date_min']
-ads_periods_grouped['promotion_gap'] = ads_periods_grouped['date_from_max'] - ads_periods_grouped['date_to_min']
-
-
-Counter(ads_periods_grouped.activation_date_nunique)
-
-
-
-
-
-
-
-
-
-
-
-
+# Merge with Cstr Txns Data
+train_dat = pd.read_csv("../data/train.csv", parse_dates=["activation_date"])
+print('train data shape: ', train_dat.shape)
 dat = pd.merge(train_dat, ads_periods, how="left", on=["item_id", "activation_date"])
 dat.head()
 
+# By customer/region/category etc.
 # City/Category/UseType/Activation_date Ads counts / distribution / percentage
 Counter(dat.param_3)
 len(set(dat.image_top_1))
