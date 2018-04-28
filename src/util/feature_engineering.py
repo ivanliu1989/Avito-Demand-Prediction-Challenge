@@ -55,14 +55,14 @@ def generate_ads_features(dat, cols):
         # dat[c + '_min'] = dat.groupby(['item_id'])[c].agg(min)
 
     print("Activation & Promotion Cnt...")
-    dat['promotion_cnt'] = dat['date_to'].groupby(dat['item_id']).transform('count')
     dat['activated'] = np.where(dat.activation_date.isna(), 0, 1)
+    dat['promotion_cnt'] = dat['item_id'].groupby(dat['item_id']).transform('count')
     dat['activated_cnt'] = dat['activated'].groupby(dat['item_id']).transform('sum')
 
     print("Derived Features - promotion_periods...")
     dat['promotion_periods'] = dat['date_to'] - dat['date_from']
     dat.promotion_periods = dat.promotion_periods.dt.days
-    dat['promotion_lifetime'] = dat.groupby(['item_id'])['promotion_periods'].agg(sum)
+    dat['promotion_lifetime'] = dat['promotion_periods'].groupby(dat['item_id']).transform('sum')
 
     print("Derived Features - activation_gap...")
     dat['activation_gap'] = dat['date_from'] - dat['activation_date']
