@@ -95,3 +95,27 @@ def generate_ads_features(dat, cols):
     gc.collect()
 
     return dat
+
+
+def basic_feature_engineering(dat):
+    dat['day_of_month'] = dat.activation_date.dt.day
+    dat['day_of_week'] = dat.activation_date.dt.weekday
+
+    dat['title'] = dat['title'].fillna(" ")
+    dat['title_len'] = dat['title'].apply(lambda x: len(x.split()))
+
+    dat['description'] = dat['description'].fillna(" ")
+    dat['description_len'] = dat['description'].apply(lambda x: len(x.split()))
+
+    #     pr_train['total_period'] = pr_train['date_to'] - pr_train['date_from']
+
+    daymap = {0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'}
+    dat['day_of_week_en'] = dat['day_of_week'].apply(lambda x: daymap[x])
+
+    dat['deal_class'] = dat['deal_probability'].apply(lambda x: ">=0.5" if x >= 0.5 else "<0.5")
+
+    interval = (-0.99, .10, .20, .30, .40, .50, .60, .70, .80, .90, 1.1)
+    cats = ['0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']
+    dat["deal_class_2"] = pd.cut(dat.deal_probability, interval, labels=cats)
+
+    return dat

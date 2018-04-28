@@ -1,4 +1,4 @@
-from util.feature_engineering import load_ads_data, generate_ads_features
+from util.feature_engineering import load_ads_data, basic_feature_engineering
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -37,6 +37,8 @@ if __name__ == '__main__':
     # (13724922, 21)
     test_dat = pd.merge(test_dat, ads_periods[ads_periods.tr_te == 0],
                         how="left", on=["item_id", "activation_date"]) # (508438, 36)
+    data = pd.concat([train_dat, test_dat], axis=0)
+    print('All data shape: ', data.shape)
     dat.head()
 
     # By customer/region/category etc.
