@@ -4,27 +4,32 @@ from tqdm import tqdm
 import gc
 
 
-def load_ads_data():
+def load_ads_data(path=None):
     """
     Loading and cleaning Ads Periods data
     :return:
     """
-    # Load Data
-    print("Reading periods_train...")
-    ads_periods_train = pd.read_csv("../data/periods_train.csv",
-                                    parse_dates=["activation_date", "date_from", "date_to"])
+    if path is None:
+        # Load Data
+        print("Reading periods_train...")
+        ads_periods_train = pd.read_csv("../data/periods_train.csv",
+                                        parse_dates=["activation_date", "date_from", "date_to"])
 
-    print("Reading periods_test...")
-    ads_periods_test = pd.read_csv("../data/periods_test.csv", parse_dates=["activation_date", "date_from", "date_to"])
+        print("Reading periods_test...")
+        ads_periods_test = pd.read_csv("../data/periods_test.csv",
+                                       parse_dates=["activation_date", "date_from", "date_to"])
 
-    print("Assigning train/test flag...")
-    ads_periods_train['tr_te'] = 1
-    ads_periods_test['tr_te'] = 0
+        print("Assigning train/test flag...")
+        ads_periods_train['tr_te'] = 1
+        ads_periods_test['tr_te'] = 0
 
-    print("Concatenating...")
-    ads_periods = pd.concat([ads_periods_train, ads_periods_test], axis=0)
-    print('Ads Periods data shape: ', ads_periods.shape)
-    gc.collect()
+        print("Concatenating...")
+        ads_periods = pd.concat([ads_periods_train, ads_periods_test], axis=0)
+        print('Ads Periods data shape: ', ads_periods.shape)
+        gc.collect()
+
+    else:
+        ads_periods = pd.read_csv(path, parse_dates=["activation_date", "date_from", "date_to"])
 
     return ads_periods
 

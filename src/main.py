@@ -11,18 +11,26 @@ import lightgbm as lgb
 pd.options.display.max_columns = 999
 
 if __name__ == '__main__':
-    # dat.groupby('method')['year'].describe().unstack()
-    ads_periods = load_ads_data()  # (30412334, 5)
-    ads_periods = generate_ads_features(ads_periods, ["activation_date", "date_from", "date_to"])  # (30412334, 29)
+
+    ### 1. Feature Engineering for Ads Periods
+    # # dat.groupby('method')['year'].describe().unstack()
+    # ads_periods = load_ads_data()  # (30412334, 5)
+    # ads_periods = generate_ads_features(ads_periods, ["activation_date", "date_from", "date_to"])  # (30412334, 29)
+    # ads_periods.head()
+    # # ads_periods[np.in1d(ads_periods.item_id, ['002ec0125215', '006c6117bebc', '01f6e956b3c5'])]
+    # # ads_periods[ads_periods.days_since_last_promotion < -1]
+    # ads_periods.to_csv("../data/periods_all_v1.csv", index = False)
+
+    ### 2. Active file for shopping behaviour
+
+
+    ### 3. Merge with Cstr Txns Data
+    ads_periods = load_ads_data("../data/periods_all_v1.csv")
     ads_periods.head()
-    # ads_periods[np.in1d(ads_periods.item_id, ['002ec0125215', '006c6117bebc', '01f6e956b3c5'])]
-    ads_periods[ads_periods.days_since_last_promotion < -1]
-
-    Counter(ads_periods.activation_date_cnt)
-
-    # Merge with Cstr Txns Data
     train_dat = pd.read_csv("../data/train.csv", parse_dates=["activation_date"])
+    test_dat = pd.read_csv("../data/test.csv", parse_dates=["activation_date"])
     print('train data shape: ', train_dat.shape)
+    print('train data shape: ', test_dat.shape)
     dat = pd.merge(train_dat, ads_periods, how="left", on=["item_id", "activation_date"])
     dat.head()
 
