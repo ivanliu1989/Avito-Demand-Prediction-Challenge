@@ -8,6 +8,7 @@
 ### Feature Engineering
 - City/Category/UseType/Activation_date Ads counts / distribution / percentage
 - City/Category/UseType/Activation_date Based Deal Probability Distribution
+- Max/percentile sequential number
 - Price percentile by City/Category/UseType/Activation_date
 - Activation_date -> Weekdays, Weekends, Holidays
 - Users shopping behaviour -> overlapping users, shopped categories, frequency, monetary, recency etc.
@@ -34,3 +35,10 @@
 - Russian to Email
 - Text mining features
 - Image Features
+
+### Model
+- catboost 
+- xgboost
+- lightGBM
+- Keras
+- Regression

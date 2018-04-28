@@ -1,4 +1,4 @@
-from util.feature_engineering import load_ads_data
+from util.feature_engineering import load_ads_data, generate_ads_features
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -11,14 +11,14 @@ import lightgbm as lgb
 pd.options.display.max_columns = 999
 
 if __name__ == '__main__':
-    ads_periods = feature_engineering.load_ads_data()
-    # 002ec0125215
-    # 006c6117bebc
-    # 01f6e956b3c5
-    ads_periods = feature_engineering.generate_ads_features(ads_periods, ["activation_date", "date_from", "date_to"])
+    # dat.groupby('method')['year'].describe().unstack()
+    ads_periods = load_ads_data()  # (30412334, 5)
+    ads_periods = generate_ads_features(ads_periods, ["activation_date", "date_from", "date_to"])  # (30412334, 29)
     ads_periods.head()
+    # ads_periods[np.in1d(ads_periods.item_id, ['002ec0125215', '006c6117bebc', '01f6e956b3c5'])]
     ads_periods[ads_periods.days_since_last_promotion < -1]
-    Counter(ads_periods.days_since_last_promotion)
+
+    Counter(ads_periods.activation_date_cnt)
 
     # Merge with Cstr Txns Data
     train_dat = pd.read_csv("../data/train.csv", parse_dates=["activation_date"])
