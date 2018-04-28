@@ -4,6 +4,9 @@ import numpy as np
 from tqdm import tqdm
 import gc
 from collections import Counter
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+import lightgbm as lgb
 
 pd.options.display.max_columns = 999
 
@@ -67,11 +70,11 @@ def generate_ads_features(dat, cols):
     print("Derived Features - days_since_last_promotion...")
     dat['days_since_last_promotion'] = dat['date_from'] - dat['date_to_lag']
 
-    print("Derived Features - total_promotion_periods...")
-    dat['total_promotion_periods'] = dat.groupby(['item_id'])['promotion_periods'].sum()
-
-    print("Derived Features - avg_promotion_periods...")
-    dat['avg_promotion_periods'] = dat.groupby(['item_id'])['promotion_periods'].mean()
+    # print("Derived Features - total_promotion_periods...")
+    # dat['total_promotion_periods'] = dat.groupby(['item_id'])['promotion_periods'].sum()
+    #
+    # print("Derived Features - avg_promotion_periods...")
+    # dat['avg_promotion_periods'] = dat.groupby(['item_id'])['promotion_periods'].mean()
 
     # Drop columns
     print("Dropping Columns not required...")
@@ -96,3 +99,25 @@ dat.head()
 Counter(dat.param_3)
 len(set(dat.image_top_1))
 cols = ['category_name', 'city', 'param_1', 'param_2', 'param_3', 'user_type', 'image_top_1']
+
+if __name__ == '__main__':
+    # Train the model
+    parameters = {
+        'task': 'train',
+        'boosting_type': 'gbdt',
+        'objective': 'regression',
+        'metric': 'rmse',
+        'num_leaves': 31,
+        'learning_rate': 0.05,
+        'feature_fraction': 0.9,
+        'bagging_fraction': 0.8,
+        'bagging_freq': 5,
+        'verbose': 50
+    }
+
+    model = lgb.train(parameters,
+                      tr_data,
+                      valid_sets=va_data,
+                      num_boost_round=2000,
+                      early_stopping_rounds=120,
+                      verbose_eval=50)
