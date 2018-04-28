@@ -16,9 +16,10 @@ gc.collect()
 # Data Cleaning for Ads Periods
 def get_day_features(dat, cols):
     for c in tqdm(cols):
-        dat[c + 'dayofweek'] = dat[c].dt.weekday_name
-        dat[c + 'dayofmonth'] = dat[c].dt.day
-        dat[c + 'weekend'] = np.where(dat[c + 'dayofweek'].isin(['Saturday', 'Sunday']), 1, 0)
+        dat[c + '_dayofweek'] = dat[c].dt.weekday_name
+        dat[c + '_dayofmonth'] = dat[c].dt.day
+        dat[c + '_weekend'] = np.where(dat[c + '_dayofweek'].isin(['Saturday', 'Sunday']), 1, 0)
+        dat[c + '_lag'] = dat.groupby(['item_id'])[c].shift(1)
 
     return dat
 
@@ -27,14 +28,31 @@ ads_periods.head()
 ads_periods = get_day_features(ads_periods, ["activation_date", "date_from", "date_to"])
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Feature engineering for Ads Periods
 def ads_periods_feature_engineering(dat):
     return dat
 
 
-# Basic date gap features
+# Basic date gap & lagged features
 ads_periods['promotion_periods'] = ads_periods['date_to'] - ads_periods['date_from']
 ads_periods['activation_gap'] = ads_periods['date_from'] - ads_periods['activation_date']
+
+
 
 # Aggregated features
 ads_periods_grp = ads_periods.groupby('item_id')
@@ -42,8 +60,24 @@ ads_periods_grouped = ads_periods_grp.agg({"activation_date": ["nunique", "min",
                                            "date_from": ["nunique", "min", "max"],
                                            "date_to": ["nunique", "min", "max"]
                                            })
-
+ads_periods_grouped.columns = ["_".join(x) for x in ads_periods_grouped.columns.ravel()]
 ads_periods_grouped.head()
+ads_periods_grouped['activation_date_gap'] = ads_periods_grouped['activation_date_max'] - ads_periods_grouped['activation_date_min']
+ads_periods_grouped['promotion_gap'] = ads_periods_grouped['date_from_max'] - ads_periods_grouped['date_to_min']
+
+
+Counter(ads_periods_grouped.activation_date_nunique)
+
+
+
+
+
+
+
+
+
+
+
 
 dat = pd.merge(train_dat, ads_periods, how="left", on=["item_id", "activation_date"])
 dat.head()
