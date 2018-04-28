@@ -47,4 +47,4 @@
 ### Feature Engineering
 - Func: Time Column & ID Column -> Agg, Transform, Lag
 - Func: Text Column -> Word Embeding, Freq, PCA, Cluster
-- Func: Sales Pattern 
+- Func: Target Column (e.g. Price, Deal_Prob) + Categorical Columns -> Target Mean, SD, Median
