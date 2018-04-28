@@ -42,3 +42,9 @@
 - lightGBM
 - Keras
 - Regression
+
+
+### Feature Engineering
+- Func: Time Column & ID Column -> Agg, Transform, Lag
+- Func: Text Column -> Word Embeding, Freq, PCA, Cluster
+- Func: Sales Pattern 
