@@ -58,7 +58,7 @@
 - v0.0.1.2 | val: 0.224491
 	- v0.0.1.2.1 | v0.0.1.1 + label encoder: [2880] 0.224867 + 0.00055142
 	- v0.0.1.2.2 | v0.0.1.1 + user_id & item_id target encoding: [260] 0.125014 + 0.000535261
-	- v0.0.1.2.3 | v0.0.1.1 + param_3 target encoding: 0.003
+	- v0.0.1.2.3 | v0.0.1.1 + param_3 target encoding: [2060] 0.224751 + 0.000484106
 	- v0.0.1.2.4 | v0.0.1.1 + sorted by date: [2880] 0.224812 + 0.000479768
 - v0.0.1.3 | val:
 	- v0.0.1.3.1 | v0.0.1.2 + impute by mean
