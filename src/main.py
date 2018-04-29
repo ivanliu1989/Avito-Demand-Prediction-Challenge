@@ -1,6 +1,6 @@
 from util import target_encoding
 from model.run_lightGBM import get_model_dataset, run_lightGBM, make_submission
-from util.feature_engineering import load_ads_data, feature_engineering
+from util.feature_engineering import load_ads_data, feature_engineering_v1
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -41,9 +41,8 @@ if __name__ == '__main__':
     train_dat = pd.read_csv("../data/train.csv", parse_dates=["activation_date"])  # (1503424, 18)
     test_dat = pd.read_csv("../data/test.csv", parse_dates=["activation_date"])  # (508438, 17)
 
-
     # feature engineering
-    train_df, test_df, features = feature_engineering(train_dat, test_dat)
+    train_df, test_df, features = feature_engineering_v1(train_dat, test_dat)
     features = ['item_seq_number', 'price']
 
     # get model datasets
@@ -71,19 +70,6 @@ if __name__ == '__main__':
 
     ### 5. make submission
     res = make_submission(test_id, pred_test_y, filename='benchmark_end_2_end')
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     # agg_cols = ['region', 'city', 'parent_category_name', 'category_name',
     #             'image_top_1', 'user_type', 'item_seq_number', 'day_of_month', 'day_of_week'];
@@ -118,4 +104,3 @@ if __name__ == '__main__':
     # new_data = dat.drop(['user_id', 'description', 'image',  # 'parent_category_name','region',
     #                      'item_id', 'param_1', 'param_2', 'param_3', 'title', 'deal_class', 'deal_class_2',
     #                      'day_of_week_en'], axis=1)
-
