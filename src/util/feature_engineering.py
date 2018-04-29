@@ -130,8 +130,9 @@ def target_encoding(dat, tgt_cols, cate_cols, measure=['mean'], noise=True):
             for c in tqdm(cate_cols):
                 for m in measure:
                     # TODO(Ivan): Add multi categories
-                    f = '{0}_{1}_{2}'.format(c, t, m)
-                    dat[f] = dat[t].groupby(dat[c]).transform(m)
+                    f = '{0}_{1}_{2}'.format(('').join(c), t, m)
+                    # dat[f] = dat[t].groupby(dat[c]).transform(m)
+                    dat[f] = dat.groupby(c)[t].transform(m)
 
     return dat
 
@@ -169,12 +170,12 @@ def feature_engineering_v1(train_dat, test_dat):
 
     # Target Mean
     tgt_cols = ['deal_probability', 'price']
-    cate_cols = ['region', 'city']
+    cate_cols = ['region', 'city', ['activation_date_dayofweek', 'region']]
     measures = ['mean', 'median']
+    dat = target_encoding(dat, tgt_cols, cate_cols, measures, False)
 
-    dat1 = target_encoding(dat, tgt_cols, cate_cols, measures, False)
+    # Split train & test
+    train_dat = dat[dat.tr_te == 1]
+    test_dat = dat[dat.tr_te == 0]
 
-    return dat
-
-
-dat1.head()
+    return train_dat, test_dat

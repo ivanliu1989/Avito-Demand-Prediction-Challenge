@@ -42,7 +42,7 @@ if __name__ == '__main__':
     test_dat = pd.read_csv("../data/test.csv", parse_dates=["activation_date"])  # (508438, 17)
 
     # feature engineering
-    train_df, test_df, features = feature_engineering_v1(train_dat, test_dat)
+    train_df, test_df = feature_engineering_v1(train_dat, test_dat)
     features = ['item_seq_number', 'price']
 
     # get model datasets
