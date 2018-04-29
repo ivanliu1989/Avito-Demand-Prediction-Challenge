@@ -160,10 +160,10 @@ def feature_engineering_v1(train_dat, test_dat):
     dat = transform_date(dat, ['activation_date'])
 
     # Deal Probability
-    dat['deal_class'] = dat['deal_probability'].apply(lambda x: ">=0.5" if x >= 0.5 else "<0.5")
-    interval = (-0.99, .10, .20, .30, .40, .50, .60, .70, .80, .90, 1.1)
-    cats = ['0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']
-    dat["deal_class_2"] = pd.cut(dat.deal_probability, interval, labels=cats)
+    # dat['deal_class'] = dat['deal_probability'].apply(lambda x: ">=0.5" if x >= 0.5 else "<0.5")
+    # interval = (-0.99, .10, .20, .30, .40, .50, .60, .70, .80, .90, 1.1)
+    # cats = ['0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']
+    # dat["deal_class_2"] = pd.cut(dat.deal_probability, interval, labels=cats)
 
     # Title
     dat['title'] = dat['title'].fillna(" ")
@@ -183,17 +183,13 @@ def feature_engineering_v1(train_dat, test_dat):
 
     # Target Mean
     tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
-    cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2',
-                 'parent_category_name', 'user_type', 'activation_date_dayofweek', 'user_id',
-                 ['activation_date_dayofweek', 'region']] #
+    cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2', 'param_3',
+                 'parent_category_name', 'user_type', 'activation_date_dayofweek',
+                 # 'user_id', ,'item_id'
+                 ['activation_date_dayofweek', 'region']]
     measures = ['mean', 'std', 'quantile', 'skew', 'count']  # , 'kurt'
 
-    # tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
-    # cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2', 'parent_category_name', 'user_type',
-    #                'activation_date_dayofweek', 'deal_class', 'deal_class_2', ['activation_date_dayofweek', 'region']]
-    # measures = ['mean', 'std', 'quantile', 'skew', 'count']
-
-    # dat = dat.sort_values(by=['activation_date'])
+    dat = dat.sort_values(by=['activation_date'])
     dat = target_encoding(dat, tgt_cols, cate_cols, measures, False)
 
     # Fill NA
