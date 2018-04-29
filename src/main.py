@@ -56,7 +56,8 @@ if __name__ == '__main__':
     #             'city_price_mean','city_price_median','activation_date_dayofweekregion_price_mean','activation_date_dayofweekregion_price_median']
 
     # get model datasets
-    train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features_to_drop)
+    train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features_to_drop,
+                                                                        val_date='2017-03-27')
     train_X.head()
 
     ### 4. run model
@@ -64,13 +65,14 @@ if __name__ == '__main__':
         "objective": "regression",
         "metric": "rmse",
         "num_leaves": 31,
-        "learning_rate": 0.02,
+        "learning_rate": 0.05,
         "bagging_fraction": 0.7,
-        "feature_fraction": 0.4,
+        "feature_fraction": 0.5,
         "bagging_frequency": 5,
         "bagging_seed": 2018,
         "verbosity": -1
     }
+
     pred_test_y, model, evals_result = run_lightGBM(train_X, train_y, val_X, val_y, test_X,
                                                     params=params, early_stop=100, rounds=5000)
 
@@ -81,7 +83,7 @@ if __name__ == '__main__':
     plt.show()
 
     ### 5. make submission
-    res = make_submission(test_id, pred_test_y, filename='v0_0_0_1_val_0_225643')
+    res = make_submission(test_id, pred_test_y, filename='v0_0_0_1_val_0_225643_3')
 
 
     ### 6. blending
