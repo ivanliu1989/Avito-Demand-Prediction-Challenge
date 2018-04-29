@@ -193,7 +193,7 @@ def feature_engineering_v1(train_dat, test_dat):
     dat = target_encoding(dat, tgt_cols, cate_cols, measures, False)
 
     # Fill NA
-    # dat['price'].fillna(np.nanmean(dat['price'].values), inplace = True)
+    dat['price'].fillna(np.nanmean(dat['price'].values), inplace = True)
     # dat.fillna(-1)
 
     # Split train & test
