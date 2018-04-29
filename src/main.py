@@ -47,7 +47,7 @@ if __name__ == '__main__':
     features = ['item_seq_number', 'price']
 
     # get model datasets
-    train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_dat, test_dat, features)
+    train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features)
 
     ### 4. run model
     params = {
