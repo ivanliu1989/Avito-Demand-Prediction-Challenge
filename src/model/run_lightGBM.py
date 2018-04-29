@@ -80,8 +80,34 @@ def make_submission(test_id, pred_test, filename='benchmark_1'):
     """
     sub_df = pd.DataFrame({"item_id": test_id})
     sub_df["deal_probability"] = pred_test
+    sub_df.deal_probability = np.where(sub_df.deal_probability < 0, 0, sub_df.deal_probability)
+    sub_df.deal_probability = np.where(sub_df.deal_probability > 1, 1, sub_df.deal_probability)
     filename = "../submissions/{}.csv".format(filename)
     sub_df.to_csv(filename, index=False)
+    print('Predictions saved into: ' + filename)
+
+    return filename
+
+
+def submission_blending(paths=None, wts=None, filename='blend_1'):
+    i = 0
+    for p in paths:
+
+        sub_df = pd.read_csv(p)
+        sub_df.deal_probability = sub_df.deal_probability * wts[i]
+
+        if i > 0:
+            submit.deal_probability = submit.deal_probability + sub_df.deal_probability
+        else:
+            submit = sub_df
+
+        i = i + 1
+
+    submit.deal_probability = np.where(submit.deal_probability < 0, 0, submit.deal_probability)
+    submit.deal_probability = np.where(submit.deal_probability > 1, 1, submit.deal_probability)
+
+    filename = "../submissions/blend/{}.csv".format(filename)
+    submit.to_csv(filename, index=False)
     print('Predictions saved into: ' + filename)
 
     return filename
