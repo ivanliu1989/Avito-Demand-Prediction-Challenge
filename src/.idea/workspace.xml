@@ -10,14 +10,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.45086706">
+    <splitter split-orientation="horizontal" split-proportion="0.5406583">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="68">
-                  <caret line="14" selection-start-line="14" selection-end-line="14" />
+                  <caret line="15" selection-start-line="15" selection-end-line="15" />
                   <folding>
                     <element signature="e#0#32#0" expanded="true" />
                   </folding>
@@ -25,11 +25,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="feature_engineering.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="feature_engineering.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2006">
-                  <caret line="121" selection-start-line="121" selection-end-line="121" />
+                <state relative-caret-position="769">
+                  <caret line="150" column="17" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
                   <folding>
                     <element signature="e#0#19#0" expanded="true" />
                   </folding>
@@ -37,7 +37,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="run_lightGBM.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="run_lightGBM.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/model/run_lightGBM.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="797">
@@ -56,8 +56,8 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1118">
-                  <caret line="70" column="10" selection-start-line="70" selection-start-column="10" selection-end-line="70" selection-end-column="10" />
+                <state relative-caret-position="650">
+                  <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
                   <folding>
                     <element signature="e#0#32#0" expanded="true" />
                   </folding>
@@ -80,6 +80,7 @@
     <findStrings>
       <find>_max</find>
       <find>_min</find>
+      <find>a</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -87,8 +88,8 @@
       <list>
         <option value="$PROJECT_DIR$/util/meta_features.py" />
         <option value="$PROJECT_DIR$/util/__init__.py" />
-        <option value="$PROJECT_DIR$/util/feature_engineering.py" />
         <option value="$PROJECT_DIR$/model/run_lightGBM.py" />
+        <option value="$PROJECT_DIR$/util/feature_engineering.py" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
@@ -187,7 +188,7 @@
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.108329736" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="SciView" order="3" weight="0.32973674" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
@@ -397,16 +398,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2006">
-          <caret line="121" selection-start-line="121" selection-end-line="121" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model/run_lightGBM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="797">
@@ -417,10 +408,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="769">
+          <caret line="150" column="17" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1118">
-          <caret line="70" column="10" selection-start-line="70" selection-start-column="10" selection-end-line="70" selection-end-column="10" />
+        <state relative-caret-position="650">
+          <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>

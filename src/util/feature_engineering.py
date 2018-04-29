@@ -3,6 +3,8 @@ import numpy as np
 from tqdm import tqdm
 import gc
 
+pd.options.display.max_columns = 999
+
 
 def load_ads_data(path=None):
     """
@@ -97,25 +99,58 @@ def generate_ads_features(dat, cols):
     return dat
 
 
-def basic_feature_engineering(dat):
-    dat['day_of_month'] = dat.activation_date.dt.day
-    dat['day_of_week'] = dat.activation_date.dt.weekday
+def transform_date(dat, cols=None):
+    """
 
-    dat['title'] = dat['title'].fillna(" ")
-    dat['title_len'] = dat['title'].apply(lambda x: len(x.split()))
+    :param dat:
+    :param cols:
+    :return:
+    """
+    for c in tqdm(cols):
+        # print("Sorting by dates...")
+        # dat = dat.sort_values(by=[key, c])
+        print("Normal Date Transformation - {0}...".format(c))
+        dat[c + '_dayofweek'] = dat[c].dt.weekday_name
+        dat[c + '_dayofmonth'] = dat[c].dt.day
+        dat[c + '_weekend'] = np.where(dat[c + '_dayofweek'].isin(['Saturday', 'Sunday']), 1, 0)
 
-    dat['description'] = dat['description'].fillna(" ")
-    dat['description_len'] = dat['description'].apply(lambda x: len(x.split()))
+        # print("Lagged Features - {0}...".format(c))
+        # dat[c + '_lag'] = dat.groupby([key])[c].shift(1)
 
-    #     pr_train['total_period'] = pr_train['date_to'] - pr_train['date_from']
+    return dat
 
-    daymap = {0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'}
-    dat['day_of_week_en'] = dat['day_of_week'].apply(lambda x: daymap[x])
 
+def feature_engineering(train_dat, test_dat):
+    print('train data shape: ', train_dat.shape)
+    print('test data shape: ', test_dat.shape)
+    train_dat['tr_te'] = 1
+    test_dat['tr_te'] = 0
+    dat = pd.concat([train_dat, test_dat], axis=0)
+    print('All data shape: ', dat.shape)  # (2011862, 37)
+    dat.head()
+
+    # Activation Date
+    dat = transform_date(dat, ['activation_date'])
+
+    # Deal Probability
     dat['deal_class'] = dat['deal_probability'].apply(lambda x: ">=0.5" if x >= 0.5 else "<0.5")
-
     interval = (-0.99, .10, .20, .30, .40, .50, .60, .70, .80, .90, 1.1)
     cats = ['0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']
     dat["deal_class_2"] = pd.cut(dat.deal_probability, interval, labels=cats)
+
+
+
+    # Title
+    dat['title'] = dat['title'].fillna(" ")
+    dat['title_len'] = dat['title'].apply(lambda x: len(x.split()))
+
+    # Description
+    dat['description'] = dat['description'].fillna(" ")
+    dat['description_len'] = dat['description'].apply(lambda x: len(x.split()))
+
+    # Target Mean
+
+
+
 
     return dat

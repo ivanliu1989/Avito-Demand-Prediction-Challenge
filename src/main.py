@@ -1,6 +1,6 @@
 from util import target_encoding
 from model.run_lightGBM import get_model_dataset, run_lightGBM, make_submission
-from util.feature_engineering import load_ads_data, basic_feature_engineering
+from util.feature_engineering import load_ads_data, feature_engineering
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -9,6 +9,7 @@ from collections import Counter
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 import lightgbm as lgb
+import matplotlib.pyplot as plt
 
 pd.options.display.max_columns = 999
 
@@ -39,15 +40,10 @@ if __name__ == '__main__':
     ### 3. Merge with Cstr Txns Data
     train_dat = pd.read_csv("../data/train.csv", parse_dates=["activation_date"])  # (1503424, 18)
     test_dat = pd.read_csv("../data/test.csv", parse_dates=["activation_date"])  # (508438, 17)
-    print('train data shape: ', train_dat.shape)
-    print('test data shape: ', test_dat.shape)
-    dat = pd.concat([train_dat, test_dat], axis=0)
-    print('All data shape: ', dat.shape)  # (2011862, 37)
-    train_dat = basic_feature_engineering(train_dat)
-    # dat = basic_feature_engineering(dat)
-    dat.head()
+
 
     # feature engineering
+    train_df, test_df, features = feature_engineering(train_dat, test_dat)
     features = ['item_seq_number', 'price']
 
     # get model datasets
@@ -57,7 +53,7 @@ if __name__ == '__main__':
     params = {
         "objective": "regression",
         "metric": "rmse",
-        "num_leaves": 32,
+        "num_leaves": 31,
         "learning_rate": 0.05,
         "bagging_fraction": 0.7,
         "feature_fraction": 0.7,
@@ -67,6 +63,11 @@ if __name__ == '__main__':
     }
     pred_test_y, model, evals_result = run_lightGBM(train_X, train_y, val_X, val_y, test_X,
                                                     params=params, early_stop=180, rounds=2000)
+    fig, ax = plt.subplots(figsize=(12, 18))
+    lgb.plot_importance(model, max_num_features=50, height=0.8, ax=ax)
+    ax.grid(False)
+    plt.title("LightGBM - Feature Importance", fontsize=15)
+    plt.show()
 
     ### 5. make submission
     res = make_submission(test_id, pred_test_y, filename='benchmark_end_2_end')

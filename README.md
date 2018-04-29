@@ -43,8 +43,10 @@
 - Keras
 - Regression
 
-
 ### Feature Engineering
 - Func: Time Column & ID Column -> Agg, Transform, Lag
 - Func: Text Column -> Word Embeding, Freq, PCA, Cluster
 - Func: Target Column (e.g. Price, Deal_Prob) + Categorical Columns -> Target Mean, SD, Median
+
+### Score Tracker
+- 0.254438: 'item_seq_number', 'price'
