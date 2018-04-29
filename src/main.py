@@ -58,6 +58,7 @@ if __name__ == '__main__':
     train_X, val_X, train_y, val_y = model_selection.train_test_split(pd.concat([train_X, val_X]),
                                                                       np.append(train_y, val_y),
                                                                       test_size=0.05, random_state=19)
+    gc.collect()
     train_X.head()
 
     ### 4. run model
