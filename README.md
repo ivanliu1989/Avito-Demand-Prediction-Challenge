@@ -57,6 +57,7 @@
 	- measures = ['mean', 'std', 'quantile', 'skew', 'count']
 - v0.0.1.2 | val: 0.224703
 	- v0.0.1.1 + label encoder
+	- v0.0.1.1 + user_id target encoding
 - v0.0.1.3 | val:
 	- v0.0.1.2 + impute by mean
 - v0.0.1.4 | val:

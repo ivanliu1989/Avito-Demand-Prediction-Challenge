@@ -47,9 +47,9 @@ if __name__ == '__main__':
     train_df.head()
     features_to_drop = ['activation_date', 'deal_probability', 'description',
                         'image', 'item_id', 'title', 'tr_te', 'user_id',
-                        'deal_class', 'deal_class_2']
-    # 'region','city', 'category_name', 'parent_category_name','user_type', 'param_1', 'param_2', 'param_3',
-    # 'activation_date_dayofweek'
+                        'deal_class', 'deal_class_2',
+    'region','city', 'category_name', 'parent_category_name','user_type', 'param_1', 'param_2', 'param_3',
+    'activation_date_dayofweek']
     # get model datasets
     train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features_to_drop,
                                                                         val_date='2017-03-27')
@@ -65,10 +65,10 @@ if __name__ == '__main__':
     params = {
         "objective": "regression",
         "metric": "rmse",
-        "num_leaves": 31,
-        "learning_rate": 0.05,
+        "num_leaves": 30,
+        "learning_rate": 0.1,
         "bagging_fraction": 0.7,
-        "feature_fraction": 0.5,
+        "feature_fraction": 0.7,
         "bagging_frequency": 5,
         "bagging_seed": 2018,
         "verbosity": -1
