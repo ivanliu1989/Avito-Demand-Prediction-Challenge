@@ -65,8 +65,8 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1125">
-                  <caret line="79" column="107" lean-forward="true" selection-start-line="78" selection-start-column="4" selection-end-line="79" selection-end-column="107" />
+                <state relative-caret-position="1142">
+                  <caret line="80" lean-forward="true" selection-start-line="78" selection-start-column="4" selection-end-line="80" />
                   <folding>
                     <element signature="e#0#32#0" expanded="true" />
                   </folding>
@@ -185,7 +185,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="726" y="0" width="3121" height="2127" extended-state="0" />
+    <frame x="1264" y="0" width="2583" height="2127" extended-state="0" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32998493" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -194,7 +194,7 @@
       <window_info active="true" anchor="bottom" id="Python Console" order="7" visible="true" weight="0.32998493" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32998493" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.08259876" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10019802" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" weight="0.15025702" />
@@ -473,8 +473,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1125">
-          <caret line="79" column="107" lean-forward="true" selection-start-line="78" selection-start-column="4" selection-end-line="79" selection-end-column="107" />
+        <state relative-caret-position="1142">
+          <caret line="80" lean-forward="true" selection-start-line="78" selection-start-column="4" selection-end-line="80" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>

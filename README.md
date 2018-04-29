@@ -62,3 +62,5 @@
 	- v0.0.1.2 + impute by mean
 - v0.0.1.4 | val:
 	- v0.0.1.3 + target encoding with noise
+- v0.0.1.5 | val:
+	- v0.0.1.4 + one hot encoding
