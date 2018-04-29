@@ -43,7 +43,13 @@ if __name__ == '__main__':
 
     # feature engineering
     train_df, test_df = feature_engineering_v1(train_dat, test_dat)
-    features = ['item_seq_number', 'price']
+    gc.collect()
+    train_df.head()
+    features = ['image_top_1','item_seq_number', 'price','activation_date_dayofmonth','activation_date_weekend',
+                'title_len', 'description_len', 'region_deal_probability_mean','region_deal_probability_median',
+                'city_deal_probability_mean', 'city_deal_probability_median', 'activation_date_dayofweekregion_deal_probability_mean',
+                'activation_date_dayofweekregion_deal_probability_median','region_price_mean','region_price_median',
+                'city_price_mean','city_price_median','activation_date_dayofweekregion_price_mean','activation_date_dayofweekregion_price_median']
 
     # get model datasets
     train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features)
