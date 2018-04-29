@@ -49,5 +49,5 @@
 - Func: Target Column (e.g. Price, Deal_Prob) + Categorical Columns -> Target Mean, SD, Median
 
 ### Score Tracker
-- 0.254438: 'item_seq_number', 'price'
-- 0.235308: 'image_top_1','item_seq_number', 'price','activation_date_dayofmonth','activation_date_weekend', 'title_len', 'description_len', 'region_deal_probability_mean','region_deal_probability_median', 'city_deal_probability_mean', 'city_deal_probability_median', 'activation_date_dayofweekregion_deal_probability_mean', 'activation_date_dayofweekregion_deal_probability_median','region_price_mean','region_price_median', 'city_price_mean','city_price_median','activation_date_dayofweekregion_price_mean','activation_date_dayofweekregion_price_median'
+- v0.0.0 | val:0.254438 | feat:'item_seq_number', 'price'
+- v0.0.1 | val:0.235308 | feat:'image_top_1','item_seq_number','price','activation_date_dayofmonth','activation_date_weekend', 'title_len', 'description_len', 'region_deal_probability_mean','region_deal_probability_median', 'city_deal_probability_mean', 'city_deal_probability_median', 'activation_date_dayofweekregion_deal_probability_mean', 'activation_date_dayofweekregion_deal_probability_median','region_price_mean','region_price_median', 'city_price_mean','city_price_median','activation_date_dayofweekregion_price_mean','activation_date_dayofweekregion_price_median'
