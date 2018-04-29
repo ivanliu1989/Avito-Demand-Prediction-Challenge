@@ -53,7 +53,7 @@ if __name__ == '__main__':
     # get model datasets
     train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_dat, test_dat, features)
 
-    # run model
+    ### 4. run model
     params = {
         "objective": "regression",
         "metric": "rmse",
@@ -68,8 +68,21 @@ if __name__ == '__main__':
     pred_test_y, model, evals_result = run_lightGBM(train_X, train_y, val_X, val_y, test_X,
                                                     params=params, early_stop=180, rounds=2000)
 
-    # make submission
+    ### 5. make submission
     res = make_submission(test_id, pred_test_y, filename='benchmark_end_2_end')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # agg_cols = ['region', 'city', 'parent_category_name', 'category_name',
     #             'image_top_1', 'user_type', 'item_seq_number', 'day_of_month', 'day_of_week'];
@@ -105,23 +118,3 @@ if __name__ == '__main__':
     #                      'item_id', 'param_1', 'param_2', 'param_3', 'title', 'deal_class', 'deal_class_2',
     #                      'day_of_week_en'], axis=1)
 
-    # Train the model
-    # parameters = {
-    #     'task': 'train',
-    #     'boosting_type': 'gbdt',
-    #     'objective': 'regression',
-    #     'metric': 'rmse',
-    #     'num_leaves': 31,
-    #     'learning_rate': 0.05,
-    #     'feature_fraction': 0.9,
-    #     'bagging_fraction': 0.8,
-    #     'bagging_freq': 5,
-    #     'verbose': 50
-    # }
-    #
-    # model = lgb.train(parameters,
-    #                   tr_data,
-    #                   valid_sets=va_data,
-    #                   num_boost_round=2000,
-    #                   early_stopping_rounds=120,
-    #                   verbose_eval=50)
