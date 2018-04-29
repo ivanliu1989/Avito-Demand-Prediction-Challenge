@@ -1,4 +1,5 @@
 from util import target_encoding
+from model.run_lightGBM import get_model_dataset, run_lightGBM, make_submission
 from util.feature_engineering import load_ads_data, basic_feature_engineering
 import pandas as pd
 import numpy as np
@@ -46,39 +47,51 @@ if __name__ == '__main__':
     # dat = basic_feature_engineering(dat)
     dat.head()
 
-    agg_cols = ['region', 'city', 'parent_category_name', 'category_name',
-                'image_top_1', 'user_type', 'item_seq_number', 'day_of_month', 'day_of_week'];
-    for c in tqdm(agg_cols):
-        gp = train_dat.groupby(c)['deal_probability']
-        mean = gp.mean()
-        std = gp.std()
-        dat[c + '_deal_probability_avg'] = dat[c].map(mean)
-        dat[c + '_deal_probability_std'] = dat[c].map(std)
+    # feature engineering
+    features = ['item_seq_number', 'price']
 
-    for c in tqdm(agg_cols):
-        gp = train_dat.groupby(c)['price']
-        mean = gp.mean()
-        std = gp.std()
-        dat[c + '_price_avg'] = dat[c].map(mean)
-        dat[c + '_price_std'] = dat[c].map(std)
+    # get model datasets
+    train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_dat, test_dat, features)
 
-    cate_cols = ['city', 'category_name', 'user_type', 'parent_category_name', 'region']
-    for c in cate_cols:
-        dat[c] = LabelEncoder().fit_transform(dat[c].values)
+    # run model
+    pred_test_y, model, evals_result = run_lightGBM(train_X, train_y, val_X, val_y, test_X)
 
-    cate_cols = ['city', 'category_name', 'user_type', 'parent_category_name', 'region']
-    for c in cate_cols:
-        trn_tf, val_tf = target_encoding.target_encode(trn_series=train_dat[c],
-                                                       tst_series=test_dat[c],
-                                                       target=train_dat.deal_probability,
-                                                       min_samples_leaf=100,
-                                                       smoothing=20,
-                                                       noise_level=0.01)
-        dat[c + '_tgt_encoding'] = trn_tf.append(val_tf, ignore_index=True)
+    # make submission
+    res = make_submission(test_id, pred_test_y, filename='benchmark_1')
 
-    new_data = dat.drop(['user_id', 'description', 'image',  # 'parent_category_name','region',
-                         'item_id', 'param_1', 'param_2', 'param_3', 'title', 'deal_class', 'deal_class_2',
-                         'day_of_week_en'], axis=1)
+    # agg_cols = ['region', 'city', 'parent_category_name', 'category_name',
+    #             'image_top_1', 'user_type', 'item_seq_number', 'day_of_month', 'day_of_week'];
+    # for c in tqdm(agg_cols):
+    #     gp = train_dat.groupby(c)['deal_probability']
+    #     mean = gp.mean()
+    #     std = gp.std()
+    #     dat[c + '_deal_probability_avg'] = dat[c].map(mean)
+    #     dat[c + '_deal_probability_std'] = dat[c].map(std)
+    #
+    # for c in tqdm(agg_cols):
+    #     gp = train_dat.groupby(c)['price']
+    #     mean = gp.mean()
+    #     std = gp.std()
+    #     dat[c + '_price_avg'] = dat[c].map(mean)
+    #     dat[c + '_price_std'] = dat[c].map(std)
+    #
+    # cate_cols = ['city', 'category_name', 'user_type', 'parent_category_name', 'region']
+    # for c in cate_cols:
+    #     dat[c] = LabelEncoder().fit_transform(dat[c].values)
+    #
+    # cate_cols = ['city', 'category_name', 'user_type', 'parent_category_name', 'region']
+    # for c in cate_cols:
+    #     trn_tf, val_tf = target_encoding.target_encode(trn_series=train_dat[c],
+    #                                                    tst_series=test_dat[c],
+    #                                                    target=train_dat.deal_probability,
+    #                                                    min_samples_leaf=100,
+    #                                                    smoothing=20,
+    #                                                    noise_level=0.01)
+    #     dat[c + '_tgt_encoding'] = trn_tf.append(val_tf, ignore_index=True)
+    #
+    # new_data = dat.drop(['user_id', 'description', 'image',  # 'parent_category_name','region',
+    #                      'item_id', 'param_1', 'param_2', 'param_3', 'title', 'deal_class', 'deal_class_2',
+    #                      'day_of_week_en'], axis=1)
 
 
     # Train the model
