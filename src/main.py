@@ -45,19 +45,17 @@ if __name__ == '__main__':
     train_df, test_df = feature_engineering_v1(train_dat, test_dat)
     gc.collect()
     train_df.head()
-    features_to_drop = ['activation_date', 'category_name', 'city', 'deal_probability', 'description',
-                        'image', 'item_id', 'param_1', 'param_2', 'param_3', 'parent_category_name',
-                        'region', 'title', 'tr_te', 'user_id', 'user_type', 'activation_date_dayofweek',
-                        'deal_class', 'deal_class_2']
-    # features = ['image_top_1','item_seq_number', 'price','activation_date_dayofmonth','activation_date_weekend',
-    #             'title_len', 'description_len', 'region_deal_probability_mean','region_deal_probability_median',
-    #             'city_deal_probability_mean', 'city_deal_probability_median', 'activation_date_dayofweekregion_deal_probability_mean',
-    #             'activation_date_dayofweekregion_deal_probability_median','region_price_mean','region_price_median',
-    #             'city_price_mean','city_price_median','activation_date_dayofweekregion_price_mean','activation_date_dayofweekregion_price_median']
-
+    features_to_drop = ['activation_date', 'deal_probability', 'description',
+                        'image', 'item_id', 'title', 'tr_te', 'user_id']
+    # 'region','city', 'category_name', 'parent_category_name','user_type', 'param_1', 'param_2', 'param_3',
+    # 'activation_date_dayofweek','deal_class', 'deal_class_2'
     # get model datasets
     train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features_to_drop,
                                                                         val_date='2017-03-27')
+    from sklearn import model_selection
+    train_X, val_X, train_y, val_y = model_selection.train_test_split(pd.concat([train_X, val_X]),
+                                                      np.append(train_y, val_y),
+                                                      test_size=0.20, random_state=19)
     train_X.head()
 
     ### 4. run model

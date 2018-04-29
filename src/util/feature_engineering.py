@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 import gc
+from sklearn import preprocessing
 from util.target_encoding import target_encode
 
 pd.options.display.max_columns = 999
@@ -171,6 +172,15 @@ def feature_engineering_v1(train_dat, test_dat):
     # Description
     dat['description'] = dat['description'].fillna(" ")
     dat['description_len'] = dat['description'].apply(lambda x: len(x.split()))
+
+    # Label Encoder
+    cat_vars = ["region", "city", "parent_category_name", "category_name", "user_type",
+                "param_1", "param_2", "param_3",
+                "deal_class", "deal_class_2", "activation_date_dayofweek"]
+    for col in tqdm(cat_vars):
+        lbl = preprocessing.LabelEncoder()
+        lbl.fit(list(dat[col].values.astype('str')))
+        dat[col] = lbl.transform(list(dat[col].values.astype('str')))
 
     # Target Mean
     tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
