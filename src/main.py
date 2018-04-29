@@ -46,16 +46,18 @@ if __name__ == '__main__':
     gc.collect()
     train_df.head()
     features_to_drop = ['activation_date', 'deal_probability', 'description',
-                        'image', 'item_id', 'title', 'tr_te', 'user_id']
+                        'image', 'item_id', 'title', 'tr_te', 'user_id',
+                        'deal_class', 'deal_class_2']
     # 'region','city', 'category_name', 'parent_category_name','user_type', 'param_1', 'param_2', 'param_3',
-    # 'activation_date_dayofweek','deal_class', 'deal_class_2'
+    # 'activation_date_dayofweek'
     # get model datasets
     train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features_to_drop,
                                                                         val_date='2017-03-27')
     from sklearn import model_selection
+
     train_X, val_X, train_y, val_y = model_selection.train_test_split(pd.concat([train_X, val_X]),
-                                                      np.append(train_y, val_y),
-                                                      test_size=0.20, random_state=19)
+                                                                      np.append(train_y, val_y),
+                                                                      test_size=0.05, random_state=19)
     train_X.head()
 
     ### 4. run model
@@ -69,10 +71,12 @@ if __name__ == '__main__':
         "bagging_frequency": 5,
         "bagging_seed": 2018,
         "verbosity": -1
+        # ,"boosting":"dart" # gbdt, rf, dart
+        # ,"device":"cpu"
     }
 
-    pred_test_y, model, evals_result = run_lightGBM(train_X, train_y, val_X, val_y, test_X,
-                                                    params=params, early_stop=100, rounds=5000)
+    pred_test_y, model, evals_result, cv_results = run_lightGBM(train_X, train_y, val_X, val_y, test_X,
+                                                                params=params, early_stop=100, rounds=5000)
 
     fig, ax = plt.subplots(figsize=(12, 18))
     lgb.plot_importance(model, max_num_features=50, height=0.8, ax=ax)
@@ -82,7 +86,6 @@ if __name__ == '__main__':
 
     ### 5. make submission
     res = make_submission(test_id, pred_test_y, filename='v0_0_0_1_val_0_222917_70dat')
-
 
     ### 6. blending
     paths = ['../submissions/v0_0_0_1_val_0_225643_2.csv',

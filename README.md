@@ -55,7 +55,9 @@
 	- tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
 	- cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2', 'parent_category_name', 'user_type', 'activation_date_dayofweek', 'deal_class', 'deal_class_2', ['activation_date_dayofweek', 'region']]
 	- measures = ['mean', 'std', 'quantile', 'skew', 'count']
-- v0.0.1.2 | val: 
+- v0.0.1.2 | val: 0.224703
 	- v0.0.1.1 + label encoder
 - v0.0.1.3 | val:
-	- v0.0.1.2 + target encoding with noise
+	- v0.0.1.2 + impute by mean
+- v0.0.1.4 | val:
+	- v0.0.1.3 + target encoding with noise

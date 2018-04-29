@@ -175,8 +175,7 @@ def feature_engineering_v1(train_dat, test_dat):
 
     # Label Encoder
     cat_vars = ["region", "city", "parent_category_name", "category_name", "user_type",
-                "param_1", "param_2", "param_3",
-                "deal_class", "deal_class_2", "activation_date_dayofweek"]
+                "param_1", "param_2", "param_3", "activation_date_dayofweek"]
     for col in tqdm(cat_vars):
         lbl = preprocessing.LabelEncoder()
         lbl.fit(list(dat[col].values.astype('str')))
@@ -193,6 +192,7 @@ def feature_engineering_v1(train_dat, test_dat):
     dat = target_encoding(dat, tgt_cols, cate_cols, measures, False)
 
     # Fill NA
+    # dat['price'].fillna(np.nanmean(dat['price'].values), inplace = True)
     # dat.fillna(-1)
 
     # Split train & test
