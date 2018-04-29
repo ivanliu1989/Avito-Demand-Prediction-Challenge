@@ -174,25 +174,25 @@ def feature_engineering_v1(train_dat, test_dat):
     dat['description_len'] = dat['description'].apply(lambda x: len(x.split()))
 
     # Label Encoder
-    # cat_vars = ["region", "city", "parent_category_name", "category_name", "user_type",
-    #             "param_1", "param_2", "param_3", "activation_date_dayofweek"]
-    # for col in tqdm(cat_vars):
-    #     lbl = preprocessing.LabelEncoder()
-    #     lbl.fit(list(dat[col].values.astype('str')))
-    #     dat[col] = lbl.transform(list(dat[col].values.astype('str')))
+    cat_vars = ["region", "city", "parent_category_name", "category_name", "user_type",
+                "param_1", "param_2", "param_3", "activation_date_dayofweek"]
+    for col in tqdm(cat_vars):
+        lbl = preprocessing.LabelEncoder()
+        lbl.fit(list(dat[col].values.astype('str')))
+        dat[col] = lbl.transform(list(dat[col].values.astype('str')))
 
     # Target Mean
-    # tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
-    # cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2',
-    #              'parent_category_name', 'user_type', 'activation_date_dayofweek',
-    #              # 'deal_class', 'deal_class_2',
-    #              ['activation_date_dayofweek', 'region']] # user_id
-    # measures = ['mean', 'std', 'quantile', 'skew', 'count']  # , 'kurt'
-
     tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
-    cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2', 'parent_category_name', 'user_type',
-                   'activation_date_dayofweek', 'deal_class', 'deal_class_2', ['activation_date_dayofweek', 'region']]
-    measures = ['mean', 'std', 'quantile', 'skew', 'count']
+    cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2',
+                 'parent_category_name', 'user_type', 'activation_date_dayofweek',
+                 # 'deal_class', 'deal_class_2',
+                 ['activation_date_dayofweek', 'region']] # user_id
+    measures = ['mean', 'std', 'quantile', 'skew', 'count']  # , 'kurt'
+
+    # tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
+    # cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2', 'parent_category_name', 'user_type',
+    #                'activation_date_dayofweek', 'deal_class', 'deal_class_2', ['activation_date_dayofweek', 'region']]
+    # measures = ['mean', 'std', 'quantile', 'skew', 'count']
 
     # dat = dat.sort_values(by=['activation_date'])
     dat = target_encoding(dat, tgt_cols, cate_cols, measures, False)
