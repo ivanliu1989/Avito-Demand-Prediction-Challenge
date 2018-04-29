@@ -83,7 +83,7 @@ if __name__ == '__main__':
     plt.show()
 
     ### 5. make submission
-    res = make_submission(test_id, pred_test_y, filename='v0_0_0_1_val_0_225643_3')
+    res = make_submission(test_id, pred_test_y, filename='v0_0_0_1_val_0_222917_70dat')
 
 
     ### 6. blending

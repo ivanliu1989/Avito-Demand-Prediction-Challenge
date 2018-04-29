@@ -51,7 +51,7 @@
 ### Score Tracker
 - v0.0.0 | val:0.254438 | feat:'item_seq_number', 'price'
 - v0.0.1.0 | val:0.235308 | feat:'image_top_1','item_seq_number','price','activation_date_dayofmonth','activation_date_weekend', 'title_len', 'description_len', 'region_deal_probability_mean','region_deal_probability_median', 'city_deal_probability_mean', 'city_deal_probability_median', 'activation_date_dayofweekregion_deal_probability_mean', 'activation_date_dayofweekregion_deal_probability_median','region_price_mean','region_price_median', 'city_price_mean','city_price_median','activation_date_dayofweekregion_price_mean','activation_date_dayofweekregion_price_median'
-- v0.0.1.1 | val: 0.225768 & LB: 0.230 (50% data)
+- v0.0.1.1 | val: 0.225768 (50%) / 0.222917 (80%) & LB: 0.230 (50% data)
 	- tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
 	- cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2', 'parent_category_name', 'user_type', 'activation_date_dayofweek', 'deal_class', 'deal_class_2', ['activation_date_dayofweek', 'region']]
 	- measures = ['mean', 'std', 'quantile', 'skew', 'count']
