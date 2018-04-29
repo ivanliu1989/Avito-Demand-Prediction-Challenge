@@ -28,8 +28,8 @@
           <file leaf-file-name="feature_engineering.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="721">
-                  <caret line="186" column="93" selection-start-line="186" selection-start-column="93" selection-end-line="186" selection-end-column="93" />
+                <state relative-caret-position="1096">
+                  <caret line="189" lean-forward="true" selection-start-line="189" selection-end-line="189" />
                   <folding>
                     <element signature="e#0#19#0" expanded="true" />
                   </folding>
@@ -65,8 +65,8 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="909">
-                  <caret line="79" column="29" selection-start-line="79" selection-start-column="29" selection-end-line="79" selection-end-column="29" />
+                <state relative-caret-position="1036">
+                  <caret line="80" lean-forward="true" selection-start-line="40" selection-start-column="4" selection-end-line="80" />
                   <folding>
                     <element signature="e#0#32#0" expanded="true" />
                   </folding>
@@ -192,7 +192,7 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="7" visible="true" weight="0.32998493" />
+      <window_info anchor="bottom" id="Python Console" order="7" visible="true" weight="0.32998493" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32998493" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10019802" />
@@ -474,8 +474,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="721">
-          <caret line="186" column="93" selection-start-line="186" selection-start-column="93" selection-end-line="186" selection-end-column="93" />
+        <state relative-caret-position="1096">
+          <caret line="189" lean-forward="true" selection-start-line="189" selection-end-line="189" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
