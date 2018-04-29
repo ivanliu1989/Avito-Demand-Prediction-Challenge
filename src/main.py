@@ -47,9 +47,9 @@ if __name__ == '__main__':
     train_df.head()
     features_to_drop = ['activation_date', 'deal_probability', 'description',
                         'image', 'item_id', 'title', 'tr_te', 'user_id',
-                        'deal_class', 'deal_class_2',
-    'region','city', 'category_name', 'parent_category_name','user_type', 'param_1', 'param_2', 'param_3',
-    'activation_date_dayofweek']
+                        'deal_class', 'deal_class_2']
+    # ,'region','city', 'category_name', 'parent_category_name','user_type', 'param_1', 'param_2', 'param_3',
+    # 'activation_date_dayofweek']
     # get model datasets
     train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features_to_drop,
                                                                         val_date='2017-03-27')
@@ -73,7 +73,7 @@ if __name__ == '__main__':
         "bagging_seed": 2018,
         "verbosity": -1
         # ,"boosting":"dart" # gbdt, rf, dart
-        # ,"device":"cpu"
+        # ,"device":"gpu"
     }
 
     pred_test_y, model, evals_result, cv_results = run_lightGBM(train_X, train_y, val_X, val_y, test_X,
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     plt.show()
 
     ### 5. make submission
-    res = make_submission(test_id, pred_test_y, filename='v0_0_0_1_val_0_222917_70dat')
+    res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_224867_sd0_00055142')
 
     ### 6. blending
     paths = ['../submissions/v0_0_0_1_val_0_225643_2.csv',
