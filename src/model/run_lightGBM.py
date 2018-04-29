@@ -22,9 +22,9 @@ def get_model_dataset(train_df, test_df, features, val_date='2017-03-23'):
     val_X = train_df[train_df.activation_date >= val_date]
     val_y = train_y[train_df.activation_date >= val_date]
 
-    dev_X = dev_X[features]
-    val_X = val_X[features]
-    test_X = test_df[features]
+    dev_X = dev_X.drop(features, axis=1)
+    val_X = val_X.drop(features, axis=1)
+    test_X = test_df.drop(features, axis=1)
 
     print('train data shape: ', dev_X.shape)
     print('validation data shape: ', val_X.shape)

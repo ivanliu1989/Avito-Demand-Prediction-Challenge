@@ -45,14 +45,19 @@ if __name__ == '__main__':
     train_df, test_df = feature_engineering_v1(train_dat, test_dat)
     gc.collect()
     train_df.head()
-    features = ['image_top_1','item_seq_number', 'price','activation_date_dayofmonth','activation_date_weekend',
-                'title_len', 'description_len', 'region_deal_probability_mean','region_deal_probability_median',
-                'city_deal_probability_mean', 'city_deal_probability_median', 'activation_date_dayofweekregion_deal_probability_mean',
-                'activation_date_dayofweekregion_deal_probability_median','region_price_mean','region_price_median',
-                'city_price_mean','city_price_median','activation_date_dayofweekregion_price_mean','activation_date_dayofweekregion_price_median']
+    features_to_drop = ['activation_date', 'category_name', 'city', 'deal_probability', 'description',
+                        'image', 'item_id', 'param_1', 'param_2', 'param_3', 'parent_category_name',
+                        'region', 'title', 'tr_te', 'user_id', 'user_type', 'activation_date_dayofweek',
+                        'deal_class', 'deal_class_2']
+    # features = ['image_top_1','item_seq_number', 'price','activation_date_dayofmonth','activation_date_weekend',
+    #             'title_len', 'description_len', 'region_deal_probability_mean','region_deal_probability_median',
+    #             'city_deal_probability_mean', 'city_deal_probability_median', 'activation_date_dayofweekregion_deal_probability_mean',
+    #             'activation_date_dayofweekregion_deal_probability_median','region_price_mean','region_price_median',
+    #             'city_price_mean','city_price_median','activation_date_dayofweekregion_price_mean','activation_date_dayofweekregion_price_median']
 
     # get model datasets
-    train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features)
+    train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features_to_drop)
+    train_X.head()
 
     ### 4. run model
     params = {
@@ -68,6 +73,7 @@ if __name__ == '__main__':
     }
     pred_test_y, model, evals_result = run_lightGBM(train_X, train_y, val_X, val_y, test_X,
                                                     params=params, early_stop=180, rounds=2000)
+
     fig, ax = plt.subplots(figsize=(12, 18))
     lgb.plot_importance(model, max_num_features=50, height=0.8, ax=ax)
     ax.grid(False)
@@ -75,7 +81,7 @@ if __name__ == '__main__':
     plt.show()
 
     ### 5. make submission
-    res = make_submission(test_id, pred_test_y, filename='benchmark_end_2_end')
+    res = make_submission(test_id, pred_test_y, filename='v0_0_0_1_val_0_0166561')
 
     # agg_cols = ['region', 'city', 'parent_category_name', 'category_name',
     #             'image_top_1', 'user_type', 'item_seq_number', 'day_of_month', 'day_of_week'];

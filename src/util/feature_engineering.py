@@ -131,8 +131,12 @@ def target_encoding(dat, tgt_cols, cate_cols, measure=['mean'], noise=True):
                 for m in measure:
                     # TODO(Ivan): Add multi categories
                     f = '{0}_{1}_{2}'.format(('').join(c), t, m)
+                    print(f)
                     # dat[f] = dat[t].groupby(dat[c]).transform(m)
-                    dat[f] = dat.groupby(c)[t].transform(m)
+                    if m == 'kurt':
+                        dat[f] = dat.groupby(c)[t].apply(pd.DataFrame.kurt)
+                    else:
+                        dat[f] = dat.groupby(c)[t].transform(m)
 
     return dat
 
@@ -169,13 +173,21 @@ def feature_engineering_v1(train_dat, test_dat):
     dat['description_len'] = dat['description'].apply(lambda x: len(x.split()))
 
     # Target Mean
-    tgt_cols = ['deal_probability', 'price']
-    cate_cols = ['region', 'city', ['activation_date_dayofweek', 'region']]
-    measures = ['mean', 'median']
+    tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
+    cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2',
+                 'parent_category_name', 'user_type', 'activation_date_dayofweek',
+                 'deal_class', 'deal_class_2',
+                 ['activation_date_dayofweek', 'region']]
+    measures = ['mean', 'std', 'quantile', 'skew', 'count'] # , 'kurt'
+    dat = dat.sort_values(by=['activation_date'])
     dat = target_encoding(dat, tgt_cols, cate_cols, measures, False)
+
+    # Fill NA
+    # dat.fillna(-1)
 
     # Split train & test
     train_dat = dat[dat.tr_te == 1]
     test_dat = dat[dat.tr_te == 0]
 
+    dat.head()
     return train_dat, test_dat
