@@ -18,7 +18,7 @@
 - ngrams
 - sentiment score
 - top words - possibility
-- meta feature - binary, regression, multi-classification, pca, clustering
+- meta feature - binary, regression, multi-classification (prob bins), pca, clustering
 
 ### Inferences:
 - So the dates are not different between train and test sets. So we need to be careful while doing our validation. May be time based validation is a good option.
@@ -55,12 +55,13 @@
 	- tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
 	- cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2', 'parent_category_name', 'user_type', 'activation_date_dayofweek', 'deal_class', 'deal_class_2', ['activation_date_dayofweek', 'region']]
 	- measures = ['mean', 'std', 'quantile', 'skew', 'count']
-- v0.0.1.2 | val: 0.224703
-	- v0.0.1.1 + label encoder
-	- v0.0.1.1 + user_id target encoding
+- v0.0.1.2 | val: 0.224491
+	- v0.0.1.2.1 | v0.0.1.1 + label encoder: [2880] 0.224867 + 0.00055142
+	- v0.0.1.2.2 | v0.0.1.1 + user_id target encoding: 
+	- v0.0.1.2.3 | v0.0.1.1 + user_id & item_id target encoding: 
 - v0.0.1.3 | val:
-	- v0.0.1.2 + impute by mean
+	- v0.0.1.3.1 | v0.0.1.2 + impute by mean
 - v0.0.1.4 | val:
-	- v0.0.1.3 + target encoding with noise
+	- v0.0.1.4.1 | v0.0.1.3 + target encoding with noise
 - v0.0.1.5 | val:
-	- v0.0.1.4 + one hot encoding
+	- v0.0.1.5.1 | v0.0.1.4 + one hot encoding
