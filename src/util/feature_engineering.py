@@ -245,7 +245,7 @@ def feature_engineering_v1(train_dat, test_dat, noise=True, OHE=True):
             ohe = pd.get_dummies(dat[c])
             ohe.columns = [c + str(col_name) for col_name in ohe.columns]
             dat = dat.drop(c, axis=1)
-            dat = pd.concat([dat, ohe], axis=1, ignore_index=True)
+            # dat = pd.concat([dat, ohe], axis=1)
     else:
         for col in tqdm(cat_vars):
             lbl = preprocessing.LabelEncoder()
