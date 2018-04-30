@@ -28,8 +28,8 @@
           <file leaf-file-name="feature_engineering.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="745">
-                  <caret line="243" column="31" lean-forward="true" selection-start-line="243" selection-start-column="31" selection-end-line="243" selection-end-column="31" />
+                <state relative-caret-position="726">
+                  <caret line="242" column="46" selection-start-line="242" selection-start-column="46" selection-end-line="242" selection-end-column="46" />
                   <folding>
                     <element signature="e#0#23#0" expanded="true" />
                   </folding>
@@ -56,8 +56,8 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="670">
-                  <caret line="80" lean-forward="true" selection-start-line="75" selection-start-column="4" selection-end-line="80" />
+                <state relative-caret-position="843">
+                  <caret line="75" column="3" selection-start-line="35" selection-start-column="3" selection-end-line="75" selection-end-column="3" />
                   <folding>
                     <element signature="e#0#35#0" expanded="true" />
                   </folding>
@@ -97,6 +97,7 @@
       <find>deal_class</find>
       <find>average</find>
       <find>conc</find>
+      <find>joi</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -119,7 +120,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-7" />
-    <option name="width" value="2530" />
+    <option name="width" value="2233" />
     <option name="height" value="2127" />
   </component>
   <component name="ProjectView">
@@ -192,7 +193,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="2530" height="2127" extended-state="0" />
+    <frame x="-7" y="0" width="2233" height="2127" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32998493" />
@@ -205,7 +206,7 @@
       <window_info content_ui="combo" id="Project" order="0" weight="0.09274194" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info anchor="right" id="SciView" order="3" visible="true" weight="0.040048543" />
+      <window_info anchor="right" id="SciView" order="3" visible="true" weight="0.04551724" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
@@ -701,8 +702,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="745">
-          <caret line="243" column="31" lean-forward="true" selection-start-line="243" selection-start-column="31" selection-end-line="243" selection-end-column="31" />
+        <state relative-caret-position="726">
+          <caret line="242" column="46" selection-start-line="242" selection-start-column="46" selection-end-line="242" selection-end-column="46" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>

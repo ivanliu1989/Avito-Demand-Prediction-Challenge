@@ -233,15 +233,19 @@ def feature_engineering_v1(train_dat, test_dat, noise=True, OHE=True):
     dat = target_encoding(dat, tgt_cols, cate_cols, measures, noise)
 
     # Label Encoder
-    # cat_vars = ["region", "city", "parent_category_name", "category_name", "user_type",
-    #             "param_1", "param_2", "param_3", "activation_date_dayofweek"]
-    cat_vars = ["region", "parent_category_name", "category_name", "user_type"]
+    cat_vars = ["region", "city", "parent_category_name", "category_name", "user_type",
+                "param_1", "param_2", "param_3", "activation_date_dayofweek"]
+    ohe_vars = ["region", "parent_category_name", "category_name", "user_type"]
     if OHE:
         for col in tqdm(cat_vars):
-            ohe = pd.get_dummies(dat[col])
-            ohe.columns = [col + str(col_name) for col_name in ohe.columns]
-            dat = dat.drop(col, axis=1)
-            dat = dat.join(ohe)
+            lbl = preprocessing.LabelEncoder()
+            lbl.fit(list(dat[col].values.astype('str')))
+            dat[col] = lbl.transform(list(dat[col].values.astype('str')))
+        for c in tqdm(ohe_vars):
+            ohe = pd.get_dummies(dat[c])
+            ohe.columns = [c + str(col_name) for col_name in ohe.columns]
+            dat = dat.drop(c, axis=1)
+            dat = pd.concat([dat, ohe], axis=1, ignore_index=True)
     else:
         for col in tqdm(cat_vars):
             lbl = preprocessing.LabelEncoder()
@@ -252,7 +256,6 @@ def feature_engineering_v1(train_dat, test_dat, noise=True, OHE=True):
     train_dat = dat[dat.tr_te == 1]
     test_dat = dat[dat.tr_te == 0]
 
-    dat.head()
     return train_dat, test_dat
 
 
