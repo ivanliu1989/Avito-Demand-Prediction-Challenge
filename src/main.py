@@ -74,13 +74,13 @@ if __name__ == '__main__':
                                                                 params=params, early_stop=100, rounds=5000)
 
     fig, ax = plt.subplots(figsize=(12, 18))
-    lgb.plot_importance(model, max_num_features=50, height=0.8, ax=ax)
+    lgb.plot_importance(model, max_num_features=100, height=0.8, ax=ax)
     ax.grid(False)
     plt.title("LightGBM - Feature Importance", fontsize=15)
     plt.show()
 
     ### 5. make submission
-    res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_226457_sd0_000489155')
+    res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_226524_sd0_000491616')
 
     ### 6. blending
     paths = ['../submissions/v0_0_0_1_val_0_225643_2.csv',

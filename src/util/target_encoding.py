@@ -36,8 +36,8 @@ def target_encode(trn_series=None,
     averages[target.name] = prior * (1 - smoothing) + averages[measure] * smoothing
     averages.drop([measure, "count"], axis=1, inplace=True)
     # Apply averages to trn and tst series
-    if len(group) >= 2:
-        print(group)
+    if isinstance(group, list) and len(group) >= 2:
+        # print(group)
         ft_trn_series = pd.merge(
             trn_series,
             averages.reset_index().rename(columns={'index': target.name, target.name: 'average'}),
@@ -54,6 +54,7 @@ def target_encode(trn_series=None,
         # pd.merge does not keep the index so restore it
         ft_tst_series.index = tst_series.index
     else:
+        # print(group)
         ft_trn_series = pd.merge(
             trn_series.to_frame(trn_series.name),
             averages.reset_index().rename(columns={'index': target.name, target.name: 'average'}),

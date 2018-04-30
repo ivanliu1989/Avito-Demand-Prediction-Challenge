@@ -63,6 +63,11 @@
 - v0.0.1.3 | val: 0.224746
 	- v0.0.1.3.1 | v0.0.1.2 + impute price by mean: [2620] 0.224746 + 0.000503914
 - v0.0.1.4 | val:
-	- v0.0.1.4.1 | v0.0.1.3 + target encoding with noise: 0.226214 + 0.000500686
+	- v0.0.1.4.1 | v0.0.1.3 + target encoding with noise: 0.226457 + 0.000489155
+	- v0.0.1.4.2 | v0.0.1.4.1 + different measures: 0.226524 + 0.000491616
 - v0.0.1.5 | val:
 	- v0.0.1.5.1 | v0.0.1.4 + one hot encoding
+
+
+### Submit
+kaggle competitions submit -c avito-demand-prediction -f v0_0_1_2_rmse0_226457_sd0_000489155.csv -m "test with noise tgt mean"
