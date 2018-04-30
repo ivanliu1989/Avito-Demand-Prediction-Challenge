@@ -123,22 +123,51 @@ def transform_date(dat, cols=None):
 
 
 def target_encoding(dat, tgt_cols, cate_cols, measure=['mean'], noise=True):
+    """
+
+    :param dat:
+    :param tgt_cols:
+    :param cate_cols:
+    :param measure:
+    :param noise:
+    :return:
+    """
     if noise:
+        trigger = []
         train_dat = dat[dat.tr_te == 1]
         test_dat = dat[dat.tr_te == 0]
         for t in tqdm(tgt_cols):
             for c in tqdm(cate_cols):
-                trn_tf, val_tf = target_encode(trn_series=train_dat[c],
-                                               tst_series=test_dat[c],
-                                               target=train_dat[t],
-                                               min_samples_leaf=100,
-                                               smoothing=20,
-                                               noise_level=0.01)
-                f = '{0}_{1}'.format(('').join(c), t)
-                train_dat[f] = trn_tf
-                test_dat[f] = val_tf
+                for m in measure:
+                    if m not in ['count', 'kurt']:
+                        trn_tf, val_tf = target_encode(trn_series=train_dat[c],
+                                                       tst_series=test_dat[c],
+                                                       group=c,
+                                                       target=train_dat[t],
+                                                       min_samples_leaf=100,
+                                                       smoothing=20,
+                                                       noise_level=0.01,
+                                                       measure=m
+                                                       )
+                        f = '{0}_{1}_{2}'.format(('').join(c), t, m)
+                        train_dat[f] = trn_tf
+                        test_dat[f] = val_tf
+                    else:
+                        trigger.append(m)
 
         dat = pd.concat([train_dat, test_dat], axis=0)
+
+        if len(trigger) > 0:
+            for t in tqdm(tgt_cols):
+                for c in tqdm(cate_cols):
+                    for m in trigger:
+                        f = '{0}_{1}_{2}'.format(('').join(c), t, m)
+                        print(f)
+                        # dat[f] = dat[t].groupby(dat[c]).transform(m)
+                        if m == 'kurt':
+                            dat[f] = dat.groupby(c)[t].apply(pd.DataFrame.kurt)
+                        else:
+                            dat[f] = dat.groupby(c)[t].transform(m)
 
     else:
         for t in tqdm(tgt_cols):
@@ -173,6 +202,9 @@ def feature_engineering_v1(train_dat, test_dat, noise=True):
     # Activation Date
     dat = transform_date(dat, ['activation_date'])
 
+    # Fill NA
+    dat['price'].fillna(np.nanmean(dat['price'].values), inplace=True)
+
     # Deal Probability
     # dat['deal_class'] = dat['deal_probability'].apply(lambda x: ">=0.5" if x >= 0.5 else "<0.5")
     # interval = (-0.99, .10, .20, .30, .40, .50, .60, .70, .80, .90, 1.1)
@@ -196,18 +228,14 @@ def feature_engineering_v1(train_dat, test_dat, noise=True):
         dat[col] = lbl.transform(list(dat[col].values.astype('str')))
 
     # Target Mean
-    tgt_cols = ['deal_probability', 'price', 'image_top_1', 'activation_date_weekend']
+    tgt_cols = ['deal_probability', 'price', 'image_top_1']
     cate_cols = ['category_name', 'region', 'city', 'param_1', 'param_2', 'param_3',
-                 'parent_category_name', 'user_type', 'activation_date_dayofweek']
+                 'parent_category_name', 'user_type', 'activation_date_dayofweek',
+                 'activation_date_weekend', ['activation_date_dayofweek', 'region']]
     # 'user_id', ,'item_id'
-    # ['activation_date_dayofweek', 'region']]
     measures = ['mean', 'std', 'quantile', 'skew', 'count']  # , 'kurt'
     dat = dat.sort_values(by=['activation_date'])
     dat = target_encoding(dat, tgt_cols, cate_cols, measures, noise)
-
-    # Fill NA
-    dat['price'].fillna(np.nanmean(dat['price'].values), inplace=True)
-    # dat.fillna(-1)
 
     # Split train & test
     train_dat = dat[dat.tr_te == 1]

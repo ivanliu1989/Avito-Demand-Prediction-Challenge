@@ -1,13 +1,9 @@
-from util import target_encoding
+from sklearn import model_selection
 from model.run_lightGBM import get_model_dataset, run_lightGBM, make_submission
 from util.feature_engineering import load_ads_data, feature_engineering_v1
 import pandas as pd
 import numpy as np
-from tqdm import tqdm
 import gc
-from collections import Counter
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
 import lightgbm as lgb
 import matplotlib.pyplot as plt
 
@@ -53,8 +49,6 @@ if __name__ == '__main__':
     # get model datasets
     train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features_to_drop,
                                                                         val_date='2017-03-27')
-    from sklearn import model_selection
-
     train_X, val_X, train_y, val_y = model_selection.train_test_split(pd.concat([train_X, val_X]),
                                                                       np.append(train_y, val_y),
                                                                       test_size=0.05, random_state=19)
@@ -86,7 +80,7 @@ if __name__ == '__main__':
     plt.show()
 
     ### 5. make submission
-    res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_226214_sd0_000500686')
+    res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_226457_sd0_000489155')
 
     ### 6. blending
     paths = ['../submissions/v0_0_0_1_val_0_225643_2.csv',
