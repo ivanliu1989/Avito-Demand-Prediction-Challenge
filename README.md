@@ -63,6 +63,6 @@
 - v0.0.1.3 | val: 0.224746
 	- v0.0.1.3.1 | v0.0.1.2 + impute price by mean: [2620] 0.224746 + 0.000503914
 - v0.0.1.4 | val:
-	- v0.0.1.4.1 | v0.0.1.3 + target encoding with noise
+	- v0.0.1.4.1 | v0.0.1.3 + target encoding with noise: 0.226214 + 0.000500686
 - v0.0.1.5 | val:
 	- v0.0.1.5.1 | v0.0.1.4 + one hot encoding
