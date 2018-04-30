@@ -28,8 +28,8 @@
           <file leaf-file-name="feature_engineering.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="726">
-                  <caret line="242" column="46" selection-start-line="242" selection-start-column="46" selection-end-line="242" selection-end-column="46" />
+                <state relative-caret-position="760">
+                  <caret line="244" column="40" lean-forward="true" selection-start-line="244" selection-start-column="40" selection-end-line="244" selection-end-column="40" />
                   <folding>
                     <element signature="e#0#23#0" expanded="true" />
                   </folding>
@@ -194,7 +194,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="2233" height="2127" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32998493" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -702,8 +701,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
-          <caret line="242" column="46" selection-start-line="242" selection-start-column="46" selection-end-line="242" selection-end-column="46" />
+        <state relative-caret-position="760">
+          <caret line="244" column="40" lean-forward="true" selection-start-line="244" selection-start-column="40" selection-end-line="244" selection-end-column="40" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
