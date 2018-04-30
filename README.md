@@ -60,8 +60,8 @@
 	- v0.0.1.2.2 | v0.0.1.1 + user_id & item_id target encoding: [260] 0.125014 + 0.000535261
 	- v0.0.1.2.3 | v0.0.1.1 + param_3 target encoding: [2060] 0.224751 + 0.000484106
 	- v0.0.1.2.4 | v0.0.1.1 + sorted by date: [2880] 0.224812 + 0.000479768
-- v0.0.1.3 | val:
-	- v0.0.1.3.1 | v0.0.1.2 + impute by mean
+- v0.0.1.3 | val: 0.224746
+	- v0.0.1.3.1 | v0.0.1.2 + impute price by mean: [2620] 0.224746 + 0.000503914
 - v0.0.1.4 | val:
 	- v0.0.1.4.1 | v0.0.1.3 + target encoding with noise
 - v0.0.1.5 | val:

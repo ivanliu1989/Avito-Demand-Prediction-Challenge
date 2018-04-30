@@ -86,7 +86,7 @@ if __name__ == '__main__':
     plt.show()
 
     ### 5. make submission
-    res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_224867_sd0_00055142')
+    res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_224746_sd0_000503914')
 
     ### 6. blending
     paths = ['../submissions/v0_0_0_1_val_0_225643_2.csv',
