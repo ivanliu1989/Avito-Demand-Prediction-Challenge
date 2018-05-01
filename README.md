@@ -68,7 +68,7 @@
 	- v0.0.1.5 | val:
 		- v0.0.1.5.1 | v0.0.1.4 + one hot encoding: [1420] 0.226585 + 0.000516941
 	- v0.0.1.6 | val:
-		- v0.0.1.6.1 | v0.0.1.5 + word count + image_available:
+		- v0.0.1.6.1 | v0.0.1.5 + word count + image_available: 0.226555 + 0.000530452
 - v0.0.2
 	- v0.0.2.1 | active feature
 - v0.0.3
