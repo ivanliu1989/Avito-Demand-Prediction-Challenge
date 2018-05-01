@@ -49,9 +49,9 @@ if __name__ == '__main__':
     # get model datasets
     train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features_to_drop,
                                                                         val_date='2017-03-27')
-    train_X, val_X, train_y, val_y = model_selection.train_test_split(pd.concat([train_X, val_X]),
-                                                                      np.append(train_y, val_y),
-                                                                      test_size=0.05, random_state=19)
+    # train_X, val_X, train_y, val_y = model_selection.train_test_split(pd.concat([train_X, val_X]),
+    #                                                                   np.append(train_y, val_y),
+    #                                                                   test_size=0.05, random_state=19)
     gc.collect()
     train_X.head()
 
@@ -59,8 +59,8 @@ if __name__ == '__main__':
     params = {
         "objective": "regression",
         "metric": "rmse",
-        "num_leaves": 30,
-        "learning_rate": 0.1,
+        "num_leaves": 30, #40
+        "learning_rate": 0.1, #0.09
         "bagging_fraction": 0.7,
         "feature_fraction": 0.7,
         "bagging_frequency": 5,
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     plt.show()
 
     ### 5. make submission
-    res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_226524_sd0_000491616')
+    res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_225142_sd0_000170338')
 
     ### 6. blending
     paths = ['../submissions/baseline_lgb.csv',

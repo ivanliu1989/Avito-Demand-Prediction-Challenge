@@ -71,14 +71,15 @@
 		- v0.0.1.6.1 | v0.0.1.5 + word count + image_available: 0.226555 + 0.000530452
 - v0.0.2
 	- v0.0.2.1 | NLP
-		- v0.0.2.1.1 | v0.0.1.6 + tfidf(svd - 3):
+		- v0.0.2.1.1 | v0.0.1.6 + tfidf(svd - 3): [1920] 0.225142 + 0.000170338
 		- v0.0.2.1.2 | v0.0.2.1.1 + tfidf(svd - 6):
 		- v0.0.2.1.3 | v0.0.2.1.2 + big text - title+desc+param123:
+		- v0.0.2.1.4 | v0.0.2.1.3 + ngrams:
 	- v0.0.2.1 | log transform
 - v0.0.3
-	- v0.0.3.1 | active feature
+	- v0.0.3.1 | Image
 - v0.0.4
-	- v0.0.4.1 | Image
+	- v0.0.4.1 | active feature
 - v0.0.5
 	- v0.0.5.1 | Meta features
 
