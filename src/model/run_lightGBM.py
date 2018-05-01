@@ -64,8 +64,9 @@ def run_lightGBM(train_X, train_y, val_X, val_y, test_X, params=None, early_stop
     evals_result = {}
     cv_results = lgb.cv(params, lgtrain, rounds, nfold=5, early_stopping_rounds=early_stop,
                         verbose_eval=20, stratified=False)
+    best_rnd = cv_results['rmse-mean'].index(min(cv_results['rmse-mean']))
 
-    model = lgb.train(params, lgtrain, rounds, valid_sets=[lgval], early_stopping_rounds=early_stop, verbose_eval=20,
+    model = lgb.train(params, lgtrain, best_rnd, valid_sets=[lgval], early_stopping_rounds=early_stop, verbose_eval=20,
                       evals_result=evals_result)
 
     pred_test_y = model.predict(test_X, num_iteration=model.best_iteration)

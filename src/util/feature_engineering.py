@@ -241,6 +241,7 @@ def feature_engineering_v1(train_dat, test_dat, noise=True, OHE=True):
     dat = target_encoding(dat, tgt_cols, cate_cols, measures, noise)
 
     # Label Encoder
+    # TODO(Ivan): Try to disable this part and test overfitting issue
     cat_vars = ["region", "city", "parent_category_name", "category_name", "user_type",
                 "param_1", "param_2", "param_3", "activation_date_dayofweek"]
     ohe_vars = ["region", "parent_category_name", "category_name", "user_type"]
