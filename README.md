@@ -66,7 +66,9 @@
 		- v0.0.1.4.1 | v0.0.1.3 + target encoding with noise: 0.226457 + 0.000489155
 		- v0.0.1.4.2 | v0.0.1.4.1 + different measures: 0.226524 + 0.000491616
 	- v0.0.1.5 | val:
-		- v0.0.1.5.1 | v0.0.1.4 + one hot encoding: 
+		- v0.0.1.5.1 | v0.0.1.4 + one hot encoding: [1420] 0.226585 + 0.000516941
+	- v0.0.1.6 | val:
+		- v0.0.1.6.1 | v0.0.1.5 + word count + image_available:
 - v0.0.2
 	- v0.0.2.1 | active feature
 - v0.0.3
