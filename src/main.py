@@ -1,5 +1,5 @@
 from sklearn import model_selection
-from model.run_lightGBM import get_model_dataset, run_lightGBM, make_submission
+from model.run_lightGBM import get_model_dataset, run_lightGBM, make_submission,submission_blending
 from util.feature_engineering import load_ads_data, feature_engineering_v1
 import pandas as pd
 import numpy as np
@@ -83,7 +83,8 @@ if __name__ == '__main__':
     res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_226524_sd0_000491616')
 
     ### 6. blending
-    paths = ['../submissions/v0_0_0_1_val_0_225643_2.csv',
-             '../submissions/baseline_lgb_0_229.csv',
-             '../submissions/v0_0_0_1_val_0_225768.csv']
-    wts = [0.5, 0.3, 0.2]
+    paths = ['../submissions/baseline_lgb.csv',
+             # '../submissions/baseline_lgb_0_229.csv',
+             '../submissions/xgb_tfidf0.22386.csv']
+    wts = [0.5, 0.5]
+    res =submission_blending(paths, wts, 'blend_tfidf_baseline')

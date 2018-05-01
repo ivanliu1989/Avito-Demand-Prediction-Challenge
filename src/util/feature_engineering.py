@@ -163,7 +163,7 @@ def target_encoding(dat, tgt_cols, cate_cols, measure=['mean'], noise=True):
                 for c in tqdm(cate_cols):
                     for m in trigger:
                         f = '{0}_{1}_{2}'.format(('').join(c), t, m)
-                        print(f)
+                        # print(f)
                         # dat[f] = dat[t].groupby(dat[c]).transform(m)
                         if m == 'kurt':
                             dat[f] = dat.groupby(c)[t].apply(pd.DataFrame.kurt)
@@ -176,7 +176,7 @@ def target_encoding(dat, tgt_cols, cate_cols, measure=['mean'], noise=True):
                 for m in measure:
                     # TODO(Ivan): Add multi categories
                     f = '{0}_{1}_{2}'.format(('').join(c), t, m)
-                    print(f)
+                    # print(f)
                     # dat[f] = dat[t].groupby(dat[c]).transform(m)
                     if m == 'kurt':
                         dat[f] = dat.groupby(c)[t].apply(pd.DataFrame.kurt)
@@ -208,19 +208,25 @@ def feature_engineering_v1(train_dat, test_dat, noise=True, OHE=True):
     # Activation Date
     dat = transform_date(dat, ['activation_date'])
 
+    # Image
+    dat['image_available'] = dat['image'].map(lambda x: 1 if len(str(x)) > 0 else 0)
+
+    # NLP
+    # Title
+    dat['title'] = dat['title'].fillna(" ")
+    dat['title_len'] = dat['title'].apply(lambda x: len(x.split()))
+    dat['title_wc'] = dat['title'].map(lambda x: len(str(x).split(' ')))
+
+    # Description
+    dat['description'] = dat['description'].fillna(" ")
+    dat['description_len'] = dat['description'].apply(lambda x: len(x.split()))
+    dat['description_wc'] = dat['description'].map(lambda x: len(str(x).split(' ')))
+
     # Translate
     # dat = translate_russian_category(dat)
 
     # Fill NA
     dat['price'].fillna(np.nanmean(dat['price'].values), inplace=True)
-
-    # Title
-    dat['title'] = dat['title'].fillna(" ")
-    dat['title_len'] = dat['title'].apply(lambda x: len(x.split()))
-
-    # Description
-    dat['description'] = dat['description'].fillna(" ")
-    dat['description_len'] = dat['description'].apply(lambda x: len(x.split()))
 
     # Target Mean
     tgt_cols = ['deal_probability', 'price', 'image_top_1']
@@ -245,7 +251,7 @@ def feature_engineering_v1(train_dat, test_dat, noise=True, OHE=True):
             ohe = pd.get_dummies(dat[c])
             ohe.columns = [c + str(col_name) for col_name in ohe.columns]
             dat = dat.drop(c, axis=1)
-            # dat = pd.concat([dat, ohe], axis=1)
+            dat = pd.concat([dat, ohe], axis=1)
     else:
         for col in tqdm(cat_vars):
             lbl = preprocessing.LabelEncoder()
