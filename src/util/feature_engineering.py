@@ -5,6 +5,7 @@ from tqdm import tqdm
 import gc
 from sklearn import preprocessing
 from util.target_encoding import target_encode
+from util.nlp_features import text_mining_v1
 
 pd.options.display.max_columns = 999
 
@@ -216,11 +217,12 @@ def feature_engineering_v1(train_dat, test_dat, noise=True, OHE=True):
     dat['title'] = dat['title'].fillna(" ")
     dat['title_len'] = dat['title'].apply(lambda x: len(x.split()))
     dat['title_wc'] = dat['title'].map(lambda x: len(str(x).split(' ')))
-
     # Description
     dat['description'] = dat['description'].fillna(" ")
     dat['description_len'] = dat['description'].apply(lambda x: len(x.split()))
     dat['description_wc'] = dat['description'].map(lambda x: len(str(x).split(' ')))
+    # tfidf & svd
+    dat = text_mining_v1(dat, 3)
 
     # Translate
     # dat = translate_russian_category(dat)
