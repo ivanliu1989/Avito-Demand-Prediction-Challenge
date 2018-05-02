@@ -6,6 +6,8 @@ from sklearn import preprocessing, model_selection, metrics
 import lightgbm as lgb
 from nltk.corpus import stopwords
 from tqdm import tqdm
+from model.run_lightGBM import get_model_dataset, run_lightGBM, make_submission,submission_blending
+
 
 pd.options.mode.chained_assignment = None
 pd.options.display.max_columns = 999
@@ -30,12 +32,12 @@ data = pd.concat([train_df, test_df], axis=0)
 # https://www.kaggle.com/classtag/lightgbm-with-mean-encode-feature-0-233
 agg_cols = ['region', 'city', 'parent_category_name', 'category_name', 'image_top_1', 'user_type', 'item_seq_number',
             'activation_weekday']
-for c in tqdm(agg_cols):
-    gp = train_df.groupby(c)['deal_probability']
-    mean = gp.mean()
-    std = gp.std()
-    data[c + '_deal_probability_avg'] = data[c].map(mean)
-    data[c + '_deal_probability_std'] = data[c].map(std)
+# for c in tqdm(agg_cols):
+#     gp = train_df.groupby(c)['deal_probability']
+#     mean = gp.mean()
+#     std = gp.std()
+#     data[c + '_deal_probability_avg'] = data[c].map(mean)
+#     data[c + '_deal_probability_std'] = data[c].map(std)
 
 for c in tqdm(agg_cols):
     gp = train_df.groupby(c)['price']
@@ -56,8 +58,8 @@ tfidf_title.fit(pd.concat([train_df['title'], test_df['title']]))
 train_des_tfidf = tfidf.transform(train_df['description'])
 test_des_tfidf = tfidf.transform(test_df['description'])
 
-train_title_tfidf = tfidf.transform(train_df['title'])
-test_title_tfidf = tfidf.transform(test_df['title'])
+train_title_tfidf = tfidf_title.transform(train_df['title'])
+test_title_tfidf = tfidf_title.transform(test_df['title'])
 
 n_comp = 3
 svd_obj = TruncatedSVD(n_components=n_comp, algorithm='arpack')
@@ -88,20 +90,17 @@ for col in tqdm(cat_vars):
     train_df[col] = lbl.transform(list(train_df[col].values.astype('str')))
     test_df[col] = lbl.transform(list(test_df[col].values.astype('str')))
 
-# cols_to_drop = ["item_id", "user_id", "title", "description", "activation_date", "image"]
-# print(train_df.columns)
-# train_X = train_df.drop(cols_to_drop + ["deal_probability"], axis=1)
-# test_X = test_df.drop(cols_to_drop, axis=1)
-# print(train_X.head())
+cols_to_drop = ["item_id", "user_id", "title", "description", "activation_date", "image"]
 
-from model.run_lightGBM import get_model_dataset, run_lightGBM, make_submission,submission_blending
-from util.feature_engineering import load_ads_data, feature_engineering_v1
 # get model datasets
+
 train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, cols_to_drop,
                                                                     val_date='2017-03-27')
 train_X, val_X, train_y, val_y = model_selection.train_test_split(pd.concat([train_X, val_X]),
                                                                   np.append(train_y, val_y),
                                                                   test_size=0.05, random_state=19)
+train_X = train_X.drop(["deal_probability"], axis=1)
+val_X = val_X.drop(["deal_probability"], axis=1)
 train_X.head()
 
 ### 4. run model
@@ -122,7 +121,8 @@ params = {
 pred_test_y, model, evals_result, cv_results = run_lightGBM(train_X, train_y, val_X, val_y, test_X,
                                                             params=params, early_stop=100, rounds=5000)
 
-
+# 0.228
+res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_224642_sd0_000488885')
 
 # def run_lgb(train_X, train_y, val_X, val_y, test_X):
 #     params = {
