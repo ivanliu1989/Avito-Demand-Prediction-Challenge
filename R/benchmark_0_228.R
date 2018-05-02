@@ -82,14 +82,14 @@ p <- list(objective = "reg:logistic",
           eval_metric = "rmse",
           nthread = 8,
           eta = 0.05,
-          max_depth = 7,
-          min_child_weight = 1,
+          max_depth = 13,
+          min_child_weight = 2,
           gamma = 0,
           subsample = 0.7,
           colsample_bytree = 0.7,
           alpha = 0,
           lambda = 0,
-          nrounds = 1000)
+          nrounds = 1500)
 
 m_xgb <- xgb.train(p, dtrain, p$nrounds, list(val = dval), print_every_n = 50, early_stopping_rounds = 50)
 

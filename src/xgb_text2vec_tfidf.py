@@ -79,11 +79,17 @@ cols_to_drop = ["item_id", "user_id", "title", "description", "activation_date",
 train_dt = pd.concat([train_df.drop(cols_to_drop, axis=1).to_sparse(fill_value=0), train_df_tfidf], axis=1)
 test_dt = pd.concat([test_df.drop(cols_to_drop, axis=1).to_sparse(fill_value=0), test_df_tfidf], axis=1)
 
-train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_dt, test_dt, [],
-                                                                    val_date='2017-03-27')
-train_X, val_X, train_y, val_y = model_selection.train_test_split(train_dt,
-                                                                  train_dt.deal_probability,
-                                                                  test_size=0.1, random_state=19)
+# train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_dt, test_dt, [],
+#                                                                     val_date='2017-03-27')
+# train_X, val_X, train_y, val_y = model_selection.train_test_split(train_dt,
+#                                                                   train_dt.deal_probability,
+#                                                                   test_size=0.1, random_state=19)
+
+train_X = train_dt.iloc[:-200000, :]
+val_X = train_dt.iloc[-200000:, :]
+train_y = train_dt.deal_probability[:-200000]
+val_y = train_dt.deal_probability[-200000:]
+
 train_X = train_X.drop(["deal_probability"], axis=1)
 val_X = val_X.drop(["deal_probability"], axis=1)
 train_X.head()
