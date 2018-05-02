@@ -49,9 +49,9 @@ if __name__ == '__main__':
     # get model datasets
     train_X, train_y, val_X, val_y, test_X, test_id = get_model_dataset(train_df, test_df, features_to_drop,
                                                                         val_date='2017-03-27')
-    # train_X, val_X, train_y, val_y = model_selection.train_test_split(pd.concat([train_X, val_X]),
-    #                                                                   np.append(train_y, val_y),
-    #                                                                   test_size=0.05, random_state=19)
+    train_X, val_X, train_y, val_y = model_selection.train_test_split(pd.concat([train_X, val_X]),
+                                                                      np.append(train_y, val_y),
+                                                                      test_size=0.05, random_state=19)
     gc.collect()
     train_X.head()
 
