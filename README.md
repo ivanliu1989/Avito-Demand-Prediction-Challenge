@@ -79,8 +79,10 @@
 	- v0.0.2.1 | log transform
 - v0.0.3
 	- v0.0.3.1 | Image
+	- v0.0.3.2 | customer preference on image
 - v0.0.4
 	- v0.0.4.1 | active feature
+	- v0.0.4.2 | customer preference on tfidf
 - v0.0.5
 	- v0.0.5.1 | weather data
 	- v0.0.5.2 | holiday data
