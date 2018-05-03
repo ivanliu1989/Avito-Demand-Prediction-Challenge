@@ -33,7 +33,7 @@ def get_model_dataset(train_df, test_df, features, val_date='2017-03-23'):
     return dev_X, dev_y, val_X, val_y, test_X, test_id
 
 
-def run_lightGBM(train_X, train_y, val_X, val_y, test_X, params=None, early_stop=100, rounds=1000):
+def run_lightGBM(train_X, train_y, val_X, val_y, test_X, params=None, early_stop=100, rounds=1000, cv = True):
     """
 
     :param train_X:
@@ -62,11 +62,13 @@ def run_lightGBM(train_X, train_y, val_X, val_y, test_X, params=None, early_stop
     lgtrain = lgb.Dataset(train_X, label=train_y)
     lgval = lgb.Dataset(val_X, label=val_y)
     evals_result = {}
-    cv_results = lgb.cv(params, lgtrain, rounds, nfold=5, early_stopping_rounds=early_stop,
-                        verbose_eval=20, stratified=False)
-    best_rnd = cv_results['rmse-mean'].index(min(cv_results['rmse-mean']))
 
-    model = lgb.train(params, lgtrain, best_rnd, valid_sets=[lgval], early_stopping_rounds=early_stop, verbose_eval=20,
+    if cv:
+        cv_results = lgb.cv(params, lgtrain, rounds, nfold=5, early_stopping_rounds=early_stop,
+                            verbose_eval=20, stratified=False)
+        rounds = cv_results['rmse-mean'].index(min(cv_results['rmse-mean']))
+
+    model = lgb.train(params, lgtrain, rounds, valid_sets=[lgval], early_stopping_rounds=early_stop, verbose_eval=20,
                       evals_result=evals_result)
 
     pred_test_y = model.predict(test_X, num_iteration=model.best_iteration)

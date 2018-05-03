@@ -9,6 +9,7 @@ from sklearn import model_selection
 from model.run_lightGBM import run_lightGBM, make_submission
 import gc
 import lightgbm as lgb
+
 # class_names = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
 
 train = pd.read_csv('../data/train.csv').fillna(' ')
@@ -55,11 +56,11 @@ train_features = hstack([train_char_features, train_word_features])
 test_features = hstack([test_char_features, test_word_features])
 
 # Save train sparse
-np.save('../data/train_1gram_10000_23grams_30000',train_features.data)
+np.save('../data/train_1gram_10000_23grams_30000', train_features.data)
 # np.save('train_words_and_ngrams_indices',train_features.indices)
 # np.save('train_words_and_ngrams_indptr',train_features.indptr)
 # Save test sparse
-np.save('../data/test_1gram_10000_23grams_30000',test_features.data)
+np.save('../data/test_1gram_10000_23grams_30000', test_features.data)
 # np.save('test_words_and_ngrams_indices',test_features.indices)
 # np.save('test_words_and_ngrams_indptr',test_features.indptr)
 
@@ -77,10 +78,9 @@ test_features = np.load('test_words_and_ngrams_feature.npy')
 # test_features.toarray()
 
 
-
 # get model datasets
 Y = train.deal_probability
-train_X, val_X, train_y, val_y = model_selection.train_test_split(train_features,Y,test_size=0.1, random_state=19)
+train_X, val_X, train_y, val_y = model_selection.train_test_split(train_features, Y, test_size=0.1, random_state=19)
 gc.collect()
 # train_X.head()
 
@@ -100,11 +100,9 @@ params = {
 }
 
 pred_test_y, model, evals_result, cv_results = run_lightGBM(train_X, train_y, val_X, val_y, test_features,
-                                                            params=params, early_stop=100, rounds=5000)
+                                                            params=params, early_stop=100, rounds=5000, cv=False)
 ### 5. make submission
 res = make_submission(test.item_id, pred_test_y, filename='v0_0_1_2_rmse0_225142_sd0_000170338')
-
-
 
 #
 # scores = []
