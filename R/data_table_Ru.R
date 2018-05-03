@@ -70,23 +70,29 @@ tfidf <-  create_dtm(token, vect) %>%
 
 gc()
 
-#---------------------------
+
+# Split into Train & Test -------------------------------------------------
 cat("Preparing data...\n")
-X <- tr_te %>% 
-  select(-txt) %>% 
-  sparse.model.matrix(~ . - 1, .) %>% 
-  cbind(tfidf)
+tr_idx = 1:nrow(dat[train_flag==1])
+col_to_drop = c('item_id', 'user_id', 'city', 'param_1', 'param_2', 'param_3', 'title', 'description', 'activation_date', 'image', 'txt', 'deal_probability')
+dat.sparse = sparse.model.matrix(~ -1 + ., dat[, !col_to_drop, with = F], -1)
+dat_all = cbind(dat.sparse, tfidf)
 
-rm(tr_te, tfidf); gc()
+gc()
 
-dtest <- xgb.DMatrix(data = X[-tri, ])
-X <- X[tri, ]; gc()
+train = dat_all[tr_idx,]
+test = dat_all[-tr_idx,]
+gc()
+
+
+# Modeling ----------------------------------------------------------------
+dtest <- xgb.DMatrix(data = test)
 tri <- caret::createDataPartition(y, p = 0.9, list = F) %>% c()
-dtrain <- xgb.DMatrix(data = X[tri, ], label = y[tri])
-dval <- xgb.DMatrix(data = X[-tri, ], label = y[-tri])
-cols <- colnames(X)
+dtrain <- xgb.DMatrix(data = train[tri, ], label = y[tri])
+dval <- xgb.DMatrix(data = train[-tri, ], label = y[-tri])
+cols <- colnames(train)
 
-rm(X, y, tri); gc()
+gc()
 
 #---------------------------
 cat("Training model...\n")
