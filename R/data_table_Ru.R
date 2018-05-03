@@ -14,7 +14,7 @@ library(Matrix)
 # Load data ---------------------------------------------------------------
 tr = read_csv('../Avito-Demand-Prediction-Challenge/data/train.csv')
 setDT(tr)
-te = read_csv('../Avito-Demand-Prediction-Challenge/data/train.csv')
+te = read_csv('../Avito-Demand-Prediction-Challenge/data/test.csv')
 setDT(te)
 tr[, train_flag := 1]
 te[, train_flag := 0]
@@ -111,12 +111,13 @@ p <- list(objective = "reg:logistic",
           nrounds = 4000)
 
 m_xgb <- xgb.train(p, dtrain, p$nrounds, list(val = dval), print_every_n = 50, early_stopping_rounds = 50)
+# [1500]	val-rmse:0.223527 
 
 xgb.importance(cols, model=m_xgb) %>%
   xgb.plot.importance(top_n = 15)
 
 #---------------------------
 cat("Creating submission file...\n")
-read_csv("../input/sample_submission.csv") %>%  
+read_csv("./data/sample_submission.csv") %>%  
   mutate(deal_probability = predict(m_xgb, dtest)) %>%
-  write_csv(paste0("xgb_tfidf", round(m_xgb$best_score, 5), ".csv"))
+  write_csv(paste0("./submissions/xgb_tfidf_dt_", round(m_xgb$best_score, 5), ".csv"))
