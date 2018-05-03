@@ -46,8 +46,8 @@
           <file leaf-file-name="xgb_text2vec_tfidf.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/xgb_text2vec_tfidf.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="861">
-                  <caret line="65" column="69" selection-start-line="65" selection-start-column="57" selection-end-line="65" selection-end-column="69" />
+                <state relative-caret-position="708">
+                  <caret line="56" column="60" lean-forward="true" selection-start-line="56" selection-start-column="60" selection-end-line="56" selection-end-column="60" />
                 </state>
               </provider>
             </entry>
@@ -71,8 +71,8 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-143">
-                  <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+                <state>
+                  <caret column="27" lean-forward="true" selection-end-line="1" />
                 </state>
               </provider>
             </entry>
@@ -80,8 +80,8 @@
           <file leaf-file-name="Regression_with_words_and_ngrams.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Regression_with_words_and_ngrams.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="748">
-                  <caret line="44" column="14" selection-start-line="44" selection-start-column="14" selection-end-line="44" selection-end-column="14" />
+                <state relative-caret-position="1114">
+                  <caret line="72" column="13" selection-start-line="72" selection-start-column="13" selection-end-line="72" selection-end-column="13" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -92,7 +92,7 @@
           <file leaf-file-name="target_encoding.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/util/target_encoding.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="952">
+                <state relative-caret-position="969">
                   <caret line="57" column="19" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
@@ -221,7 +221,7 @@
       <window_info anchor="bottom" id="Event Log" order="21" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="18" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="17" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Python Console" order="19" visible="true" weight="0.34605727" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="19" visible="true" weight="0.34605727" />
       <window_info anchor="bottom" id="Run" order="4" />
       <window_info anchor="bottom" id="Terminal" order="20" weight="0.32998493" />
       <window_info content_ui="combo" id="Project" order="0" weight="0.32958335" />
@@ -573,16 +573,6 @@
       </provider>
     </entry>
     <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/IPython/core/interactiveshell.py" />
-    <entry file="file://$PROJECT_DIR$/util/target_encoding.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="952">
-          <caret line="57" column="19" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model/run_lightGBM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1938">
@@ -604,13 +594,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-143">
-          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/util/nlp_features.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -620,15 +603,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/xgb_text2vec_tfidf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="861">
-          <caret line="65" column="69" selection-start-line="65" selection-start-column="57" selection-end-line="65" selection-end-column="69" />
+        <state relative-caret-position="708">
+          <caret line="56" column="60" lean-forward="true" selection-start-line="56" selection-start-column="60" selection-end-line="56" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/target_encoding.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="57" column="19" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="27" lean-forward="true" selection-end-line="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Regression_with_words_and_ngrams.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="44" column="14" selection-start-line="44" selection-start-column="14" selection-end-line="44" selection-end-column="14" />
+        <state relative-caret-position="1114">
+          <caret line="72" column="13" selection-start-line="72" selection-start-column="13" selection-end-line="72" selection-end-column="13" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
