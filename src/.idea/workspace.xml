@@ -16,7 +16,7 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-235">
+                <state relative-caret-position="68">
                   <caret line="11" selection-start-line="11" selection-end-line="11" />
                 </state>
               </provider>
@@ -25,7 +25,7 @@
           <file leaf-file-name="feature_engineering.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4488">
+                <state relative-caret-position="4369">
                   <caret line="264" column="35" selection-start-line="264" selection-start-column="35" selection-end-line="267" selection-end-column="30" />
                   <folding>
                     <element signature="e#0#23#0" expanded="true" />
@@ -46,8 +46,8 @@
           <file leaf-file-name="xgb_text2vec_tfidf.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/xgb_text2vec_tfidf.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="538">
-                  <caret line="46" column="49" lean-forward="true" selection-start-line="46" selection-start-column="49" selection-end-line="46" selection-end-column="49" />
+                <state relative-caret-position="912">
+                  <caret line="68" column="44" selection-start-line="68" selection-start-column="44" selection-end-line="68" selection-end-column="44" />
                 </state>
               </provider>
             </entry>
@@ -72,7 +72,7 @@
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state>
-                  <caret column="27" lean-forward="true" selection-end-line="1" />
+                  <caret column="27" selection-end-line="1" />
                 </state>
               </provider>
             </entry>
@@ -80,8 +80,8 @@
           <file leaf-file-name="Regression_with_words_and_ngrams.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Regression_with_words_and_ngrams.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1131">
-                  <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
+                <state relative-caret-position="732">
+                  <caret line="60" column="18" lean-forward="true" selection-start-line="60" selection-start-column="18" selection-end-line="60" selection-end-column="18" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -92,7 +92,7 @@
           <file leaf-file-name="target_encoding.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/util/target_encoding.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="969">
+                <state relative-caret-position="952">
                   <caret line="57" column="19" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
@@ -150,7 +150,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-7" />
-    <option name="width" value="2458" />
+    <option name="width" value="2377" />
     <option name="height" value="2127" />
   </component>
   <component name="ProjectView">
@@ -214,7 +214,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="2458" height="2127" extended-state="0" />
+    <frame x="-7" y="0" width="2377" height="2127" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="15" weight="0.32998493" />
@@ -241,15 +241,14 @@
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32958335" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" weight="0.15128712" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32958335" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32998493" />
-      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Python Console" order="10" visible="true" weight="0.34605727" />
@@ -257,8 +256,9 @@
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32998493" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" weight="0.15128712" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info id="Favorites" order="2" side_tool="true" />
     </layout-to-restore>
@@ -586,7 +586,7 @@
     <entry file="file://$PROJECT_DIR$/lgb_baseline.py" />
     <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4488">
+        <state relative-caret-position="4369">
           <caret line="264" column="35" selection-start-line="264" selection-start-column="35" selection-end-line="267" selection-end-column="30" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
@@ -603,7 +603,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/util/target_encoding.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
+        <state relative-caret-position="952">
           <caret line="57" column="19" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -613,25 +613,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-235">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Regression_with_words_and_ngrams.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1131">
-          <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state>
+          <caret column="27" selection-end-line="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xgb_text2vec_tfidf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="46" column="49" lean-forward="true" selection-start-line="46" selection-start-column="49" selection-end-line="46" selection-end-column="49" />
+        <state relative-caret-position="912">
+          <caret line="68" column="44" selection-start-line="68" selection-start-column="44" selection-end-line="68" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Regression_with_words_and_ngrams.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="732">
+          <caret line="60" column="18" lean-forward="true" selection-start-line="60" selection-start-column="18" selection-end-line="60" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

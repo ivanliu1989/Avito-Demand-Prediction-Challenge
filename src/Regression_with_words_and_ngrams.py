@@ -5,7 +5,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 from scipy.sparse import hstack, csr_matrix
-
+from sklearn import model_selection
+from model.run_lightGBM import run_lightGBM, make_submission
+import gc
+import lightgbm as lgb
 # class_names = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
 
 train = pd.read_csv('../data/train.csv').fillna(' ')
@@ -33,13 +36,14 @@ word_vectorizer.fit(all_text)
 train_word_features = word_vectorizer.transform(train_text)
 test_word_features = word_vectorizer.transform(test_text)
 
+gc.collect()
 char_vectorizer = TfidfVectorizer(
     sublinear_tf=True,
     # strip_accents='unicode',
     analyzer='char',
     stop_words=stopWords,
-    ngram_range=(2, 6),
-    max_features=50000,
+    ngram_range=(2, 3),
+    max_features=30000,
     norm='l2',
     min_df=3,
     max_df=0.3)
@@ -51,37 +55,34 @@ train_features = hstack([train_char_features, train_word_features])
 test_features = hstack([test_char_features, test_word_features])
 
 # Save train sparse
-np.save('train_words_and_ngrams_feature',train_features.data)
-np.save('train_words_and_ngrams_indices',train_features.indices)
-np.save('train_words_and_ngrams_indptr',train_features.indptr)
+np.save('../data/train_1gram_10000_23grams_30000',train_features.data)
+# np.save('train_words_and_ngrams_indices',train_features.indices)
+# np.save('train_words_and_ngrams_indptr',train_features.indptr)
 # Save test sparse
-np.save('test_words_and_ngrams_feature',test_features.data)
-np.save('test_words_and_ngrams_indices',test_features.indices)
-np.save('test_words_and_ngrams_indptr',test_features.indptr)
+np.save('../data/test_1gram_10000_23grams_30000',test_features.data)
+# np.save('test_words_and_ngrams_indices',test_features.indices)
+# np.save('test_words_and_ngrams_indptr',test_features.indptr)
 
 # Load train sparse
 train_features = np.load('train_words_and_ngrams_feature.npy')
-indices = np.load('train_words_and_ngrams_indices.npy')
-indptr = np.load('train_words_and_ngrams_indptr.npy')
-train_features = csr_matrix((train_features,indices,indptr))
-train_features.toarray()
+# indices = np.load('train_words_and_ngrams_indices.npy')
+# indptr = np.load('train_words_and_ngrams_indptr.npy')
+# train_features = csr_matrix((train_features,indices,indptr))
+# train_features.toarray()
 # Load test sparse
 test_features = np.load('test_words_and_ngrams_feature.npy')
-indices = np.load('test_words_and_ngrams_indices.npy')
-indptr = np.load('test_words_and_ngrams_indptr.npy')
-test_features = csr_matrix((train_features,indices,indptr))
-test_features.toarray()
+# indices = np.load('test_words_and_ngrams_indices.npy')
+# indptr = np.load('test_words_and_ngrams_indptr.npy')
+# test_features = csr_matrix((train_features,indices,indptr))
+# test_features.toarray()
 
 
-from sklearn import model_selection
-from model.run_lightGBM import run_lightGBM, make_submission
-import gc
-import lightgbm as lgb
+
 # get model datasets
 Y = train.deal_probability
 train_X, val_X, train_y, val_y = model_selection.train_test_split(train_features,Y,test_size=0.1, random_state=19)
 gc.collect()
-train_X.head()
+# train_X.head()
 
 ### 4. run model
 params = {

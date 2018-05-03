@@ -19,6 +19,7 @@ setDT(te)
 tr[, train_flag := 1]
 te[, train_flag := 0]
 y <- tr$deal_probability
+tr$deal_probability = NULL
 dat = rbind(tr, te)
 
 
@@ -44,8 +45,8 @@ dat[, txt := str_replace_all(txt, "\\s+", " ")]
 
 token = tokenize_word_stems(dat$txt, language = "russian", stopwords = NULL) %>%
   itoken()
-vect = create_vocabulary(token, ngram = c(1, 1), stopwords = stopwords("ru")) %>%
-  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 4000) %>% 
+vect = create_vocabulary(token, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
+  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 50000) %>% 
   vocab_vectorizer()
 # Number of docs: 3006848 
 # 159 stopwords: и, в, во, не, что, он ... 
@@ -78,6 +79,11 @@ col_to_drop = c('item_id', 'user_id', 'city', 'param_1', 'param_2', 'param_3', '
 dat.sparse = sparse.model.matrix(~ -1 + ., dat[, !col_to_drop, with = F], -1)
 dat_all = cbind(dat.sparse, tfidf)
 
+
+
+# Save dataset ------------------------------------------------------------
+saveRDS(dat_all, file = './data/tfidf_1_3grams_3_03_50000.rds')
+
 gc()
 
 train = dat_all[tr_idx,]
@@ -94,7 +100,6 @@ cols <- colnames(train)
 
 gc()
 
-#---------------------------
 cat("Training model...\n")
 p <- list(objective = "reg:logistic",
           booster = "gbtree",
@@ -116,7 +121,8 @@ m_xgb <- xgb.train(p, dtrain, p$nrounds, list(val = dval), print_every_n = 50, e
 xgb.importance(cols, model=m_xgb) %>%
   xgb.plot.importance(top_n = 15)
 
-#---------------------------
+
+# Submissions -------------------------------------------------------------
 cat("Creating submission file...\n")
 read_csv("./data/sample_submission.csv") %>%  
   mutate(deal_probability = predict(m_xgb, dtest)) %>%
