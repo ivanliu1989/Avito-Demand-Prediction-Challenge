@@ -84,7 +84,8 @@ if __name__ == '__main__':
 
     ### 6. blending
     paths = ['../submissions/baseline_lgb.csv',
-             # '../submissions/baseline_lgb_0_229.csv',
-             '../submissions/xgb_tfidf0.22386.csv']
-    wts = [0.5, 0.5]
+             '../submissions/xgb_tfidf0.22088.csv',
+             '../submissions/xgb_tfidf0.22061.csv',
+             '../submissions/blend_it.csv']
+    wts = [0.15, 0.35, 0.4, 0.1]
     res =submission_blending(paths, wts, 'blend_tfidf_baseline')
