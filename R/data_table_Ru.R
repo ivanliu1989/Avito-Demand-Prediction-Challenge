@@ -46,7 +46,7 @@ dat[, txt := str_replace_all(txt, "\\s+", " ")]
 token = tokenize_word_stems(dat$txt, language = "russian", stopwords = NULL) %>%
   itoken()
 vect = create_vocabulary(token, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
-  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 50000) %>% 
+  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 5500) %>% 
   vocab_vectorizer()
 # Number of docs: 3006848 
 # 159 stopwords: и, в, во, не, что, он ... 
@@ -106,14 +106,14 @@ p <- list(objective = "reg:logistic",
           eval_metric = "rmse",
           nthread = 8,
           eta = 0.05,
-          max_depth = 11,
-          min_child_weight = 1,
+          max_depth = 17,
+          min_child_weight = 3,
           gamma = 0,
-          subsample = 0.7,
+          subsample = 0.8,
           colsample_bytree = 0.7,
           alpha = 0,
           lambda = 0,
-          nrounds = 4000)
+          nrounds = 2000)
 
 m_xgb <- xgb.train(p, dtrain, p$nrounds, list(val = dval), print_every_n = 50, early_stopping_rounds = 50)
 # [1500]	val-rmse:0.223527 

@@ -29,10 +29,10 @@ word_vectorizer = TfidfVectorizer(
     # token_pattern=r'\w{1,}',
     stop_words=stopWords,
     ngram_range=(1, 1),
-    max_features=10000,
+    max_features=5000,
     norm='l2',
     min_df=3,
-    max_df=0.3)
+    max_df=0.6)
 word_vectorizer.fit(all_text)
 train_word_features = word_vectorizer.transform(train_text)
 test_word_features = word_vectorizer.transform(test_text)
@@ -44,10 +44,10 @@ char_vectorizer = TfidfVectorizer(
     analyzer='char',
     stop_words=stopWords,
     ngram_range=(2, 3),
-    max_features=30000,
+    max_features=10000,
     norm='l2',
     min_df=3,
-    max_df=0.3)
+    max_df=0.6)
 char_vectorizer.fit(all_text)
 train_char_features = char_vectorizer.transform(train_text)
 test_char_features = char_vectorizer.transform(test_text)
@@ -102,7 +102,7 @@ params = {
 pred_test_y, model, evals_result, cv_results = run_lightGBM(train_X, train_y, val_X, val_y, test_features,
                                                             params=params, early_stop=100, rounds=5000, cv=False)
 ### 5. make submission
-res = make_submission(test.item_id, pred_test_y, filename='v0_0_1_2_rmse0_225142_sd0_000170338')
+res = make_submission(test.item_id, pred_test_y, filename='v0_0_1_2_rmse0_233179_sd0_000329159')
 
 #
 # scores = []

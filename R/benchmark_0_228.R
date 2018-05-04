@@ -47,8 +47,8 @@ it <- tr_te %$%
   tokenize_word_stems(language = "russian") %>% 
   itoken()
 
-vect <- create_vocabulary(it, ngram = c(1, 1), stopwords = stopwords("ru")) %>%
-  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 4000) %>% 
+vect <- create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
+  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 5500) %>% 
   vocab_vectorizer()
 
 m_tfidf <- TfIdf$new(norm = "l2", sublinear_tf = T)
@@ -82,14 +82,14 @@ p <- list(objective = "reg:logistic",
           eval_metric = "rmse",
           nthread = 8,
           eta = 0.05,
-          max_depth = 13,
-          min_child_weight = 2,
+          max_depth = 17,
+          min_child_weight = 3,
           gamma = 0,
-          subsample = 0.7,
+          subsample = 0.8,
           colsample_bytree = 0.7,
           alpha = 0,
           lambda = 0,
-          nrounds = 1500)
+          nrounds = 2000)
 
 m_xgb <- xgb.train(p, dtrain, p$nrounds, list(val = dval), print_every_n = 50, early_stopping_rounds = 50)
 
