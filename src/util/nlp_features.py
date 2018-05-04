@@ -12,8 +12,31 @@ def text_mining_v1(dat, n_comp=3):
     stopWords = stopwords.words('russian')
 
     # Create tfidf matrix for title and description
-    tfidf = TfidfVectorizer(max_features=50000, stop_words=stopWords)
-    tfidf_title = TfidfVectorizer(max_features=50000, stop_words=stopWords)
+    # tfidf = TfidfVectorizer(max_features=50000, stop_words=stopWords)
+
+    tfidf = TfidfVectorizer(
+        sublinear_tf=True,
+        # strip_accents='unicode',
+        analyzer='word',
+        # token_pattern=r'\w{1,}',
+        stop_words=stopWords,
+        ngram_range=(1, 3),
+        max_features=50000,
+        norm='l2',
+        min_df=3,
+        max_df=0.6)
+
+    tfidf_title = TfidfVectorizer(
+        sublinear_tf=True,
+        # strip_accents='unicode',
+        analyzer='word',
+        # token_pattern=r'\w{1,}',
+        stop_words=stopWords,
+        ngram_range=(1, 3),
+        max_features=50000,
+        norm='l2',
+        min_df=3,
+        max_df=0.6)
 
     dat['description'] = dat['description'].fillna(' ')
     dat['title'] = dat['title'].fillna(' ')
@@ -28,8 +51,12 @@ def text_mining_v1(dat, n_comp=3):
     svd_obj = TruncatedSVD(n_components=n_comp, algorithm='arpack')
     svd_obj.fit(tfidf.transform(dat['description']))
 
+    print(svd_obj.explained_variance_ratio_)
+
     svd_title = TruncatedSVD(n_components=n_comp, algorithm='arpack')
     svd_title.fit(tfidf.transform(dat['title']))
+
+    print(svd_title.explained_variance_ratio_)
 
     dat_svd = pd.DataFrame(svd_obj.transform(dat_des_tfidf))
     dat_svd.columns = ['svd_des_' + str(i + 1) for i in range(n_comp)]
