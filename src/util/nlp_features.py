@@ -6,7 +6,6 @@ import numpy as np
 
 
 def text_mining_v1(dat, n_comp=3):
-
     print('NLP - tfidf')
     # Get Russian Stopwords
     stopWords = stopwords.words('russian')
@@ -70,6 +69,43 @@ def text_mining_v1(dat, n_comp=3):
 
     return dat
 
+
+def text_mining_v2(dat, col=None, n_comp=3):
+    print('NLP - tfidf')
+    # Get Russian Stopwords
+    stopWords = stopwords.words('russian')
+
+    # Create tfidf matrix for title and description
+    tfidf = TfidfVectorizer(
+        sublinear_tf=True,
+        # strip_accents='unicode',
+        analyzer='word',
+        # token_pattern=r'\w{1,}',
+        stop_words=stopWords,
+        ngram_range=(1, 3),
+        max_features=50000,
+        norm='l2',
+        min_df=3,
+        max_df=0.6)
+
+    dat[col] = dat[col].fillna(' ')
+    tfidf.fit(dat[col])
+
+    dat_tfidf = tfidf.transform(dat[col])
+
+    # Get Key Components for tfidf matrix
+    print('NLP - svd')
+    svd_obj = TruncatedSVD(n_components=n_comp, algorithm='arpack')
+    svd_obj.fit(tfidf.transform(dat[col]))
+
+    print(svd_obj.explained_variance_ratio_)
+
+    dat_svd = pd.DataFrame(svd_obj.transform(dat_tfidf))
+    dat_svd.columns = ['svd_' + col + '_' + str(i + 1) for i in range(n_comp)]
+    # dat = pd.concat([dat, dat_svd], axis=1)
+    # dat = dat.join(dat_svd)
+
+    return dat_svd
 
 
 def translate_russian_category(dat):

@@ -9,12 +9,11 @@ library(tokenizers)
 library(stopwords)
 library(xgboost)
 library(Matrix)
-library(tsne)
 
 # Load data ---------------------------------------------------------------
-tr = read_csv('../Avito-Demand-Prediction-Challenge/data/train.csv')
+tr = read_csv('./data/train.csv')
 setDT(tr)
-te = read_csv('../Avito-Demand-Prediction-Challenge/data/test.csv')
+te = read_csv('./data/test.csv')
 setDT(te)
 
 tri <- 1:nrow(tr)
@@ -69,7 +68,7 @@ dat[, txt := str_replace_all(txt, "\\s+", " ")]
 it = tokenize_word_stems(dat$txt, language = "russian") %>%
   itoken()
 vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
-  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 5500) %>% 
+  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.6, vocab_term_max = 1000) %>% 
   vocab_vectorizer()
 
 m_tfidf <- TfIdf$new(norm = "l2", sublinear_tf = T)
@@ -78,20 +77,16 @@ tfidf <-  create_dtm(it, vect) %>%
 
 gc()
 
-### PCA
-library(gmodels)
-tfidf.pcov <- fast.prcomp(tfidf)#, scores = TRUE, scale = TRUE, center = TRUE)
-summary(tfidf.pcov)
-# Variance explained by each principal component: pve
-pr.cvar <- tfidf.pcov$sdev ^ 2
-pve_cov <- pr.cvar/sum(pr.cvar)
-# Take first components
-tfidf.pcs <- tfidf.pcov$x[,1:6]
-
-### t-SNE
-tsne3d <- tsne(tfidf, initial_config = NULL, k = 3, initial_dims = 30, perplexity = 35, 
-               max_iter = 1000, min_cost = 0, epoch_callback = NULL, whiten = TRUE, epoch=300)
-tsne3d <- cbind(tsne3d,data[,1])
+# ### PCA
+tfidf.pca = read_csv('./data/svd_title_desc_18comp.csv')
+# library(sparsesvd)
+# tfidf.pcov <- sparsesvd(tfidf)#, scores = TRUE, scale = TRUE, center = TRUE)
+# library(irlba)
+# prcomp_irlba(tfidf, n = 12, retx = TRUE, center = TRUE, scale. = FALSE)
+# ### t-SNE
+# tsne3d <- tsne(tfidf, initial_config = NULL, k = 3, initial_dims = 30, perplexity = 35, 
+#                max_iter = 1000, min_cost = 0, epoch_callback = NULL, whiten = TRUE, epoch=300)
+# tsne3d <- cbind(tsne3d,data[,1])
 
 
 # Split into Train & Test -------------------------------------------------
@@ -107,7 +102,7 @@ dat[, wday := ifelse(is.na(wday), 'na', wday)]
 
 X = dat[, !c('txt'), with = F] %>% 
   sparse.model.matrix(~ . - 1, .) %>% 
-  cbind(tfidf)
+  cbind(as.matrix(tfidf.pca))
 
 
 

@@ -17,6 +17,20 @@ train = pd.read_csv('../data/train.csv').fillna(' ')
 test = pd.read_csv('../data/test.csv').fillna(' ')
 dat = pd.concat([train, test], axis=0)
 
-dat = nf.text_mining_v1(dat, 12)
+dat = nf.text_mining_v1(dat, 18)
 
-dat.to_csv("../data/svd_tsne_title_desc_12comp.csv")
+dat.to_csv("../data/svd_title_desc_18comp.csv")
+
+
+
+
+### Other text components
+dat['all_txt'] = dat.region + ' ' + dat.city + ' ' + dat.parent_category_name + ' ' + dat.category_name + ' ' \
+            + dat.param_1 + ' ' + dat.param_2 + ' ' + dat.param_3 + ' ' + dat.title + ' ' + dat.description
+dat['param_all'] = dat.param_1 + ' ' + dat.param_2 + ' ' + dat.param_3
+
+col = 'all_txt'
+n_comp=18
+
+dat_svd = nf.text_mining_v1(dat, 18)
+dat_svd.to_csv("../data/svd_title_desc_18comp.csv")

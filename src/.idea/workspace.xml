@@ -37,8 +37,8 @@
           <file leaf-file-name="nlp_features.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/util/nlp_features.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="950">
-                  <caret line="58" column="19" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="19" />
+                <state relative-caret-position="916">
+                  <caret line="106" lean-forward="true" selection-start-line="106" selection-end-line="106" />
                   <folding>
                     <element signature="e#0#33#0" expanded="true" />
                   </folding>
@@ -84,7 +84,7 @@
             <entry file="file://$PROJECT_DIR$/Regression_with_words_and_ngrams.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="357">
-                  <caret line="21" selection-start-line="21" selection-end-line="21" selection-end-column="45" />
+                  <caret line="21" lean-forward="true" selection-start-line="19" selection-end-line="21" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -95,8 +95,8 @@
           <file leaf-file-name="SVD_tSNE_text.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/SVD_tSNE_text.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="323">
-                  <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+                <state relative-caret-position="357">
+                  <caret line="21" column="3" selection-start-line="21" selection-end-line="21" selection-end-column="3" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -224,7 +224,7 @@
       <window_info anchor="bottom" id="Event Log" order="21" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="18" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="17" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Python Console" order="19" visible="true" weight="0.34605727" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="19" visible="true" weight="0.34605727" />
       <window_info anchor="bottom" id="Run" order="4" />
       <window_info anchor="bottom" id="Terminal" order="20" weight="0.32998493" />
       <window_info content_ui="combo" id="Project" order="0" weight="0.32958335" />
@@ -597,16 +597,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Regression_with_words_and_ngrams.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" selection-start-line="21" selection-end-line="21" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -624,10 +614,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Regression_with_words_and_ngrams.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" lean-forward="true" selection-start-line="19" selection-end-line="21" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SVD_tSNE_text.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+        <state relative-caret-position="357">
+          <caret line="21" column="3" selection-start-line="21" selection-end-line="21" selection-end-column="3" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -636,8 +636,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/util/nlp_features.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="950">
-          <caret line="58" column="19" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="19" />
+        <state relative-caret-position="916">
+          <caret line="106" lean-forward="true" selection-start-line="106" selection-end-line="106" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
