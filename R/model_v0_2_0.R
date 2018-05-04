@@ -10,16 +10,13 @@ library(stopwords)
 library(xgboost)
 library(Matrix)
 
-
 # Load data ---------------------------------------------------------------
-tr = read_csv('../Avito-Demand-Prediction-Challenge/data/train.csv')
+tr = read_csv('./data/train.csv')
 setDT(tr)
-te = read_csv('../Avito-Demand-Prediction-Challenge/data/test.csv')
+te = read_csv('./data/test.csv')
 setDT(te)
 
 tri <- 1:nrow(tr)
-# tr[, train_flag := 1]
-# te[, train_flag := 0]
 y <- tr$deal_probability
 tr$deal_probability = NULL
 dat = rbind(tr, te)
@@ -27,13 +24,33 @@ dat = rbind(tr, te)
 
 
 # Feature engineering -----------------------------------------------------
-dat[,price := log1p(price)]
-dat[,txt := paste(city, param_1, param_2, param_3, title, description, sep = " ")]
+dat[, price := log1p(price)]
+# dat[, txt := paste(city, param_1, param_2, param_3, title, description, sep = " ")]
+dat[, txt := paste(title, description, sep = " ")]
 dat[, mon := month(activation_date)]
 dat[, mday := mday(activation_date)]
 dat[, week := week(activation_date)]
-dat[, wday := wday(activation_date)]
-col_to_drop = c('item_id', 'user_id', 'city', 'param_1', 'param_2', 'param_3', 'title', 
+dat[, wday := weekdays(activation_date)]
+
+# New
+dat[, wend := ifelse(wday %in% c('Sunday', 'Saturday'), 1, 0)]
+dat[, image_available := ifelse(is.na(image), 1, 0)]
+dat[, title_len := nchar(title)]
+dat[, desc_len := nchar(description)]
+dat[, desc_len := ifelse(is.na(desc_len), 0, desc_len)]
+dat[, title_wc := lengths(gregexpr("\\W+", title)) + 1]
+dat[, desc_wc := lengths(gregexpr("\\W+", description)) + 1]
+# dat[, param := paste(param_1, param_2, param_3, sep = " ")]
+# region 28
+# city 1752
+# param_1 372
+# param_2 278
+# param_3 1277
+# param 2402
+# category 47
+# parent_category_name 9
+
+col_to_drop = c('item_id', 'user_id', 'city', 'title', # 'param_1', 'param_2', 'param_3', 
                 'description', 'activation_date', 'image')
 dat = dat[, !col_to_drop, with = F]
 dat[, price := ifelse(is.na(price), -1, price)]
@@ -51,24 +68,8 @@ dat[, txt := str_replace_all(txt, "\\s+", " ")]
 it = tokenize_word_stems(dat$txt, language = "russian") %>%
   itoken()
 vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
-  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 5500) %>% 
+  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.6, vocab_term_max = 1000) %>% 
   vocab_vectorizer()
-# Number of docs: 3006848 
-# 159 stopwords: и, в, во, не, что, он ... 
-# ngram_min = 1; ngram_max = 1 
-# Vocabulary: 
-#   term term_count doc_count
-# 1:  состоян     896316    858762
-# 2:     прод     857046    721518
-# 3:    одежд     846920    694874
-# 4:      нов     710082    569656
-# 5:      кра     688936    681378
-# ---                              
-#   3996:  каневск       2080      1986
-# 3997: трансфер       2080      1588
-# 3998:    прайс       2080      1988
-# 3999:     line       2078      1566
-# 4000:  premium       2078      1622
 
 m_tfidf <- TfIdf$new(norm = "l2", sublinear_tf = T)
 tfidf <-  create_dtm(it, vect) %>% 
@@ -76,15 +77,37 @@ tfidf <-  create_dtm(it, vect) %>%
 
 gc()
 
+# ### PCA
+tfidf.pca = read_csv('./data/svd_title_desc_18comp.csv')
+# library(sparsesvd)
+# tfidf.pcov <- sparsesvd(tfidf)#, scores = TRUE, scale = TRUE, center = TRUE)
+# library(irlba)
+# prcomp_irlba(tfidf, n = 12, retx = TRUE, center = TRUE, scale. = FALSE)
+# ### t-SNE
+# tsne3d <- tsne(tfidf, initial_config = NULL, k = 3, initial_dims = 30, perplexity = 35, 
+#                max_iter = 1000, min_cost = 0, epoch_callback = NULL, whiten = TRUE, epoch=300)
+# tsne3d <- cbind(tsne3d,data[,1])
+
 
 # Split into Train & Test -------------------------------------------------
 cat("Preparing data...\n")
-X = sparse.model.matrix(~ -1 + ., dat[, !c('txt'), with = F], -1) %>%
-  cbind(tfidf)
+dat[, region := ifelse(is.na(region), 'na', region)]
+dat[, parent_category_name := ifelse(is.na(parent_category_name), 'na', parent_category_name)]
+dat[, category_name := ifelse(is.na(category_name), 'na', category_name)]
+dat[, param_1 := ifelse(is.na(param_1), 'na', param_1)]
+dat[, param_2 := ifelse(is.na(param_2), 'na', param_2)]
+dat[, param_3 := ifelse(is.na(param_3), 'na', param_3)]
+dat[, user_type := ifelse(is.na(user_type), 'na', user_type)]
+dat[, wday := ifelse(is.na(wday), 'na', wday)]
+
+X = dat[, !c('txt'), with = F] %>% 
+  sparse.model.matrix(~ . - 1, .) %>% 
+  cbind(as.matrix(tfidf.pca))
+
+
 
 # Save dataset ------------------------------------------------------------
 # saveRDS(X, file = './data/tfidf_1_3grams_3_03_50000.rds')
-
 gc()
 
 train = X[tri,]
@@ -131,34 +154,3 @@ read_csv("./data/sample_submission.csv") %>%
 
 
 
-# [1]	val-rmse:0.428720 
-# Will train until val_rmse hasn't improved in 50 rounds.
-# [51]	val-rmse:0.227506 
-# [101]	val-rmse:0.223314 
-# [151]	val-rmse:0.222583 
-# [201]	val-rmse:0.222073 
-# [251]	val-rmse:0.221790 
-# [301]	val-rmse:0.221554 
-# [351]	val-rmse:0.221388 
-# [401]	val-rmse:0.221245 
-# [451]	val-rmse:0.221144 
-# [501]	val-rmse:0.221044 
-# [551]	val-rmse:0.220970 
-# [601]	val-rmse:0.220899 
-# [651]	val-rmse:0.220846 
-# [701]	val-rmse:0.220803 
-# [751]	val-rmse:0.220746 
-# [801]	val-rmse:0.220694 
-# [851]	val-rmse:0.220672 
-# [901]	val-rmse:0.220631 
-# [951]	val-rmse:0.220586 
-# [1001]	val-rmse:0.220562 
-# [1051]	val-rmse:0.220537 
-# [1101]	val-rmse:0.220499 
-# [1151]	val-rmse:0.220479 
-# [1201]	val-rmse:0.220452 
-# [1251]	val-rmse:0.220440 
-# [1301]	val-rmse:0.220429 
-# [1351]	val-rmse:0.220426 
-# Stopping. Best iteration:
-# [1338]	val-rmse:0.220419
