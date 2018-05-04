@@ -98,6 +98,41 @@ xgb.importance(cols, model=m_xgb) %>%
 
 #---------------------------
 cat("Creating submission file...\n")
-read_csv("../input/sample_submission.csv") %>%  
+read_csv("./data/sample_submission.csv") %>%  
   mutate(deal_probability = predict(m_xgb, dtest)) %>%
   write_csv(paste0("xgb_tfidf", round(m_xgb$best_score, 5), ".csv"))
+
+
+# [1]	val-rmse:0.428802 
+# Will train until val_rmse hasn't improved in 50 rounds.
+# [51]	val-rmse:0.228356 
+# [101]	val-rmse:0.223992 
+# [151]	val-rmse:0.222848 
+# [201]	val-rmse:0.222272 
+# [251]	val-rmse:0.221857 
+# [301]	val-rmse:0.221604 
+# [351]	val-rmse:0.221384 
+# [401]	val-rmse:0.221216 
+# [451]	val-rmse:0.221102 
+# [501]	val-rmse:0.220997 
+# [551]	val-rmse:0.220897 
+# [601]	val-rmse:0.220807 
+# [651]	val-rmse:0.220732 
+# [701]	val-rmse:0.220680 
+# [751]	val-rmse:0.220616 
+# [801]	val-rmse:0.220547 
+# [851]	val-rmse:0.220515 
+# [901]	val-rmse:0.220447 
+# [951]	val-rmse:0.220405 
+# [1001]	val-rmse:0.220368 
+# [1051]	val-rmse:0.220335 
+# [1101]	val-rmse:0.220310 
+# [1151]	val-rmse:0.220282 
+# [1201]	val-rmse:0.220262 
+# [1251]	val-rmse:0.220233 
+# [1301]	val-rmse:0.220219 
+# [1351]	val-rmse:0.220186 
+# [1401]	val-rmse:0.220182 
+# [1451]	val-rmse:0.220176 
+# Stopping. Best iteration:
+# [1442]	val-rmse:0.220172

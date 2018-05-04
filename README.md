@@ -72,22 +72,14 @@
 - v0.0.2
 	- v0.0.2.1 | NLP
 		- v0.0.2.1.1 | v0.0.1.6 + tfidf(svd - 3): [1920] 0.225142 + 0.000170338
-		- v0.0.2.1.2 | textblob english translation + stopwords + special char + tfidf + lemmatize
-		- v0.0.2.1.3 | v0.0.2.1.2 + textblob sentiment
-		- v0.0.2.1.4 | v0.0.2.1.3 + big text - title+desc+param123:
-		- v0.0.2.1.5 | v0.0.2.1.4 + ngrams:
-	- v0.0.2.1 | log transform
+- v0.1.0 | R tfidf only | Valid: 0.220186 | LB:0.2258
 - v0.0.3
 	- v0.0.3.1 | Image
-	- v0.0.3.2 | customer preference on image
 - v0.0.4
 	- v0.0.4.1 | active feature
-	- v0.0.4.2 | customer preference on tfidf
 - v0.0.5
-	- v0.0.5.1 | weather data
-	- v0.0.5.2 | holiday data
-- v0.0.6
-	- v0.0.6.1 | Meta features
+	- v0.0.5.1 | Meta features
+
 
 ### Submit
 kaggle competitions submit -c avito-demand-prediction -f v0_0_1_2_rmse0_226457_sd0_000489155.csv -m "test with noise tgt mean"

@@ -16,8 +16,10 @@ tr = read_csv('../Avito-Demand-Prediction-Challenge/data/train.csv')
 setDT(tr)
 te = read_csv('../Avito-Demand-Prediction-Challenge/data/test.csv')
 setDT(te)
-tr[, train_flag := 1]
-te[, train_flag := 0]
+
+tri <- 1:nrow(tr)
+# tr[, train_flag := 1]
+# te[, train_flag := 0]
 y <- tr$deal_probability
 tr$deal_probability = NULL
 dat = rbind(tr, te)
@@ -25,12 +27,15 @@ dat = rbind(tr, te)
 
 
 # Feature engineering -----------------------------------------------------
-dat[,price := log(price)]
-dat[,txt := paste(region, city, param_1, param_2, param_3, title, description, sep = " ")]
+dat[,price := log1p(price)]
+dat[,txt := paste(city, param_1, param_2, param_3, title, description, sep = " ")]
 dat[, mon := month(activation_date)]
 dat[, mday := mday(activation_date)]
 dat[, week := week(activation_date)]
 dat[, wday := wday(activation_date)]
+col_to_drop = c('item_id', 'user_id', 'city', 'param_1', 'param_2', 'param_3', 'title', 
+                'description', 'activation_date', 'image')
+dat = dat[, !col_to_drop, with = F]
 dat[, price := ifelse(is.na(price), -1, price)]
 dat[, image_top_1 := ifelse(is.na(image_top_1), -1, image_top_1)]
 
@@ -43,9 +48,9 @@ dat[, txt := str_to_lower(txt)]
 dat[, txt := str_replace_all(txt, "[^[:alpha:]]", " ")]
 dat[, txt := str_replace_all(txt, "\\s+", " ")]
 
-token = tokenize_word_stems(dat$txt, language = "russian", stopwords = NULL) %>%
+it = tokenize_word_stems(dat$txt, language = "russian") %>%
   itoken()
-vect = create_vocabulary(token, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
+vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
   prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 5500) %>% 
   vocab_vectorizer()
 # Number of docs: 3006848 
@@ -66,7 +71,7 @@ vect = create_vocabulary(token, ngram = c(1, 3), stopwords = stopwords("ru")) %>
 # 4000:  premium       2078      1622
 
 m_tfidf <- TfIdf$new(norm = "l2", sublinear_tf = T)
-tfidf <-  create_dtm(token, vect) %>% 
+tfidf <-  create_dtm(it, vect) %>% 
   fit_transform(m_tfidf)
 
 gc()
@@ -74,20 +79,16 @@ gc()
 
 # Split into Train & Test -------------------------------------------------
 cat("Preparing data...\n")
-tr_idx = 1:nrow(dat[train_flag==1])
-col_to_drop = c('item_id', 'user_id', 'city', 'param_1', 'param_2', 'param_3', 'title', 'description', 'activation_date', 'image', 'txt', 'deal_probability')
-dat.sparse = sparse.model.matrix(~ -1 + ., dat[, !col_to_drop, with = F], -1)
-dat_all = cbind(dat.sparse, tfidf)
-
-
+X = sparse.model.matrix(~ -1 + ., dat[, !c('txt'), with = F], -1) %>%
+  cbind(tfidf)
 
 # Save dataset ------------------------------------------------------------
-saveRDS(dat_all, file = './data/tfidf_1_3grams_3_03_50000.rds')
+# saveRDS(X, file = './data/tfidf_1_3grams_3_03_50000.rds')
 
 gc()
 
-train = dat_all[tr_idx,]
-test = dat_all[-tr_idx,]
+train = X[tri,]
+test = X[-tri,]
 gc()
 
 
@@ -127,3 +128,6 @@ cat("Creating submission file...\n")
 read_csv("./data/sample_submission.csv") %>%  
   mutate(deal_probability = predict(m_xgb, dtest)) %>%
   write_csv(paste0("./submissions/xgb_tfidf_dt_", round(m_xgb$best_score, 5), ".csv"))
+
+
+
