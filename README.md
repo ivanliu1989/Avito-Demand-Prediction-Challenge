@@ -73,13 +73,15 @@
 	- v0.0.2.1 | NLP
 		- v0.0.2.1.1 | v0.0.1.6 + tfidf(svd - 3): [1920] 0.225142 + 0.000170338
 - v0.1.0 | R tfidf only | Valid: 0.220186 | LB:0.2258
+- v0.2.0 | 3grams tfidf + tgt mean + feature engineering | 
 - v0.0.3
 	- v0.0.3.1 | Image
 - v0.0.4
 	- v0.0.4.1 | active feature
 - v0.0.5
 	- v0.0.5.1 | Meta features
-
+- v0.0.6
+	- v0.0.6.1 | SVD features
 
 ### Submit
 kaggle competitions submit -c avito-demand-prediction -f v0_0_1_2_rmse0_226457_sd0_000489155.csv -m "test with noise tgt mean"
