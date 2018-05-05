@@ -98,7 +98,7 @@ def text_mining_v2(dat, col=None, n_comp=3):
     svd_obj = TruncatedSVD(n_components=n_comp, algorithm='arpack')
     svd_obj.fit(tfidf.transform(dat[col]))
 
-    print(svd_obj.explained_variance_ratio_)
+    print(svd_obj.explained_variance_ratio_.sum())
 
     dat_svd = pd.DataFrame(svd_obj.transform(dat_tfidf))
     dat_svd.columns = ['svd_' + col + '_' + str(i + 1) for i in range(n_comp)]

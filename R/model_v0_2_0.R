@@ -61,11 +61,11 @@ gc()
 
 # NLP ---------------------------------------------------------------------
 cat("Parsing text...\n")
-dat[, txt := str_to_lower(txt)]
-dat[, txt := str_replace_all(txt, "[^[:alpha:]]", " ")]
-dat[, txt := str_replace_all(txt, "\\s+", " ")]
-
-it = tokenize_word_stems(dat$txt, language = "russian") %>%
+it <- dat %$%
+  str_to_lower(txt) %>%
+  str_replace_all("[^[:alpha:]]", " ") %>%
+  str_replace_all("\\s+", " ") %>%
+  tokenize_word_stems(language = "russian") %>% 
   itoken()
 vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
   prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.6, vocab_term_max = 1000) %>% 
@@ -102,6 +102,7 @@ dat[, wday := ifelse(is.na(wday), 'na', wday)]
 
 X = dat[, !c('txt'), with = F] %>% 
   sparse.model.matrix(~ . - 1, .) %>% 
+  # cbind(tfidf) %>% 
   cbind(as.matrix(tfidf.pca))
 
 
@@ -152,5 +153,21 @@ read_csv("./data/sample_submission.csv") %>%
   mutate(deal_probability = predict(m_xgb, dtest)) %>%
   write_csv(paste0("./submissions/xgb_tfidf_dt_", round(m_xgb$best_score, 5), ".csv"))
 
+
+# [1]	val-rmse:0.428515 
+# Will train until val_rmse hasn't improved in 50 rounds.
+# 
+# [51]	val-rmse:0.230020 
+# [101]	val-rmse:0.226567 
+# [151]	val-rmse:0.226081 
+# [201]	val-rmse:0.225891 
+# [251]	val-rmse:0.225734 
+# [301]	val-rmse:0.225670 
+# [351]	val-rmse:0.225617 
+# [401]	val-rmse:0.225561 
+# [451]	val-rmse:0.225517 
+# [501]	val-rmse:0.225553 
+# Stopping. Best iteration:
+# [456]	val-rmse:0.225513
 
 

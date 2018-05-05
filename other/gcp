@@ -1,0 +1,33 @@
+gcloud config set project avito-203110
+gcloud compute machine-types list --zones
+sudo gcloud compute instances create rstudio --image-family ubuntu-1604-lts --image-project ubuntu-os-cloud  --machine-type n1-standard-1 --zone australia-southeast1-b
+sudo gcloud compute firewall-rules create allow-rstudio --allow=tcp:8787
+sudo gcloud compute ssh ubuntu@rstudio --zone australia-southeast1-b
+
+sudo sh -c 'echo "deb https://cloud.r-project.org/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list'
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo apt update
+sudo apt install r-base r-base-dev
+
+sudo apt install libcurl4-openssl-dev libssl-dev libxml2-dev
+//sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
+//sudo apt update && apt upgrade
+//sudo apt install libgeos-dev libproj-dev libgdal-dev libudunits2-dev
+
+
+R
+
+sudo apt install gdebi-core
+wget https://download2.rstudio.org/rstudio-server-1.0.143-amd64.deb
+sudo gdebi rstudio-server-1.0.143-amd64.deb
+sudo adduser ivanliu
+//sudo gcloud compute ssh ivanliu@rstudio --zone australia-southeast1-b
+
+
+sudo gcloud compute instances describe rstudio  --zone australia-southeast1-b
+http://35.201.6.96:8787
+
+
+
+sudo gcloud compute instances stop rstudio
+sudo gcloud compute instances start rstudio
