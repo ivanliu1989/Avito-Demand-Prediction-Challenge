@@ -102,8 +102,8 @@ dat[, wday := ifelse(is.na(wday), 'na', wday)]
 
 X = dat[, !c('txt'), with = F] %>% 
   sparse.model.matrix(~ . - 1, .) %>% 
-  # cbind(tfidf) %>% 
-  cbind(as.matrix(tfidf.pca))
+  cbind(tfidf) #%>%
+  # cbind(as.matrix(tfidf.pca))
 
 
 
