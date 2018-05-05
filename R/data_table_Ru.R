@@ -71,22 +71,6 @@ it_dt <- dat %$%
 vect_dt = create_vocabulary(it_dt, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
   prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 5500) %>% 
   vocab_vectorizer()
-# Number of docs: 3006848 
-# 159 stopwords: и, в, во, не, что, он ... 
-# ngram_min = 1; ngram_max = 1 
-# Vocabulary: 
-#   term term_count doc_count
-# 1:  состоян     896316    858762
-# 2:     прод     857046    721518
-# 3:    одежд     846920    694874
-# 4:      нов     710082    569656
-# 5:      кра     688936    681378
-# ---                              
-#   3996:  каневск       2080      1986
-# 3997: трансфер       2080      1588
-# 3998:    прайс       2080      1988
-# 3999:     line       2078      1566
-# 4000:  premium       2078      1622
 
 m_tfidf <- TfIdf$new(norm = "l2", sublinear_tf = T)
 tfidf <-  create_dtm(it_dt, vect_dt) %>% 
@@ -182,3 +166,40 @@ read_csv("./data/sample_submission.csv") %>%
 # [1351]	val-rmse:0.220426 
 # Stopping. Best iteration:
 # [1338]	val-rmse:0.220419
+
+
+
+# [1]	val-rmse:0.428652 
+# Will train until val_rmse hasn't improved in 50 rounds.
+# 
+# [51]	val-rmse:0.226957 
+# [101]	val-rmse:0.222981 
+# [151]	val-rmse:0.222216 
+# [201]	val-rmse:0.221812 
+# [251]	val-rmse:0.221489 
+# [301]	val-rmse:0.221288 
+# [351]	val-rmse:0.221084 
+# [401]	val-rmse:0.220944 
+# [451]	val-rmse:0.220841 
+# [501]	val-rmse:0.220740 
+# [551]	val-rmse:0.220684 
+# [601]	val-rmse:0.220609 
+# [651]	val-rmse:0.220534 
+# [701]	val-rmse:0.220488 
+# [751]	val-rmse:0.220444 
+# [801]	val-rmse:0.220401 
+# [851]	val-rmse:0.220362 
+# [901]	val-rmse:0.220331 
+# [951]	val-rmse:0.220281 
+# [1001]	val-rmse:0.220254 
+# [1051]	val-rmse:0.220238 
+# [1101]	val-rmse:0.220221 
+# [1151]	val-rmse:0.220206 
+# [1201]	val-rmse:0.220186 
+# [1251]	val-rmse:0.220168 
+# [1301]	val-rmse:0.220149 
+# [1351]	val-rmse:0.220119 
+# [1401]	val-rmse:0.220101 
+# [1451]	val-rmse:0.220093 
+# Stopping. Best iteration:
+# [1418]	val-rmse:0.220091
