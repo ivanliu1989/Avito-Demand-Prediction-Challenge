@@ -1,6 +1,6 @@
 gcloud config set project avito-203110
 gcloud compute machine-types list --zones
-sudo gcloud compute instances create rstudio --image-family ubuntu-1604-lts --image-project ubuntu-os-cloud  --machine-type n1-standard-1 --zone australia-southeast1-b
+sudo gcloud compute instances create rstudio --image-family ubuntu-1604-lts --image-project ubuntu-os-cloud  --machine-type n1-standard-8 --zone australia-southeast1-b
 sudo gcloud compute firewall-rules create allow-rstudio --allow=tcp:8787
 sudo gcloud compute ssh ubuntu@rstudio --zone australia-southeast1-b
 
