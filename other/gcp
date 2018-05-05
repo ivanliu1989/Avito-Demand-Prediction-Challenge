@@ -18,16 +18,21 @@ sudo apt install libcurl4-openssl-dev libssl-dev libxml2-dev
 R
 
 sudo apt install gdebi-core
-wget https://download2.rstudio.org/rstudio-server-1.0.143-amd64.deb
-sudo gdebi rstudio-server-1.0.143-amd64.deb
+wget https://download2.rstudio.org/rstudio-server-1.1.447-amd64.deb
+sudo gdebi rstudio-server-1.1.447-amd64.deb
 sudo adduser ivanliu
-//sudo gcloud compute ssh ivanliu@rstudio --zone australia-southeast1-b
 
+
+sudo apt install python-pip
+sudo apt-get install htop
 
 sudo gcloud compute instances describe rstudio  --zone australia-southeast1-b
-http://35.201.6.96:8787
+http://35.197.176.34:8787
 
 
 
 sudo gcloud compute instances stop rstudio
 sudo gcloud compute instances start rstudio
+
+sudo gcloud compute ssh ivanliu@rstudio --zone australia-southeast1-b
+htop
