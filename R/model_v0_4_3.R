@@ -1,6 +1,14 @@
+# new lines
+# stopword_count
+# Image quality
+# WordBatch https://www.kaggle.com/c/mercari-price-suggestion-challenge/discussion/47295
+# Mercari https://www.kaggle.com/c/mercari-price-suggestion-challenge/discussion/50256
+# https://www.kaggle.com/lopuhin/mercari-golf-0-3875-cv-in-75-loc-1900-s
+
 rm(list=ls());gc()
 Sys.setlocale(,"russian")
 library(data.table)
+library(stringr)
 library(tidyverse)
 library(lubridate)
 library(magrittr)
@@ -42,6 +50,60 @@ dat[, desc_len := nchar(description)]
 dat[, desc_len := ifelse(is.na(desc_len), 0, desc_len)]
 dat[, title_wc := lengths(gregexpr("\\W+", title)) + 1]
 dat[, desc_wc := lengths(gregexpr("\\W+", description)) + 1]
+
+dat[, title_punc := str_count(title, '[:punct:]')]
+dat[, title_punc_suc := str_count(title, '\\b[:punct:]{2,}\\b')]
+dat[, title_num := str_count(title, '[0-9]')]
+dat[, title_num_suc := str_count(title, '\\b[0-9]{2,}\\b')]
+dat[, title_upper := str_count(title, '[A-Z]')]
+dat[, title_upper_suc := str_count(title, "\\b[A-Z]{2,}\\b")]
+dat[, title_ascii := str_count(title, '[:ascii:]')]
+dat[, title_ascii_suc := str_count(title, "\\b[:ascii:]{2,}\\b")]
+dat[, title_space := str_count(title, '[:blank:]')]
+
+dat[, title_punc_p := title_punc / title_len]
+dat[, title_punc_suc_p := title_punc_suc / title_len]
+dat[, title_num_p := title_num / title_len]
+dat[, title_num_suc_p := title_num_suc / title_len]
+dat[, title_upper_p := title_upper / title_len]
+dat[, title_upper_suc_p := title_upper_suc / title_len]
+dat[, title_ascii_p := title_ascii / title_len]
+dat[, title_ascii_suc_p := title_ascii_suc / title_len]
+dat[, title_space_p := title_space / title_len]
+
+
+dat[, desc_punc := str_count(description, '[:punct:]')]
+dat[, desc_punc_suc := str_count(description, '\\b[:punct:]{2,}\\b')]
+dat[, desc_num := str_count(description, '[0-9]')]
+dat[, desc_num_suc := str_count(description, '\\b[0-9]{2,}\\b')]
+dat[, desc_upper := str_count(description, '[A-Z]')]
+dat[, desc_upper_suc := str_count(description, "\\b[A-Z]{2,}\\b")]
+dat[, desc_ascii := str_count(description, '[:ascii:]')]
+dat[, desc_ascii_suc := str_count(description, "\\b[:ascii:]{2,}\\b")]
+dat[, desc_space := str_count(description, '[:blank:]')]
+
+dat[, desc_punc_p := desc_punc / desc_len]
+dat[, desc_punc_suc_p := desc_punc_suc / desc_len]
+dat[, desc_num_p := desc_num / desc_len]
+dat[, desc_num_suc_p := desc_num_suc / desc_len]
+dat[, desc_upper_p := desc_upper / desc_len]
+dat[, desc_upper_suc_p := desc_upper_suc / desc_len]
+dat[, desc_ascii_p := desc_ascii / desc_len]
+dat[, desc_ascii_suc_p := desc_ascii_suc / desc_len]
+dat[, desc_space_p := desc_space / desc_len]
+# stopword_count
+dat[, title_stops := str_count(title, stopwords("ru"))]
+dat[, title_stops := ifelse(is.na(title_stops), 0, title_stops)]
+dat[, title_stops_p := title_stops / title_wc]
+dat[, desc_stops := str_count(description, stopwords("ru"))]
+dat[, desc_stops := ifelse(is.na(desc_stops), 0, desc_stops)]
+dat[, desc_stops_p := desc_stops / desc_wc]
+# new lines
+dat[, title_nline := str_count(title, '\n')]
+dat[, title_nline := ifelse(is.na(title_nline), 0, title_nline)]
+dat[, desc_nline := str_count(description, '\n')]
+dat[, desc_nline := ifelse(is.na(desc_nline), 0, desc_nline)]
+
 # dat[, param := paste(param_1, param_2, param_3, sep = " ")]
 # region 28
 # city 1752
@@ -313,8 +375,8 @@ it <- dat %$%
   str_replace_all("\\s+", " ") %>%
   tokenize_word_stems(language = "russian") %>% 
   itoken()
-vect = create_vocabulary(it, ngram = c(1, 1), stopwords = stopwords("ru")) %>%
-  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.4, vocab_term_max = 6500) %>% 
+vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
+  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.6, vocab_term_max = 6500) %>% 
   vocab_vectorizer()
 
 m_tfidf <- TfIdf$new(norm = "l2", sublinear_tf = T)
@@ -378,38 +440,3 @@ read_csv("./data/sample_submission.csv") %>%
   mutate(deal_probability = predict(m_xgb, dtest)) %>%
   write_csv(paste0("./submissions/xgb_tfidf_dt_", round(m_xgb$best_score, 5), ".csv"))
 
-# [1]	val-rmse:0.428584 
-# Will train until val_rmse hasn't improved in 50 rounds.
-# 
-# [51]	val-rmse:0.224797 
-# [101]	val-rmse:0.221703 
-# [151]	val-rmse:0.221236 
-# [201]	val-rmse:0.220940 
-# [251]	val-rmse:0.220758 
-# [301]	val-rmse:0.220626 
-# [351]	val-rmse:0.220525 
-# [401]	val-rmse:0.220412 
-# [451]	val-rmse:0.220320 
-# [501]	val-rmse:0.220231 
-# [551]	val-rmse:0.220188 
-# [601]	val-rmse:0.220171 
-# [651]	val-rmse:0.220111 
-# [701]	val-rmse:0.220043 
-# [751]	val-rmse:0.219990 
-# [801]	val-rmse:0.219936 
-# [851]	val-rmse:0.219923 
-# [901]	val-rmse:0.219902 
-# [951]	val-rmse:0.219868 
-# [1001]	val-rmse:0.219841 
-# [1051]	val-rmse:0.219809 
-# [1101]	val-rmse:0.219790 
-# [1151]	val-rmse:0.219778 
-# [1201]	val-rmse:0.219744 
-# [1251]	val-rmse:0.219731 
-# [1301]	val-rmse:0.219725 
-# [1351]	val-rmse:0.219711 
-# [1401]	val-rmse:0.219699 
-# [1451]	val-rmse:0.219676 
-# [1501]	val-rmse:0.219674 
-# Stopping. Best iteration:
-# [1479]	val-rmse:0.219665
