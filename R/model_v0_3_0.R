@@ -18,15 +18,16 @@ setDT(te)
 
 tri <- 1:nrow(tr)
 y <- tr$deal_probability
-tr$deal_probability = NULL
+# tr$deal_probability = NULL
+te$deal_probability = NA
 dat = rbind(tr, te)
 
 
 
 # Feature engineering -----------------------------------------------------
 dat[, price := log1p(price)]
-# dat[, txt := paste(city, param_1, param_2, param_3, title, description, sep = " ")]
-dat[, txt := paste(title, description, sep = " ")]
+dat[, txt := paste(city, param_1, param_2, param_3, title, description, sep = " ")]
+# dat[, txt := paste(title, description, sep = " ")]
 dat[, mon := month(activation_date)]
 dat[, mday := mday(activation_date)]
 dat[, week := week(activation_date)]
@@ -50,11 +51,53 @@ dat[, desc_wc := lengths(gregexpr("\\W+", description)) + 1]
 # category 47
 # parent_category_name 9
 
-col_to_drop = c('item_id', 'user_id', 'city', 'title', # 'param_1', 'param_2', 'param_3', 
+col_to_drop = c('item_id', 'user_id', 'city', 'title', 'param_3', # 'param_1', 'param_2', 
                 'description', 'activation_date', 'image')
 dat = dat[, !col_to_drop, with = F]
+
+# Target Mean
+dat[, price_region_avg := mean(price, na.rm = T), by = region]
+dat[, price_region_sd := sd(price, na.rm = T), by = region]
+dat[, price_region_ratio := price / price_region_avg]
+dat[, price_category_avg := mean(price, na.rm = T), by = category_name]
+dat[, price_category_sd := sd(price, na.rm = T), by = category_name]
+dat[, price_category_ratio := price / price_category_avg]
+
+dat[, image_region_avg := mean(image_top_1, na.rm = T), by = region]
+dat[, image_region_sd := sd(image_top_1, na.rm = T), by = region]
+dat[, image_region_ratio := image_top_1 / image_region_avg]
+dat[, image_category_avg := mean(image_top_1, na.rm = T), by = category_name]
+dat[, image_category_sd := sd(image_top_1, na.rm = T), by = category_name]
+dat[, image_category_ratio := image_top_1 / image_category_avg]
+
+
+dat[, deal_region_avg := mean(deal_probability, na.rm = T), by = region]
+dat[, deal_region_sd := sd(deal_probability, na.rm = T), by = region]
+dat[, deal_category_avg := mean(deal_probability, na.rm = T), by = category_name]
+dat[, deal_category_sd := sd(deal_probability, na.rm = T), by = category_name]
+
+dat$deal_probability = NULL
+
+# Impute
 dat[, price := ifelse(is.na(price), -1, price)]
 dat[, image_top_1 := ifelse(is.na(image_top_1), -1, image_top_1)]
+
+dat[, price_region_avg := ifelse(is.na(price_region_avg), -1, price_region_avg)]
+dat[, price_region_sd := ifelse(is.na(price_region_sd), -1, price_region_sd)]
+dat[, price_region_ratio := ifelse(is.na(price_region_ratio), -1, price_region_ratio)]
+dat[, price_category_avg := ifelse(is.na(price_category_avg), -1, price_category_avg)]
+dat[, price_category_sd := ifelse(is.na(price_category_sd), -1, price_category_sd)]
+dat[, price_category_ratio := ifelse(is.na(price_category_ratio), -1, price_category_ratio)]
+dat[, image_region_avg := ifelse(is.na(image_region_avg), -1, image_region_avg)]
+dat[, image_region_sd := ifelse(is.na(image_region_sd), -1, image_region_sd)]
+dat[, image_region_ratio := ifelse(is.na(image_region_ratio), -1, image_region_ratio)]
+dat[, image_category_avg := ifelse(is.na(image_category_avg), -1, image_category_avg)]
+dat[, image_category_sd := ifelse(is.na(image_category_sd), -1, image_category_sd)]
+dat[, image_category_ratio := ifelse(is.na(image_category_ratio), -1, image_category_ratio)]
+dat[, deal_region_avg := ifelse(is.na(deal_region_avg), -1, deal_region_avg)]
+dat[, deal_region_sd := ifelse(is.na(deal_region_sd), -1, deal_region_sd)]
+dat[, deal_category_avg := ifelse(is.na(deal_category_avg), -1, deal_category_avg)]
+dat[, deal_category_sd := ifelse(is.na(deal_category_sd), -1, deal_category_sd)]
 
 gc()
 
@@ -78,7 +121,7 @@ tfidf <-  create_dtm(it, vect) %>%
 gc()
 
 # ### PCA
-tfidf.pca = read_csv('./data/svd_title_desc_18comp.csv')
+# tfidf.pca = read_csv('./data/svd_title_desc_18comp.csv')
 # library(sparsesvd)
 # tfidf.pcov <- sparsesvd(tfidf)#, scores = TRUE, scale = TRUE, center = TRUE)
 # library(irlba)
@@ -96,14 +139,14 @@ dat[, parent_category_name := ifelse(is.na(parent_category_name), 'na', parent_c
 dat[, category_name := ifelse(is.na(category_name), 'na', category_name)]
 dat[, param_1 := ifelse(is.na(param_1), 'na', param_1)]
 dat[, param_2 := ifelse(is.na(param_2), 'na', param_2)]
-dat[, param_3 := ifelse(is.na(param_3), 'na', param_3)]
+# dat[, param_3 := ifelse(is.na(param_3), 'na', param_3)]
 dat[, user_type := ifelse(is.na(user_type), 'na', user_type)]
 dat[, wday := ifelse(is.na(wday), 'na', wday)]
 
 X = dat[, !c('txt'), with = F] %>% 
   sparse.model.matrix(~ . - 1, .) %>% 
   cbind(tfidf) #%>%
-  # cbind(as.matrix(tfidf.pca))
+# cbind(as.matrix(tfidf.pca))
 
 
 
@@ -155,20 +198,38 @@ read_csv("./data/sample_submission.csv") %>%
   write_csv(paste0("./submissions/xgb_tfidf_dt_", round(m_xgb$best_score, 5), ".csv"))
 
 
-# [1]	val-rmse:0.428515 
+# [1]	val-rmse:0.428754 
 # Will train until val_rmse hasn't improved in 50 rounds.
 # 
-# [51]	val-rmse:0.230020 
-# [101]	val-rmse:0.226567 
-# [151]	val-rmse:0.226081 
-# [201]	val-rmse:0.225891 
-# [251]	val-rmse:0.225734 
-# [301]	val-rmse:0.225670 
-# [351]	val-rmse:0.225617 
-# [401]	val-rmse:0.225561 
-# [451]	val-rmse:0.225517 
-# [501]	val-rmse:0.225553 
+# [51]	val-rmse:0.225579 
+# [101]	val-rmse:0.222123 
+# [151]	val-rmse:0.221461 
+# [201]	val-rmse:0.221135 
+# [251]	val-rmse:0.220923 
+# [301]	val-rmse:0.220743 
+# [351]	val-rmse:0.220614 
+# [401]	val-rmse:0.220475 
+# [451]	val-rmse:0.220360 
+# [501]	val-rmse:0.220265 
+# [551]	val-rmse:0.220170 
+# [601]	val-rmse:0.220086 
+# [651]	val-rmse:0.220012 
+# [701]	val-rmse:0.219954 
+# [751]	val-rmse:0.219878 
+# [801]	val-rmse:0.219815 
+# [851]	val-rmse:0.219732 
+# [901]	val-rmse:0.219700 
+# [951]	val-rmse:0.219674 
+# [1001]	val-rmse:0.219639 
+# [1051]	val-rmse:0.219608 
+# [1101]	val-rmse:0.219564 
+# [1151]	val-rmse:0.219553 
+# [1201]	val-rmse:0.219542 
+# [1251]	val-rmse:0.219501 
+# [1301]	val-rmse:0.219472 
+# [1351]	val-rmse:0.219443 
+# [1401]	val-rmse:0.219437 
+# [1451]	val-rmse:0.219415 
 # Stopping. Best iteration:
-# [456]	val-rmse:0.225513
-
+# [1433]	val-rmse:0.219412
 
