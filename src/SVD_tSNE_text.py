@@ -30,7 +30,11 @@ dat['all_txt'] = dat.region + ' ' + dat.city + ' ' + dat.parent_category_name + 
 dat['param_all'] = dat.param_1 + ' ' + dat.param_2 + ' ' + dat.param_3
 
 col = 'all_txt'
-n_comp=1000
+n_comp=3000
+
+# 500 0.405664791407
+# 1000 0.491388070074
+# 3000
 
 dat_svd = nf.text_mining_v1(dat, 18)
 dat_svd.to_csv("../data/svd_title_desc_18comp.csv")
