@@ -1,6 +1,14 @@
+# new lines
+# stopword_count
+# Image quality
+# WordBatch https://www.kaggle.com/c/mercari-price-suggestion-challenge/discussion/47295
+# Mercari https://www.kaggle.com/c/mercari-price-suggestion-challenge/discussion/50256
+# https://www.kaggle.com/lopuhin/mercari-golf-0-3875-cv-in-75-loc-1900-s
+
 rm(list=ls());gc()
 Sys.setlocale(,"russian")
 library(data.table)
+library(stringr)
 library(tidyverse)
 library(lubridate)
 library(magrittr)
@@ -42,6 +50,60 @@ dat[, desc_len := nchar(description)]
 dat[, desc_len := ifelse(is.na(desc_len), 0, desc_len)]
 dat[, title_wc := lengths(gregexpr("\\W+", title)) + 1]
 dat[, desc_wc := lengths(gregexpr("\\W+", description)) + 1]
+
+dat[, title_punc := str_count(title, '[:punct:]')]
+dat[, title_punc_suc := str_count(title, '\\b[:punct:]{2,}\\b')]
+dat[, title_num := str_count(title, '[0-9]')]
+dat[, title_num_suc := str_count(title, '\\b[0-9]{2,}\\b')]
+dat[, title_upper := str_count(title, '[A-Z]')]
+dat[, title_upper_suc := str_count(title, "\\b[A-Z]{2,}\\b")]
+dat[, title_ascii := str_count(title, '[:ascii:]')]
+dat[, title_ascii_suc := str_count(title, "\\b[:ascii:]{2,}\\b")]
+dat[, title_space := str_count(title, '[:blank:]')]
+
+dat[, title_punc_p := title_punc / title_len]
+dat[, title_punc_suc_p := title_punc_suc / title_len]
+dat[, title_num_p := title_num / title_len]
+dat[, title_num_suc_p := title_num_suc / title_len]
+dat[, title_upper_p := title_upper / title_len]
+dat[, title_upper_suc_p := title_upper_suc / title_len]
+dat[, title_ascii_p := title_ascii / title_len]
+dat[, title_ascii_suc_p := title_ascii_suc / title_len]
+dat[, title_space_p := title_space / title_len]
+
+
+dat[, desc_punc := str_count(description, '[:punct:]')]
+dat[, desc_punc_suc := str_count(description, '\\b[:punct:]{2,}\\b')]
+dat[, desc_num := str_count(description, '[0-9]')]
+dat[, desc_num_suc := str_count(description, '\\b[0-9]{2,}\\b')]
+dat[, desc_upper := str_count(description, '[A-Z]')]
+dat[, desc_upper_suc := str_count(description, "\\b[A-Z]{2,}\\b")]
+dat[, desc_ascii := str_count(description, '[:ascii:]')]
+dat[, desc_ascii_suc := str_count(description, "\\b[:ascii:]{2,}\\b")]
+dat[, desc_space := str_count(description, '[:blank:]')]
+
+dat[, desc_punc_p := desc_punc / desc_len]
+dat[, desc_punc_suc_p := desc_punc_suc / desc_len]
+dat[, desc_num_p := desc_num / desc_len]
+dat[, desc_num_suc_p := desc_num_suc / desc_len]
+dat[, desc_upper_p := desc_upper / desc_len]
+dat[, desc_upper_suc_p := desc_upper_suc / desc_len]
+dat[, desc_ascii_p := desc_ascii / desc_len]
+dat[, desc_ascii_suc_p := desc_ascii_suc / desc_len]
+dat[, desc_space_p := desc_space / desc_len]
+# stopword_count
+dat[, title_stops := str_count(title, stopwords("ru"))]
+dat[, title_stops := ifelse(is.na(title_stops), 0, title_stops)]
+dat[, title_stops_p := title_stops / title_wc]
+dat[, desc_stops := str_count(description, stopwords("ru"))]
+dat[, desc_stops := ifelse(is.na(desc_stops), 0, desc_stops)]
+dat[, desc_stops_p := desc_stops / desc_wc]
+# new lines
+dat[, title_nline := str_count(title, '\n')]
+dat[, title_nline := ifelse(is.na(title_nline), 0, title_nline)]
+dat[, desc_nline := str_count(description, '\n')]
+dat[, desc_nline := ifelse(is.na(desc_nline), 0, desc_nline)]
+
 # dat[, param := paste(param_1, param_2, param_3, sep = " ")]
 # region 28
 # city 1752
@@ -378,29 +440,32 @@ read_csv("./data/sample_submission.csv") %>%
   mutate(deal_probability = predict(m_xgb, dtest)) %>%
   write_csv(paste0("./submissions/xgb_tfidf_dt_", round(m_xgb$best_score, 5), ".csv"))
 
-# [1]	val-rmse:0.428468 
+
+# [1]	val-rmse:0.428473 
 # Will train until val_rmse hasn't improved in 50 rounds.
 # 
-# [51]	val-rmse:0.224143 
-# [101]	val-rmse:0.221068 
-# [151]	val-rmse:0.220661 
-# [201]	val-rmse:0.220435 
-# [251]	val-rmse:0.220262 
-# [301]	val-rmse:0.220127 
-# [351]	val-rmse:0.220017 
-# [401]	val-rmse:0.219928 
-# [451]	val-rmse:0.219864 
-# [501]	val-rmse:0.219794 
-# [551]	val-rmse:0.219756 
-# [601]	val-rmse:0.219689 
-# [651]	val-rmse:0.219658 
-# [701]	val-rmse:0.219614 
-# [751]	val-rmse:0.219576 
-# [801]	val-rmse:0.219560 
-# [851]	val-rmse:0.219537 
-# [901]	val-rmse:0.219524 
-# [951]	val-rmse:0.219497 
-# [1001]	val-rmse:0.219485 
+# [51]	val-rmse:0.224103 
+# [101]	val-rmse:0.220967 
+# [151]	val-rmse:0.220569 
+# [201]	val-rmse:0.220323 
+# [251]	val-rmse:0.220125 
+# [301]	val-rmse:0.220009 
+# [351]	val-rmse:0.219923 
+# [401]	val-rmse:0.219857 
+# [451]	val-rmse:0.219787 
+# [501]	val-rmse:0.219742 
+# [551]	val-rmse:0.219694 
+# [601]	val-rmse:0.219648 
+# [651]	val-rmse:0.219630 
+# [701]	val-rmse:0.219604 
+# [751]	val-rmse:0.219585 
+# [801]	val-rmse:0.219565 
+# [851]	val-rmse:0.219548 
+# [901]	val-rmse:0.219512 
+# [951]	val-rmse:0.219509 
+# [1001]	val-rmse:0.219505 
 # [1051]	val-rmse:0.219481 
+# [1101]	val-rmse:0.219470 
+# [1151]	val-rmse:0.219470 
 # Stopping. Best iteration:
-# [1023]	val-rmse:0.219465
+# [1123]	val-rmse:0.219465

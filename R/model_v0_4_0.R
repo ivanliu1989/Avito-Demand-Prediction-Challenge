@@ -378,3 +378,38 @@ read_csv("./data/sample_submission.csv") %>%
   mutate(deal_probability = predict(m_xgb, dtest)) %>%
   write_csv(paste0("./submissions/xgb_tfidf_dt_", round(m_xgb$best_score, 5), ".csv"))
 
+# [1]	val-rmse:0.428584 
+# Will train until val_rmse hasn't improved in 50 rounds.
+# 
+# [51]	val-rmse:0.224797 
+# [101]	val-rmse:0.221703 
+# [151]	val-rmse:0.221236 
+# [201]	val-rmse:0.220940 
+# [251]	val-rmse:0.220758 
+# [301]	val-rmse:0.220626 
+# [351]	val-rmse:0.220525 
+# [401]	val-rmse:0.220412 
+# [451]	val-rmse:0.220320 
+# [501]	val-rmse:0.220231 
+# [551]	val-rmse:0.220188 
+# [601]	val-rmse:0.220171 
+# [651]	val-rmse:0.220111 
+# [701]	val-rmse:0.220043 
+# [751]	val-rmse:0.219990 
+# [801]	val-rmse:0.219936 
+# [851]	val-rmse:0.219923 
+# [901]	val-rmse:0.219902 
+# [951]	val-rmse:0.219868 
+# [1001]	val-rmse:0.219841 
+# [1051]	val-rmse:0.219809 
+# [1101]	val-rmse:0.219790 
+# [1151]	val-rmse:0.219778 
+# [1201]	val-rmse:0.219744 
+# [1251]	val-rmse:0.219731 
+# [1301]	val-rmse:0.219725 
+# [1351]	val-rmse:0.219711 
+# [1401]	val-rmse:0.219699 
+# [1451]	val-rmse:0.219676 
+# [1501]	val-rmse:0.219674 
+# Stopping. Best iteration:
+# [1479]	val-rmse:0.219665
