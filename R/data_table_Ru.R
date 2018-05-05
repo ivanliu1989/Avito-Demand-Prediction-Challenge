@@ -9,6 +9,7 @@ library(tokenizers)
 library(stopwords)
 library(xgboost)
 library(Matrix)
+set.seed(0)
 
 
 # Load data ---------------------------------------------------------------
@@ -33,8 +34,8 @@ dat[, mon := month(activation_date)]
 dat[, mday := mday(activation_date)]
 dat[, week := week(activation_date)]
 dat[, wday := wday(activation_date)]
-col_to_drop = c('item_id', 'user_id', 'city', 'param_1', 'param_2', 'param_3', 'title', 
-                'description', 'activation_date', 'image')
+col_to_drop = c('item_id', 'user_id', 'city', 'param_1', 'param_2', 'param_3', 
+                'title', 'description', 'activation_date', 'image')
 dat = dat[, !col_to_drop, with = F]
 dat[, price := ifelse(is.na(price), -1, price)]
 dat[, image_top_1 := ifelse(is.na(image_top_1), -1, image_top_1)]
@@ -96,7 +97,9 @@ gc()
 
 # Split into Train & Test -------------------------------------------------
 cat("Preparing data...\n")
-X = sparse.model.matrix(~ -1 + ., dat[, !c('txt'), with = F], -1) %>%
+X <- dat %>% 
+  select(-txt) %>% 
+  sparse.model.matrix(~ . - 1, .) %>% 
   cbind(tfidf)
 
 # Save dataset ------------------------------------------------------------

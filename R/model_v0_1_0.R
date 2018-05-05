@@ -9,6 +9,7 @@ library(tokenizers)
 library(stopwords)
 library(xgboost)
 library(Matrix)
+set.seed(0)
 
 
 # Load data ---------------------------------------------------------------
