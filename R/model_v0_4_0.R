@@ -22,7 +22,7 @@ y <- tr$deal_probability
 # tr$deal_probability = NULL
 te$deal_probability = NA
 dat = rbind(tr, te)
-
+rm(tr, te)
 
 # Feature engineering -----------------------------------------------------
 # hist(log1p(dat$price), 100)
@@ -293,17 +293,18 @@ dat[, deal_p1_avg := mean(deal_probability, na.rm = T), by = param_1]
 dat[, deal_p1_sd := sd(deal_probability, na.rm = T), by = param_1]
 dat[, deal_p2_avg := mean(deal_probability, na.rm = T), by = param_2]
 dat[, deal_p2_sd := sd(deal_probability, na.rm = T), by = param_2]
+dat[, deal_usrtype_avg := mean(deal_probability, na.rm = T), by = user_type]
+dat[, deal_usrtype_sd := sd(deal_probability, na.rm = T), by = user_type]
 
 dat$deal_probability = NULL
 
 # Impute
-for(col in colnames(dat)){
-  if(is.numeric(dat[,col, with = F])){
-    print(col)
-    dat[, col := ifelse(is.na(col), -1, col), with = F]
-  }
+f_dowle3 = function(DT) {
+  # or by number (slightly faster than by name) :
+  for (j in seq_len(ncol(DT)))
+    DT[[j]][is.na(DT[[j]])] = -999
 }
-
+f_dowle3(dat)
 gc()
 
 
