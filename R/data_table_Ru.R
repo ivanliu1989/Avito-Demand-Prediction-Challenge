@@ -44,13 +44,30 @@ gc()
 
 # NLP ---------------------------------------------------------------------
 cat("Parsing text...\n")
-dat[, txt := str_to_lower(txt)]
-dat[, txt := str_replace_all(txt, "[^[:alpha:]]", " ")]
-dat[, txt := str_replace_all(txt, "\\s+", " ")]
-
-it = tokenize_word_stems(dat$txt, language = "russian") %>%
+it_dt <- dat %$%
+  str_to_lower(txt) %>%
+  str_replace_all("[^[:alpha:]]", " ") %>%
+  str_replace_all("\\s+", " ") %>%
+  tokenize_word_stems(language = "russian") %>% 
   itoken()
-vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
+# <itoken>
+#   Inherits from: <iterator>
+#   Public:
+#   chunk_size: 201187
+# clone: function (deep = FALSE) 
+#   counter: 0
+# ids: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 ...
+# initialize: function (iterable, ids = NULL, n_chunks = 10, progress_ = interactive(), 
+#                       is_complete: active binding
+#                       iterable: list
+#                       length: active binding
+#                       nextElem: function () 
+#                         preprocessor: list
+#                       progress: TRUE
+#                       progressbar: txtProgressBar
+#                       tokenizer: list
+                      
+vect_dt = create_vocabulary(it_dt, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
   prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.3, vocab_term_max = 5500) %>% 
   vocab_vectorizer()
 # Number of docs: 3006848 
@@ -71,7 +88,7 @@ vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
 # 4000:  premium       2078      1622
 
 m_tfidf <- TfIdf$new(norm = "l2", sublinear_tf = T)
-tfidf <-  create_dtm(it, vect) %>% 
+tfidf <-  create_dtm(it_dt, vect_dt) %>% 
   fit_transform(m_tfidf)
 
 gc()
