@@ -1,5 +1,4 @@
-# new lines
-# stopword_count
+# seperate title, description
 # Image quality
 # WordBatch https://www.kaggle.com/c/mercari-price-suggestion-challenge/discussion/47295
 # Mercari https://www.kaggle.com/c/mercari-price-suggestion-challenge/discussion/50256
@@ -31,6 +30,7 @@ y <- tr$deal_probability
 te$deal_probability = NA
 dat = rbind(tr, te)
 rm(tr, te)
+missing_val = 'отсутствует'
 
 # Feature engineering -----------------------------------------------------
 # hist(log1p(dat$price), 100)
