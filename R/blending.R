@@ -14,10 +14,14 @@ pred8 = fread("./submissions/xgb_tfidf_dt_0.21946_v0.4.1.csv")
 pred9 = fread("./submissions/xgb_tfidf_dt_0.21952_v0.4.2.csv")
 pred10 = fread("./submissions/xgb_tfidf_dt_0.21946_v0.4.3.csv")
 pred11 = fread("./submissions/xgb_tfidf_dt_0.21966_0.2246.csv")
-pred12 = fread("./submissions/blend/blend_tfidf_baseline3.csv")
+
+pred12 = fread("./submissions/blend/blend_tfidf_baseline4_0.2231.csv")
+pred13 = fread("./submissions/xgb_tfidf_dt_0.21956.csv")
+pred14 = fread("./submissions/xgb_tfidf_dt_0.21928.csv")
+pred15 = fread("./submissions/xgb_tfidf_dt_0.21861.csv")
 
 par(mfcol = c(2,2))
-plot(pred12$deal_probability, pred11$deal_probability)
+plot(pred12$deal_probability, pred15$deal_probability)
 plot(pred12$deal_probability, pred7$deal_probability)
 plot(pred10$deal_probability, pred11$deal_probability)
 plot(pred10$deal_probability, pred8$deal_probability)
@@ -39,3 +43,9 @@ submit = pred2
 submit$deal_probability = (pred7$deal_probability + pred8$deal_probability + pred9$deal_probability +
   pred10$deal_probability + pred11$deal_probability + pred12$deal_probability)/6
 write.csv(submit, file = './submissions/blend/blend_tfidf_baseline4.csv', row.names = F)
+
+# v0.5
+submit = pred12
+submit$deal_probability = 0.55 * pred12$deal_probability + 0.1 * pred13$deal_probability + 0.1 * pred14$deal_probability +
+  0.25 * pred15$deal_probability
+write.csv(submit, file = './submissions/blend/blend_tfidf_baseline5.csv', row.names = F)
