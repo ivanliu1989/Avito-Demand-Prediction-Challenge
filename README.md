@@ -81,7 +81,29 @@
 - v0.0.5
 	- v0.0.5.1 | Meta features
 - v0.0.6
-	- v0.0.6.1 | SVD features
+	- v0.0.6.1 | SVD features, title description seperate
+
 
 ### Submit
 kaggle competitions submit -c avito-demand-prediction -f v0_0_1_2_rmse0_226457_sd0_000489155.csv -m "test with noise tgt mean"
+
+
+### Reference
+1. Models per category - ridge models for category level 1,2,3
+2. Residual models (MLP & LGBM) - target difference between 1 predictions and target
+1. Sparse MLP
+2. CNN with conv1d (different from MLP, good boost)
+1. 2 different preprocessing schemes created much needed variance
+	1. Different tokenization, with/without stemming
+	2. Countvectorizer / tfidfvectorizer
+	3. n-grams from name
+	4. stemming - standard PorterStemmer
+	5. text concatenation
+	6. neural networks 
+		1. conv1d CNN - embedding size 32, 4 MLP models with hidden size 256
+		2. https://www.kaggle.com/lopuhin/mercari-golf-0-3875-cv-in-75-loc-1900-s
+		3. Huber loss & classification (split into buckets and a soft target for prediction)
+			- first calculate L2 distance from the centers of the buckets, and then apply softmax to this (with high softmax temperature which was a hyperparameter). This classification model achieved better score on it’s own due to less overfitting, and also added diversity.
+		4. half models to binarize input data to all non-zero values to 1. (extra data with a binary countvectorizer instead of TFIDF)
+		5. L2 regularization to first layer and PRELU activations
+	7. Blending - 5% of data for validation - Lasso model with L! regularization
