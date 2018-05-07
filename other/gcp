@@ -36,3 +36,27 @@ sudo gcloud compute instances start rstudio
 
 sudo gcloud compute ssh ivanliu@rstudio --zone australia-southeast1-b
 htop
+
+
+
+
+# Anaconda
+https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52
+
+
+wget http://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+bash Anaconda3-5.1.0-Linux-x86_64.sh
+
+source ~/.bashrc
+pip install tensorflow
+pip install keras
+
+ls ~/.jupyter/jupyter_notebook_config.py
+jupyter notebook --generate-config
+
+c = get_config()
+c.NotebookApp.ip = '*'
+c.NotebookApp.open_browser = False
+c.NotebookApp.port = 8123
+
+jupyter-notebook --no-browser --port=8123
