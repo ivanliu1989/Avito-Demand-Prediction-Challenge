@@ -53,6 +53,8 @@ def fit_predict(xs, y_train) -> np.ndarray:
         for i in range(3):
             with timer(f'epoch {i + 1}'):
                 model.fit(x=X_train, y=y_train, batch_size=2**(11 + i), epochs=1, verbose=0)
+
+        # y_pred = model.predict(X_test)[:, 0]
         return model.predict(X_test)[:, 0]
 
 def main():
@@ -82,7 +84,7 @@ def main():
         xs = [[Xb_train, Xb_valid], [X_train, X_valid]] * 2
         y_pred = np.mean(pool.map(partial(fit_predict, y_train=y_train), xs), axis=0)
     y_pred = np.expm1(y_scaler.inverse_transform(y_pred.reshape(-1, 1))[:, 0])
-    print('Valid RMSLE: {:.4f}'.format(np.sqrt(mean_squared_log_error(valid['price'], y_pred))))
+    print('Valid RMSLE: {:.4f}'.format(np.sqrt(mean_squared_log_error(valid['deal_probability'], y_pred))))
 
 if __name__ == '__main__':
     main()

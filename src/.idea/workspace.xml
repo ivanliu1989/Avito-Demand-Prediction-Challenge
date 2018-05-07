@@ -25,7 +25,7 @@
           <file leaf-file-name="feature_engineering.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2091">
+                <state relative-caret-position="3366">
                   <caret line="205" column="50" selection-start-line="205" selection-start-column="4" selection-end-line="205" selection-end-column="50" />
                   <folding>
                     <element signature="e#0#23#0" expanded="true" />
@@ -38,7 +38,7 @@
             <entry file="file://$PROJECT_DIR$/util/nlp_features.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state>
-                  <caret column="33" lean-forward="true" selection-end-line="1" />
+                  <caret column="33" selection-end-line="1" />
                 </state>
               </provider>
             </entry>
@@ -71,8 +71,8 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <caret column="27" selection-end-line="1" />
+                <state relative-caret-position="17">
+                  <caret line="1" column="99" lean-forward="true" selection-start-line="1" selection-end-line="2" />
                 </state>
               </provider>
             </entry>
@@ -80,7 +80,7 @@
           <file leaf-file-name="Regression_with_words_and_ngrams.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Regression_with_words_and_ngrams.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="357">
+                <state relative-caret-position="187">
                   <caret line="21" selection-start-line="19" selection-end-line="21" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
@@ -101,11 +101,20 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="tensorflow.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="tensorflow.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/tensorflow.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="780">
-                  <caret line="84" column="6" selection-start-line="84" selection-start-column="6" selection-end-line="84" selection-end-column="6" />
+                <state relative-caret-position="1066">
+                  <caret line="86" column="107" lean-forward="true" selection-start-line="86" selection-start-column="4" selection-end-line="86" selection-end-column="107" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="model_v0_6_0.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/model_v0_6_0.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="963">
+                  <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
                 </state>
               </provider>
             </entry>
@@ -150,6 +159,7 @@
         <option value="$PROJECT_DIR$/util/nlp_features.py" />
         <option value="$PROJECT_DIR$/SVD_tSNE_text.py" />
         <option value="$PROJECT_DIR$/tensorflow.py" />
+        <option value="$PROJECT_DIR$/model_v0_6_0.py" />
       </list>
     </option>
   </component>
@@ -161,27 +171,14 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-7" />
-    <option name="width" value="2292" />
+    <option name="width" value="2253" />
     <option name="height" value="2127" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="src" type="b2602c69:ProjectViewProjectNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -225,7 +222,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="2292" height="2127" extended-state="0" />
+    <frame x="-7" y="0" width="2253" height="2127" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="15" weight="0.32998493" />
       <window_info anchor="bottom" id="Event Log" order="21" side_tool="true" />
@@ -253,24 +251,24 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32958335" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32998493" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Python Console" order="10" visible="true" weight="0.34605727" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32998493" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="right" id="SciView" order="3" weight="0.15128712" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Python Console" order="10" visible="true" weight="0.34605727" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -285,13 +283,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -591,9 +582,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
           <caret line="35" column="6" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -609,7 +597,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2091">
+        <state relative-caret-position="3366">
           <caret line="205" column="50" selection-start-line="205" selection-start-column="4" selection-end-line="205" selection-end-column="50" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
@@ -617,16 +605,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="27" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Regression_with_words_and_ngrams.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
+        <state relative-caret-position="187">
           <caret line="21" selection-start-line="19" selection-end-line="21" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -637,14 +618,28 @@
     <entry file="file://$PROJECT_DIR$/util/nlp_features.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="33" lean-forward="true" selection-end-line="1" />
+          <caret column="33" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="99" lean-forward="true" selection-start-line="1" selection-end-line="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tensorflow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="84" column="6" selection-start-line="84" selection-start-column="6" selection-end-line="84" selection-end-column="6" />
+        <state relative-caret-position="1066">
+          <caret line="86" column="107" lean-forward="true" selection-start-line="86" selection-start-column="4" selection-end-line="86" selection-end-column="107" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model_v0_6_0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="963">
+          <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
         </state>
       </provider>
     </entry>
