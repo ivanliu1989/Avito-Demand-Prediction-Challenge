@@ -195,7 +195,7 @@ def fit_predict(xs, y_train, loss_fn='mean_squared_error') -> np.ndarray:
         out = ks.layers.Dense(64, activation='relu')(out)
         out = ks.layers.Dense(64, activation='relu')(out)
         out = ks.layers.Dense(1)(out)
-        model = ks.Model(model_in, out)
+        model = ks.models.Model(model_in, out)
         model.compile(loss=loss_fn, optimizer=ks.optimizers.Adam(lr=2e-3))
         for i in range(3):
             with timer(f'epoch {i + 1}'):
