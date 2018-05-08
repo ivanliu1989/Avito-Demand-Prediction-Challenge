@@ -110,11 +110,23 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="model_v0_6_0.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="model_v0_6_0.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/model_v0_6_0.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="136">
-                  <caret line="8" column="29" selection-end-line="99" />
+                <state relative-caret-position="68">
+                  <caret line="4" column="29" lean-forward="true" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="model_v0_6_1.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/model_v0_6_1.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1029">
+                  <caret line="393" lean-forward="true" selection-start-line="153" selection-end-line="393" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -160,6 +172,7 @@
         <option value="$PROJECT_DIR$/SVD_tSNE_text.py" />
         <option value="$PROJECT_DIR$/tensorflow.py" />
         <option value="$PROJECT_DIR$/model_v0_6_0.py" />
+        <option value="$PROJECT_DIR$/model_v0_6_1.py" />
       </list>
     </option>
   </component>
@@ -283,13 +296,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1105">
@@ -638,8 +644,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model_v0_6_0.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="29" selection-end-line="99" />
+        <state relative-caret-position="68">
+          <caret line="4" column="29" lean-forward="true" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model_v0_6_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1029">
+          <caret line="393" lean-forward="true" selection-start-line="153" selection-end-line="393" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
