@@ -49,3 +49,17 @@ submit = pred12
 submit$deal_probability = 0.55 * pred12$deal_probability + 0.1 * pred13$deal_probability + 0.1 * pred14$deal_probability +
   0.25 * pred15$deal_probability
 write.csv(submit, file = './submissions/blend/blend_tfidf_baseline5.csv', row.names = F)
+
+
+
+# v0.6
+library(data.table)
+library(tidyverse)
+
+
+pred1 = fread("./submissions/xgb_tfidf_dt_0.21861.csv")
+pred2 = fread("./submissions/xgb_tfidf_dt_binary_0.21853.csv")
+plot(pred1$deal_probability, pred2$deal_probability)
+submit = pred2
+submit$deal_probability = (pred1$deal_probability + pred2$deal_probability)/2
+write.csv(submit, file = './submissions/blend/blend_tfidf_bf.csv', row.names = F)
