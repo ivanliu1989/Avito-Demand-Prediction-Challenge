@@ -334,8 +334,8 @@ dat[, param_3 := str_replace_all(str_replace_all(str_to_lower(param_3),"[^[:alph
 dim(dat)
 tr = dat[tri]
 te = dat[-tri]
-write.csv(tr, file = './data/train_bsc_fe_txt_clean.csv', row.names = F)
-write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F)
+write.csv(tr, file = './data/train_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
+write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
 
 
 ### TODO
