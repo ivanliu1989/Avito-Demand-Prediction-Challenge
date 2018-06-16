@@ -323,13 +323,19 @@ dat[, p2_date_seq_log := log1p(p2_date_seq)]
 dat[, p2_date_seq_ratio := item_seq_number/p2_date_seq]
 
 
+# dat[, txt := paste(city, param_1, param_2, param_3, sep = " ")] # seperate title and description
+# dat[, txt := paste(title, description, sep = " ")]
+dat[, description := str_replace_all(str_replace_all(str_to_lower(description),"[^[:alpha:]]", " "), "\\s+", " ")]
+dat[, title := str_replace_all(str_replace_all(str_to_lower(title),"[^[:alpha:]]", " "), "\\s+", " ")]
+dat[, param_1 := str_replace_all(str_replace_all(str_to_lower(param_1),"[^[:alpha:]]", " "), "\\s+", " ")]
+dat[, param_2 := str_replace_all(str_replace_all(str_to_lower(param_2),"[^[:alpha:]]", " "), "\\s+", " ")]
+dat[, param_3 := str_replace_all(str_replace_all(str_to_lower(param_3),"[^[:alpha:]]", " "), "\\s+", " ")]
+
 dim(dat)
 tr = dat[tri]
 te = dat[-tri]
-write.csv(tr, file = './data/train_bsc_fe.csv', row.names = F)
-write.csv(te, file = './data/test_bsc_fe.csv', row.names = F)
-# dat[, txt := paste(city, param_1, param_2, param_3, sep = " ")] # seperate title and description
-# dat[, txt := paste(title, description, sep = " ")]
+write.csv(tr, file = './data/train_bsc_fe_txt_clean.csv', row.names = F)
+write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F)
 
 
 ### TODO

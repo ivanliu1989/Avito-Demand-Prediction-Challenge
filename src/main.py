@@ -80,7 +80,7 @@ if __name__ == '__main__':
     plt.show()
 
     ### 5. make submission
-    res = make_submission(test_id, pred_test_y, filename='v2_0_1_poisson_rmse0_224611_sd0_00020622')
+    res = make_submission(test_id, pred_test_y, filename='v2_0_1_poisson_rmse0_224138_sd0_000168156')
 
     ### 6. blending
     paths = ['../submissions/blend/blend_tfidf_baseline5.csv',
