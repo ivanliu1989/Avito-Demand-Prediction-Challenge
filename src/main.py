@@ -83,9 +83,7 @@ if __name__ == '__main__':
     res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_225142_sd0_000170338')
 
     ### 6. blending
-    paths = ['../submissions/baseline_lgb.csv',
-             '../submissions/xgb_tfidf0.22088.csv',
-             '../submissions/xgb_tfidf0.22061.csv',
-             '../submissions/blend_it.csv']
-    wts = [0.15, 0.35, 0.4, 0.1]
-    res =submission_blending(paths, wts, 'blend_tfidf_baseline')
+    paths = ['../submissions/blend/blend_tfidf_baseline5.csv',
+             '../submissions/blend/lgsub_0.2219.csv']
+    wts = [0.35, 0.65]
+    res =submission_blending(paths, wts, 'i_am_back')
