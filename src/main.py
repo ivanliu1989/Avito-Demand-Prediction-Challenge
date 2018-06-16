@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     ### 4. run model
     params = {
-        "objective": "regression",
+        "objective": "poisson", #poisson, regression
         "metric": "rmse",
         "num_leaves": 30, #40
         "learning_rate": 0.1, #0.09
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     plt.show()
 
     ### 5. make submission
-    res = make_submission(test_id, pred_test_y, filename='v0_0_1_2_rmse0_225142_sd0_000170338')
+    res = make_submission(test_id, pred_test_y, filename='v2_0_1_poisson_rmse0_224611_sd0_00020622')
 
     ### 6. blending
     paths = ['../submissions/blend/blend_tfidf_baseline5.csv',

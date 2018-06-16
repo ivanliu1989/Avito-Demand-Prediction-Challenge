@@ -107,3 +107,9 @@ kaggle competitions submit -c avito-demand-prediction -f v0_0_1_2_rmse0_226457_s
 		4. half models to binarize input data to all non-zero values to 1. (extra data with a binary countvectorizer instead of TFIDF)
 		5. L2 regularization to first layer and PRELU activations
 	7. Blending - 5% of data for validation - Lasso model with L! regularization
+
+
+
+fillColor={this["postcode_" + this.state.currentMetric][item_name] !== undefined ?
+							this.getColour(this[this.state.currentMetric + "_colour"], this["postcode_" + this.state.currentMetric][item_name]["total"])
+							: this.getColour(this[this.state.currentMetric + "_colour"], 0)}
