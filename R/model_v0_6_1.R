@@ -474,10 +474,15 @@ m_xgb <- xgb.train(p, dtrain, p$nrounds, list(val = dval), print_every_n = 50, e
 xgb.importance(cols, model=m_xgb) %>%
   xgb.plot.importance(top_n = 15)
 
+# [851] val-rmse:0.218959
+# [901] val-rmse:0.218939
+# Stopping. Best iteration:
+#   [870] val-rmse:0.218931
+# LB: 0.2244
 
 # Submissions -------------------------------------------------------------
 cat("Creating submission file...\n")
 read_csv("./data/sample_submission.csv") %>%  
   mutate(deal_probability = predict(m_xgb, dtest)) %>%
-  write_csv(paste0("./submissions/xgb_tfidf_dt_binary_", round(m_xgb$best_score, 5), ".csv"))
+  write_csv(paste0("./submissions/xgb_tfidf_dt_binary_", round(m_xgb$best_score, 5), "v0_6_1.csv"))
 
