@@ -32,13 +32,21 @@ rm(tr, te)
 
 
 # Feature engineering -----------------------------------------------------
+dat[, is_desc := ifelse(is.na(description), 0, 1)]
+dat[, is_price := ifelse(is.na(price), 0, 1)]
+dat[, is_img := ifelse(is.na(image), 0, 1)]
+dat[, is_p1 := ifelse(is.na(param_1), 0, 1)]
+dat[, is_p2 := ifelse(is.na(param_2), 0, 1)]
+dat[, is_p3 := ifelse(is.na(param_3), 0, 1)]
+
 missing_val = 'отсутствует'
 dat[['description']][is.na(dat[['description']])] = missing_val
+dat[, txt := paste(city, param_1, param_2, param_3, sep = " ")] # seperate title and description
 
 # hist(log1p(dat$price), 100)
 dat[, price_log := log1p(price)]
-dat[, txt := paste(city, param_1, param_2, param_3, sep = " ")] # seperate title and description
-# dat[, txt := paste(title, description, sep = " ")]
+dat[, itm_seq_log := log1p(item_seq_number)]
+
 dat[, mon := month(activation_date)]
 dat[, mday := mday(activation_date)]
 dat[, week := week(activation_date)]
@@ -46,7 +54,6 @@ dat[, wday := weekdays(activation_date)]
 
 # New
 dat[, wend := ifelse(wday %in% c('Sunday', 'Saturday'), 1, 0)]
-dat[, image_available := ifelse(is.na(image), 1, 0)]
 dat[, title_len := nchar(title)]
 dat[, desc_len := nchar(description)]
 dat[, desc_len := ifelse(is.na(desc_len), 0, desc_len)]
@@ -72,7 +79,6 @@ dat[, title_upper_suc_p := title_upper_suc / title_len]
 dat[, title_ascii_p := title_ascii / title_len]
 dat[, title_ascii_suc_p := title_ascii_suc / title_len]
 dat[, title_space_p := title_space / title_len]
-
 
 dat[, desc_punc := str_count(description, '[:punct:]')]
 dat[, desc_punc_suc := str_count(description, '\\b[:punct:]{2,}\\b')]
@@ -106,28 +112,9 @@ dat[, title_nline := ifelse(is.na(title_nline), 0, title_nline)]
 dat[, desc_nline := str_count(description, '\n')]
 dat[, desc_nline := ifelse(is.na(desc_nline), 0, desc_nline)]
 
-# dat[, param := paste(param_1, param_2, param_3, sep = " ")]
-# region 28
-# city 1752
-# param_1 372
-# param_2 278
-# param_3 1277
-# param 2402
-# category 47
-# parent_category_name 9
 
-dat[, region := ifelse(is.na(region), 'na', region)]
-dat[, parent_category_name := ifelse(is.na(parent_category_name), 'na', parent_category_name)]
-dat[, category_name := ifelse(is.na(category_name), 'na', category_name)]
-dat[, param_1 := ifelse(is.na(param_1), 'na', param_1)]
-dat[, param_2 := ifelse(is.na(param_2), 'na', param_2)]
-dat[, param_3 := ifelse(is.na(param_3), 'na', param_3)]
-dat[, user_type := ifelse(is.na(user_type), 'na', user_type)]
-dat[, wday := ifelse(is.na(wday), 'na', wday)]
 
 # Shopping behaviour
-dat[, item_seq_number_log := log1p(item_seq_number)]
-
 dat[, user_act_cnt := .N, by = user_id] # user's total activation - loyalty
 dat[, user_act_cnt_log := log1p(user_act_cnt)]
 
@@ -335,6 +322,7 @@ dat[, p2_date_seq := mean(item_seq_number, na.rm = T), by = .(param_2, activatio
 dat[, p2_date_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_2, activation_date)]
 dat[, p2_date_seq_log := log1p(p2_date_seq)]
 dat[, p2_date_seq_ratio := item_seq_number/p2_date_seq]
+
 
 
 ### TODO
