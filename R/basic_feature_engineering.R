@@ -405,8 +405,159 @@ aggregated_user_features <- fread('./data/aggregated_features_entire.csv')
 
 dat = merge(dat, aggregated_user_features, by = 'user_id', all.x = TRUE)
 
-dim(dat)
-tr = dat[tri]
-te = dat[-tri]
-write.csv(tr, file = './data/train_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
-write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
+# dim(dat)
+# tr = dat[tri]
+# te = dat[-tri]
+# write.csv(tr, file = './data/train_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
+# write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
+
+
+dat[, txt := paste(city, param_1, param_2, param_3, sep = " ")]
+
+
+# Modeling ----------------------------------------------------------------
+
+
+col_to_drop = c('item_id', 'user_id', 'city', 'param_3', # 'param_1', 'param_2', 
+                'activation_date', 'image')
+dat = dat[, !col_to_drop, with = F]
+
+dat$deal_probability = NULL
+
+# Impute
+for (j in seq_len(ncol(dat))){
+  dat[[j]][is.na(dat[[j]])] = -1
+}
+gc()
+
+
+# NLP ---------------------------------------------------------------------
+cat("Parsing text...\n")
+# Param123
+it <- dat %$%
+  str_to_lower(txt) %>%
+  str_replace_all("[^[:alpha:]]", " ") %>%
+  str_replace_all("\\s+", " ") %>%
+  tokenize_word_stems(language = "russian") %>% 
+  itoken()
+vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
+  prune_vocabulary(term_count_min = 3, doc_proportion_max = 1, vocab_term_max = 2000) %>% 
+  vocab_vectorizer()
+
+m_tfidf_p <- TfIdf$new(norm = "l2", sublinear_tf = T)
+tfidf_p <-  create_dtm(it, vect) %>% 
+  fit_transform(m_tfidf_p)
+gc()
+
+# title
+it <- dat %$%
+  str_to_lower(title) %>%
+  str_replace_all("[^[:alpha:]]", " ") %>%
+  str_replace_all("\\s+", " ") %>%
+  tokenize_word_stems(language = "russian") %>% 
+  itoken()
+vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
+  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.8, vocab_term_max = 4000) %>% 
+  vocab_vectorizer()
+
+m_tfidf_t <- TfIdf$new(norm = "l2", sublinear_tf = T)
+tfidf_t <-  create_dtm(it, vect) %>% 
+  fit_transform(m_tfidf_t)
+
+dat$title = NULL
+gc()
+
+# description
+it <- dat %$%
+  str_to_lower(description) %>%
+  str_replace_all("[^[:alpha:]]", " ") %>%
+  str_replace_all("\\s+", " ") %>%
+  tokenize_word_stems(language = "russian") %>% 
+  itoken()
+vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
+  prune_vocabulary(term_count_min = 3, doc_proportion_max = 0.6, vocab_term_max = 6500) %>% 
+  vocab_vectorizer()
+
+m_tfidf_d <- TfIdf$new(norm = "l2", sublinear_tf = T)
+tfidf_d <-  create_dtm(it, vect) %>% 
+  fit_transform(m_tfidf_d)
+
+dat$description = NULL
+gc()
+
+
+
+
+# ### PCA
+
+# Split into Train & Test -------------------------------------------------
+cat("Preparing data...\n")
+
+X = dat[, !c('txt'), with = F] %>% 
+  sparse.model.matrix(~ . - 1, .) %>% 
+  cbind(tfidf_p) %>% 
+  cbind(tfidf_t) %>% 
+  cbind(tfidf_d) #%>%
+# cbind(as.matrix(tfidf.pca))
+gc()
+
+ck = 100000
+for(i in 0:20){
+  idx = (i*ck+1):min((i+1)*ck, 2011862)
+  print(idx)
+  X[idx][X[idx]!=0] = 1  
+  gc()
+}
+
+
+
+# Save dataset ------------------------------------------------------------
+# saveRDS(X, file = './data/tfidf_1_3grams_3_03_50000.rds')
+train = X[tri,]
+test = X[-tri,]
+gc()
+
+
+# Modeling ----------------------------------------------------------------
+dtest <- xgb.DMatrix(data = test)
+tri <- caret::createDataPartition(y, p = 0.9, list = F) %>% c()
+dtrain <- xgb.DMatrix(data = train[tri, ], label = y[tri])
+dval <- xgb.DMatrix(data = train[-tri, ], label = y[-tri])
+cols <- colnames(train)
+
+gc()
+
+cat("Training model...\n")
+p <- list(objective = "reg:logistic",
+          booster = "gbtree",
+          eval_metric = "rmse",
+          nthread = 8,
+          eta = 0.05,
+          max_depth = 17,
+          min_child_weight = 1,
+          gamma = 0,
+          subsample = 0.7,
+          colsample_bytree = 0.7,
+          alpha = 0,
+          lambda = 0,
+          nrounds = 4000)
+
+
+m_xgb <- xgb.train(p, dtrain, p$nrounds, list(val = dval), print_every_n = 50, early_stopping_rounds = 50)
+
+xgb.importance(cols, model=m_xgb) %>%
+  xgb.plot.importance(top_n = 15)
+
+# [851] val-rmse:0.218959
+# [901] val-rmse:0.218939
+# Stopping. Best iteration:
+#   [870] val-rmse:0.218931
+# LB: 0.2244
+
+# Submissions -------------------------------------------------------------
+cat("Creating submission file...\n")
+read_csv("./data/sample_submission.csv") %>%  
+  mutate(deal_probability = predict(m_xgb, dtest)) %>%
+  write_csv(paste0("./submissions/xgb_tfidf_dt_binary_", round(m_xgb$best_score, 5), "v0_6_1.csv"))
+
+
