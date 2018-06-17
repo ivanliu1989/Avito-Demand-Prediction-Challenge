@@ -39,20 +39,33 @@ dat[, is_p1 := ifelse(is.na(param_1), 0, 1)]
 dat[, is_p2 := ifelse(is.na(param_2), 0, 1)]
 dat[, is_p3 := ifelse(is.na(param_3), 0, 1)]
 
-missing_val = 'отсутствует'
-dat[['description']][is.na(dat[['description']])] = missing_val
+# missing_val = 'отсутствует'
+# dat[['description']][is.na(dat[['description']])] = missing_val
 
 # hist(log1p(dat$price), 100)
-dat[, price_log := log1p(price)]
+dat[, price_log := log1p(price) + 0.001]
 dat[, itm_seq_log := log1p(item_seq_number)]
 
-dat[, mon := month(activation_date)]
+# dat[, mon := month(activation_date)]
 dat[, mday := mday(activation_date)]
-dat[, week := week(activation_date)]
-dat[, wday := weekdays(activation_date)]
+# dat[, week := week(activation_date)]
+dat[, wday := wday(activation_date)]
+
+
+# df[cols + '_num_words'] = df[cols].apply(lambda comment: len(comment.split())) # Count number of Words
+# df[cols + '_num_unique_words'] = df[cols].apply(lambda comment: len(set(w for w in comment.split())))
+# df[cols + '_words_vs_unique'] = df[cols+'_num_unique_words'] / df[cols+'_num_words'] * 100 # Count Unique Words
+# ### New Features
+# df[cols + '_num_letters'] = df[cols].apply(lambda comment: len(comment)) # Count number of Letters
+# df[cols + '_num_alphabets'] = df[cols].apply(lambda comment: (comment.count(r'[a-zA-Z]'))) # Count number of Alphabets
+# df[cols + '_num_alphanumeric'] = df[cols].apply(lambda comment: (comment.count(r'[A-Za-z0-9]'))) # Count number of AlphaNumeric
+# Extra Feature Engineering
+# df['title_desc_len_ratio'] = df['title_num_letters']/df['description_num_letters']
 
 # New
-dat[, wend := ifelse(wday %in% c('Sunday', 'Saturday'), 1, 0)]
+dat[, wend := ifelse(wday %in% c(1, 7), 1, 0)]
+
+# Text Features
 dat[, title_len := nchar(title)]
 dat[, desc_len := nchar(description)]
 dat[, desc_len := ifelse(is.na(desc_len), 0, desc_len)]
@@ -106,16 +119,15 @@ dat[, desc_stops := str_count(description, stopwords("ru"))]
 dat[, desc_stops := ifelse(is.na(desc_stops), 0, desc_stops)]
 dat[, desc_stops_p := desc_stops / desc_wc]
 # new lines
-dat[, title_nline := str_count(title, '\n')]
-dat[, title_nline := ifelse(is.na(title_nline), 0, title_nline)]
 dat[, desc_nline := str_count(description, '\n')]
 dat[, desc_nline := ifelse(is.na(desc_nline), 0, desc_nline)]
-
+# ratio
+dat[, title_desc_len_ratio := title_len / desc_len]
 
 
 # Shopping behaviour
 dat[, user_act_cnt := .N, by = user_id] # user's total activation - loyalty
-dat[, user_act_cnt_log := log1p(user_act_cnt)]
+# dat[, user_act_cnt_log := log1p(user_act_cnt)]
 
 dat[, user_act_pcat_cnt := .N, by = .(user_id, parent_category_name)] # user's frequency by category
 dat[, user_act_cat_cnt := .N, by = .(user_id, category_name)] # user's frequency by category
@@ -129,19 +141,27 @@ dat[, user_act_mon_sd := sd(price, na.rm = T), by = user_id]
 dat[, user_act_mon_log := log1p(user_act_mon)] 
 dat[, user_act_mon_ratio := price/user_act_mon] # monetary ratio
 dat[, user_act_mon_ratio_log := log1p(user_act_mon_ratio)] 
+dat$user_act_mon <- NULL
+dat$user_act_mon_ratio <- NULL
+dat[, user_act_mon_sd := ifelse(is.na(user_act_mon_sd), 0, user_act_mon_sd)]
 
 dat[, user_act_pcat_mon := mean(price, na.rm = T), by = .(user_id, parent_category_name)] # user's average price by category
 dat[, user_act_mon_pcat_sd := sd(price, na.rm = T), by = .(user_id, parent_category_name)]
 dat[, user_act_mon_pcat_log := log1p(user_act_pcat_mon)] 
 dat[, user_act_mon_pcat_ratio := price/user_act_pcat_mon] # monetary ratio
 dat[, user_act_mon_pcat_ratio_log := log1p(user_act_mon_pcat_ratio)] 
+dat$user_act_pcat_mon <- NULL
+dat$user_act_mon_pcat_ratio <- NULL
+dat[, user_act_mon_pcat_sd := ifelse(is.na(user_act_mon_pcat_sd), 0, user_act_mon_pcat_sd)]
 
 dat[, user_act_cat_mon := mean(price, na.rm = T), by = .(user_id, category_name)] # user's average price by category
 dat[, user_act_mon_cat_sd := sd(price, na.rm = T), by = .(user_id, category_name)]
 dat[, user_act_mon_cat_log := log1p(user_act_cat_mon)] 
 dat[, user_act_mon_cat_ratio := price/user_act_cat_mon] # monetary ratio
 dat[, user_act_mon_cat_ratio_log := log1p(user_act_mon_cat_ratio)] 
-
+dat$user_act_cat_mon <- NULL
+dat$user_act_mon_cat_ratio <- NULL
+dat[, user_act_mon_cat_sd := ifelse(is.na(user_act_mon_cat_sd), 0, user_act_mon_cat_sd)]
 
 # Category/Date - price/image/item_seq_number (percentile)
 dat[, cat_cnt := .N, by = .(category_name)]
@@ -151,31 +171,43 @@ dat[, cat_price := mean(price, na.rm = T), by = .(category_name)]
 dat[, cat_price_sd := sd(price, na.rm = T), by = .(category_name)]
 dat[, cat_price_log := log1p(cat_price)]
 dat[, cat_price_ratio := price/cat_price]
+dat$cat_price <- NULL
+dat[, cat_price_sd := ifelse(is.na(cat_price_sd), 0, cat_price_sd)]
 
 dat[, pcat_price := mean(price, na.rm = T), by = .(parent_category_name)]
 dat[, pcat_price_sd := sd(price, na.rm = T), by = .(parent_category_name)]
 dat[, pcat_price_log := log1p(pcat_price)]
 dat[, pcat_price_ratio := price/pcat_price]
+dat$pcat_price <- NULL
+dat[, pcat_price_sd := ifelse(is.na(pcat_price_sd), 0, pcat_price_sd)]
 
 dat[, cat_img := mean(image_top_1, na.rm = T), by = .(category_name)]
 dat[, cat_img_sd := sd(image_top_1, na.rm = T), by = .(category_name)]
 dat[, cat_img_log := log1p(cat_img)]
 dat[, cat_img_ratio := image_top_1/cat_img]
+dat$cat_img <- NULL
+dat[, cat_img_sd := ifelse(is.na(cat_img_sd), 0, cat_img_sd)]
 
 dat[, pcat_img := mean(image_top_1, na.rm = T), by = .(parent_category_name)]
 dat[, pcat_img_sd := sd(image_top_1, na.rm = T), by = .(parent_category_name)]
 dat[, pcat_img_log := log1p(pcat_img)]
 dat[, pcat_img_ratio := image_top_1/pcat_img]
+dat$pcat_img <- NULL
+dat[, pcat_img_sd := ifelse(is.na(pcat_img_sd), 0, pcat_img_sd)]
 
 dat[, cat_seq := mean(item_seq_number, na.rm = T), by = .(category_name)]
 dat[, cat_seq_sd := sd(item_seq_number, na.rm = T), by = .(category_name)]
 dat[, cat_seq_log := log1p(cat_seq)]
 dat[, cat_seq_ratio := item_seq_number/cat_seq]
+dat$cat_seq <- NULL
+dat[, cat_seq_sd := ifelse(is.na(cat_seq_sd), 0, cat_seq_sd)]
 
 dat[, pcat_seq := mean(item_seq_number, na.rm = T), by = .(parent_category_name)]
 dat[, pcat_seq_sd := sd(item_seq_number, na.rm = T), by = .(parent_category_name)]
 dat[, pcat_seq_log := log1p(pcat_seq)]
 dat[, pcat_seq_ratio := item_seq_number/pcat_seq]
+dat$pcat_seq <- NULL
+dat[, pcat_seq_sd := ifelse(is.na(pcat_seq_sd), 0, pcat_seq_sd)]
 
 
 dat[, cat_date_cnt := .N, by = .(category_name, activation_date)]
@@ -185,32 +217,43 @@ dat[, cat_date_price := mean(price, na.rm = T), by = .(category_name, activation
 dat[, cat_date_price_sd := sd(price, na.rm = T), by = .(category_name, activation_date)]
 dat[, cat_date_price_log := log1p(cat_date_price)]
 dat[, cat_date_price_ratio := price/cat_date_price]
+dat$cat_date_price <- NULL
+dat[, cat_date_price_sd := ifelse(is.na(cat_date_price_sd), 0, cat_date_price_sd)]
 
 dat[, pcat_date_price := mean(price, na.rm = T), by = .(parent_category_name, activation_date)]
 dat[, pcat_date_price_sd := sd(price, na.rm = T), by = .(parent_category_name, activation_date)]
 dat[, pcat_date_price_log := log1p(pcat_date_price)]
 dat[, pcat_date_price_ratio := price/pcat_date_price]
+dat$pcat_date_price <- NULL
+dat[, pcat_date_price_sd := ifelse(is.na(pcat_date_price_sd), 0, pcat_date_price_sd)]
 
 dat[, cat_date_img := mean(image_top_1, na.rm = T), by = .(category_name, activation_date)]
 dat[, cat_date_img_sd := sd(image_top_1, na.rm = T), by = .(category_name, activation_date)]
 dat[, cat_date_img_log := log1p(cat_date_img)]
 dat[, cat_date_img_ratio := image_top_1/cat_date_img]
+dat$cat_date_img <- NULL
+dat[, cat_date_img_sd := ifelse(is.na(cat_date_img_sd), 0, cat_date_img_sd)]
 
 dat[, pcat_date_img := mean(image_top_1, na.rm = T), by = .(parent_category_name, activation_date)]
 dat[, pcat_date_img_sd := sd(image_top_1, na.rm = T), by = .(parent_category_name, activation_date)]
 dat[, pcat_date_img_log := log1p(pcat_date_img)]
 dat[, pcat_date_img_ratio := image_top_1/pcat_date_img]
+dat$pcat_date_img <- NULL
+dat[, pcat_date_img_sd := ifelse(is.na(pcat_date_img_sd), 0, pcat_date_img_sd)]
 
 dat[, cat_date_seq := mean(item_seq_number, na.rm = T), by = .(category_name, activation_date)]
 dat[, cat_date_seq_sd := sd(item_seq_number, na.rm = T), by = .(category_name, activation_date)]
 dat[, cat_date_seq_log := log1p(cat_date_seq)]
 dat[, cat_date_seq_ratio := item_seq_number/cat_date_seq]
+dat$cat_date_seq <- NULL
+dat[, cat_date_seq_sd := ifelse(is.na(cat_date_seq_sd), 0, cat_date_seq_sd)]
 
 dat[, pcat_date_seq := mean(item_seq_number, na.rm = T), by = .(parent_category_name, activation_date)]
 dat[, pcat_date_seq_sd := sd(item_seq_number, na.rm = T), by = .(parent_category_name, activation_date)]
 dat[, pcat_date_seq_log := log1p(pcat_date_seq)]
 dat[, pcat_date_seq_ratio := item_seq_number/pcat_date_seq]
-
+dat$pcat_date_seq <- NULL
+dat[, pcat_date_seq_sd := ifelse(is.na(pcat_date_seq_sd), 0, pcat_date_seq_sd)]
 
 # City/Region/Date - price/image/item_seq_number (percentile)
 dat[, reg_cnt := .N, by = .(region)]
@@ -219,108 +262,102 @@ dat[, reg_price := mean(price, na.rm = T), by = .(region)]
 dat[, reg_price_sd := sd(price, na.rm = T), by = .(region)]
 dat[, reg_price_log := log1p(reg_price)]
 dat[, reg_price_ratio := price/reg_price]
+dat$reg_price <- NULL
+dat[, reg_price_sd := ifelse(is.na(reg_price_sd), 0, reg_price_sd)]
 
 dat[, reg_img := mean(image_top_1, na.rm = T), by = .(region)]
 dat[, reg_img_sd := sd(image_top_1, na.rm = T), by = .(region)]
 dat[, reg_img_log := log1p(reg_img)]
 dat[, reg_img_ratio := image_top_1/reg_img]
+dat$reg_img <- NULL
+dat[, reg_img_sd := ifelse(is.na(reg_img_sd), 0, reg_img_sd)]
 
 dat[, reg_seq := mean(item_seq_number, na.rm = T), by = .(region)]
 dat[, reg_seq_sd := sd(item_seq_number, na.rm = T), by = .(region)]
 dat[, reg_seq_log := log1p(reg_seq)]
 dat[, reg_seq_ratio := item_seq_number/reg_seq]
-
-
-dat[, reg_date_cnt := .N, by = .(region, activation_date)]
-
-dat[, reg_date_price := mean(price, na.rm = T), by = .(region, activation_date)]
-dat[, reg_date_price_sd := sd(price, na.rm = T), by = .(region, activation_date)]
-dat[, reg_date_price_log := log1p(reg_date_price)]
-dat[, reg_date_price_ratio := price/reg_date_price]
-
-dat[, reg_date_img := mean(image_top_1, na.rm = T), by = .(region, activation_date)]
-dat[, reg_date_img_sd := sd(image_top_1, na.rm = T), by = .(region, activation_date)]
-dat[, reg_date_img_log := log1p(reg_date_img)]
-dat[, reg_date_img_ratio := image_top_1/reg_date_img]
-
-dat[, reg_date_seq := mean(item_seq_number, na.rm = T), by = .(region, activation_date)]
-dat[, reg_date_seq_sd := sd(item_seq_number, na.rm = T), by = .(region, activation_date)]
-dat[, reg_date_seq_log := log1p(reg_date_seq)]
-dat[, reg_date_seq_ratio := item_seq_number/reg_date_seq]
-
-
+dat$reg_seq <- NULL
+dat[, reg_seq_sd := ifelse(is.na(reg_seq_sd), 0, reg_seq_sd)]
 
 # Param/Date - price/image/item_seq_number (percentile)
-dat[, p1_cnt := .N, by = .(param_1)]
+dat[, param_1_proxy := ifelse(is.na(param_1), 'missing', param_1)]
+dat[, p1_cnt := .N, by = .(param_1_proxy)]
 
-dat[, p1_price := mean(price, na.rm = T), by = .(param_1)]
-dat[, p1_price_sd := sd(price, na.rm = T), by = .(param_1)]
+dat[, p1_price := mean(price, na.rm = T), by = .(param_1_proxy)]
+dat[, p1_price_sd := sd(price, na.rm = T), by = .(param_1_proxy)]
 dat[, p1_price_log := log1p(p1_price)]
 dat[, p1_price_ratio := price/p1_price]
+dat$p1_price <- NULL
+dat[, p1_price_sd := ifelse(is.na(p1_price_sd), 0, p1_price_sd)]
 
-dat[, p1_img := mean(image_top_1, na.rm = T), by = .(param_1)]
-dat[, p1_img_sd := sd(image_top_1, na.rm = T), by = .(param_1)]
+dat[, p1_img := mean(image_top_1, na.rm = T), by = .(param_1_proxy)]
+dat[, p1_img_sd := sd(image_top_1, na.rm = T), by = .(param_1_proxy)]
 dat[, p1_img_log := log1p(p1_img)]
 dat[, p1_img_ratio := image_top_1/p1_img]
+dat$p1_img <- NULL
+dat[, p1_img_sd := ifelse(is.na(p1_img_sd), 0, p1_img_sd)]
 
-dat[, p1_seq := mean(item_seq_number, na.rm = T), by = .(param_1)]
-dat[, p1_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_1)]
+dat[, p1_seq := mean(item_seq_number, na.rm = T), by = .(param_1_proxy)]
+dat[, p1_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_1_proxy)]
 dat[, p1_seq_log := log1p(p1_seq)]
 dat[, p1_seq_ratio := item_seq_number/p1_seq]
+dat$p1_seq <- NULL
+dat[, p1_seq_sd := ifelse(is.na(p1_seq_sd), 0, p1_seq_sd)]
+
+dat$param_1_proxy <- NULL
+
+# dat[, p1_date_cnt := .N, by = .(param_1, activation_date)]
+# 
+# dat[, p1_date_price := mean(price, na.rm = T), by = .(param_1, activation_date)]
+# dat[, p1_date_price_sd := sd(price, na.rm = T), by = .(param_1, activation_date)]
+# dat[, p1_date_price_log := log1p(p1_date_price)]
+# dat[, p1_date_price_ratio := price/p1_date_price]
+# 
+# dat[, p1_date_img := mean(image_top_1, na.rm = T), by = .(param_1, activation_date)]
+# dat[, p1_date_img_sd := sd(image_top_1, na.rm = T), by = .(param_1, activation_date)]
+# dat[, p1_date_img_log := log1p(p1_date_img)]
+# dat[, p1_date_img_ratio := image_top_1/p1_date_img]
+# 
+# dat[, p1_date_seq := mean(item_seq_number, na.rm = T), by = .(param_1, activation_date)]
+# dat[, p1_date_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_1, activation_date)]
+# dat[, p1_date_seq_log := log1p(p1_date_seq)]
+# dat[, p1_date_seq_ratio := item_seq_number/p1_date_seq]
 
 
-dat[, p1_date_cnt := .N, by = .(param_1, activation_date)]
-
-dat[, p1_date_price := mean(price, na.rm = T), by = .(param_1, activation_date)]
-dat[, p1_date_price_sd := sd(price, na.rm = T), by = .(param_1, activation_date)]
-dat[, p1_date_price_log := log1p(p1_date_price)]
-dat[, p1_date_price_ratio := price/p1_date_price]
-
-dat[, p1_date_img := mean(image_top_1, na.rm = T), by = .(param_1, activation_date)]
-dat[, p1_date_img_sd := sd(image_top_1, na.rm = T), by = .(param_1, activation_date)]
-dat[, p1_date_img_log := log1p(p1_date_img)]
-dat[, p1_date_img_ratio := image_top_1/p1_date_img]
-
-dat[, p1_date_seq := mean(item_seq_number, na.rm = T), by = .(param_1, activation_date)]
-dat[, p1_date_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_1, activation_date)]
-dat[, p1_date_seq_log := log1p(p1_date_seq)]
-dat[, p1_date_seq_ratio := item_seq_number/p1_date_seq]
-
-
-dat[, p2_cnt := .N, by = .(param_2)]
-
-dat[, p2_price := mean(price, na.rm = T), by = .(param_2)]
-dat[, p2_price_sd := sd(price, na.rm = T), by = .(param_2)]
-dat[, p2_price_log := log1p(p2_price)]
-dat[, p2_price_ratio := price/p2_price]
-
-dat[, p2_img := mean(image_top_1, na.rm = T), by = .(param_2)]
-dat[, p2_img_sd := sd(image_top_1, na.rm = T), by = .(param_2)]
-dat[, p2_img_log := log1p(p2_img)]
-dat[, p2_img_ratio := image_top_1/p2_img]
-
-dat[, p2_seq := mean(item_seq_number, na.rm = T), by = .(param_2)]
-dat[, p2_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_2)]
-dat[, p2_seq_log := log1p(p2_seq)]
-dat[, p2_seq_ratio := item_seq_number/p2_seq]
+# dat[, p2_cnt := .N, by = .(param_2)]
+# 
+# dat[, p2_price := mean(price, na.rm = T), by = .(param_2)]
+# dat[, p2_price_sd := sd(price, na.rm = T), by = .(param_2)]
+# dat[, p2_price_log := log1p(p2_price)]
+# dat[, p2_price_ratio := price/p2_price]
+# 
+# dat[, p2_img := mean(image_top_1, na.rm = T), by = .(param_2)]
+# dat[, p2_img_sd := sd(image_top_1, na.rm = T), by = .(param_2)]
+# dat[, p2_img_log := log1p(p2_img)]
+# dat[, p2_img_ratio := image_top_1/p2_img]
+# 
+# dat[, p2_seq := mean(item_seq_number, na.rm = T), by = .(param_2)]
+# dat[, p2_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_2)]
+# dat[, p2_seq_log := log1p(p2_seq)]
+# dat[, p2_seq_ratio := item_seq_number/p2_seq]
 
 
-dat[, p2_date_cnt := .N, by = .(param_2, activation_date)]
-
-dat[, p2_date_price := mean(price, na.rm = T), by = .(param_2, activation_date)]
-dat[, p2_date_price_sd := sd(price, na.rm = T), by = .(param_2, activation_date)]
-dat[, p2_date_price_log := log1p(p2_date_price)]
-dat[, p2_date_price_ratio := price/p2_date_price]
-
-dat[, p2_date_img := mean(image_top_1, na.rm = T), by = .(param_2, activation_date)]
-dat[, p2_date_img_sd := sd(image_top_1, na.rm = T), by = .(param_2, activation_date)]
-dat[, p2_date_img_log := log1p(p2_date_img)]
-dat[, p2_date_img_ratio := image_top_1/p2_date_img]
-
-dat[, p2_date_seq := mean(item_seq_number, na.rm = T), by = .(param_2, activation_date)]
-dat[, p2_date_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_2, activation_date)]
-dat[, p2_date_seq_log := log1p(p2_date_seq)]
-dat[, p2_date_seq_ratio := item_seq_number/p2_date_seq]
+# dat[, p2_date_cnt := .N, by = .(param_2, activation_date)]
+# 
+# dat[, p2_date_price := mean(price, na.rm = T), by = .(param_2, activation_date)]
+# dat[, p2_date_price_sd := sd(price, na.rm = T), by = .(param_2, activation_date)]
+# dat[, p2_date_price_log := log1p(p2_date_price)]
+# dat[, p2_date_price_ratio := price/p2_date_price]
+# 
+# dat[, p2_date_img := mean(image_top_1, na.rm = T), by = .(param_2, activation_date)]
+# dat[, p2_date_img_sd := sd(image_top_1, na.rm = T), by = .(param_2, activation_date)]
+# dat[, p2_date_img_log := log1p(p2_date_img)]
+# dat[, p2_date_img_ratio := image_top_1/p2_date_img]
+# 
+# dat[, p2_date_seq := mean(item_seq_number, na.rm = T), by = .(param_2, activation_date)]
+# dat[, p2_date_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_2, activation_date)]
+# dat[, p2_date_seq_log := log1p(p2_date_seq)]
+# dat[, p2_date_seq_ratio := item_seq_number/p2_date_seq]
 
 
 # dat[, txt := paste(city, param_1, param_2, param_3, sep = " ")] # seperate title and description
@@ -331,11 +368,6 @@ dat[, param_1 := str_replace_all(str_replace_all(str_to_lower(param_1),"[^[:alph
 dat[, param_2 := str_replace_all(str_replace_all(str_to_lower(param_2),"[^[:alpha:]]", " "), "\\s+", " ")]
 dat[, param_3 := str_replace_all(str_replace_all(str_to_lower(param_3),"[^[:alpha:]]", " "), "\\s+", " ")]
 
-dim(dat)
-tr = dat[tri]
-te = dat[-tri]
-write.csv(tr, file = './data/train_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
-write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
 
 
 ### TODO
@@ -348,18 +380,18 @@ write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F, fileEnco
 # dat = dat[, !col_to_drop, with = F]
 
 # Target Mean
-# dat[, deal_region_avg := mean(deal_probability, na.rm = T), by = region]
-# dat[, deal_region_sd := sd(deal_probability, na.rm = T), by = region]
+dat[, deal_region_avg := mean(deal_probability, na.rm = T), by = region]
+dat[, deal_region_sd := sd(deal_probability, na.rm = T), by = region]
 # dat[, deal_category_avg := mean(deal_probability, na.rm = T), by = category_name]
 # dat[, deal_category_sd := sd(deal_probability, na.rm = T), by = category_name]
-# dat[, deal_pcategory_avg := mean(deal_probability, na.rm = T), by = parent_category_name]
-# dat[, deal_pcategory_sd := sd(deal_probability, na.rm = T), by = parent_category_name]
+dat[, deal_pcategory_avg := mean(deal_probability, na.rm = T), by = parent_category_name]
+dat[, deal_pcategory_sd := sd(deal_probability, na.rm = T), by = parent_category_name]
 # dat[, deal_p1_avg := mean(deal_probability, na.rm = T), by = param_1]
 # dat[, deal_p1_sd := sd(deal_probability, na.rm = T), by = param_1]
 # dat[, deal_p2_avg := mean(deal_probability, na.rm = T), by = param_2]
 # dat[, deal_p2_sd := sd(deal_probability, na.rm = T), by = param_2]
-# dat[, deal_usrtype_avg := mean(deal_probability, na.rm = T), by = user_type]
-# dat[, deal_usrtype_sd := sd(deal_probability, na.rm = T), by = user_type]
+dat[, deal_usrtype_avg := mean(deal_probability, na.rm = T), by = user_type]
+dat[, deal_usrtype_sd := sd(deal_probability, na.rm = T), by = user_type]
 # 
 # dat$deal_probability = NULL
 
@@ -368,3 +400,13 @@ write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F, fileEnco
 #   dat[[j]][is.na(dat[[j]])] = -1
 # }
 # gc()
+
+aggregated_user_features <- fread('./data/aggregated_features_entire.csv')
+
+dat = merge(dat, aggregated_user_features, by = 'user_id', all.x = TRUE)
+
+dim(dat)
+tr = dat[tri]
+te = dat[-tri]
+write.csv(tr, file = './data/train_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
+write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
