@@ -1,3 +1,22 @@
+rm(list=ls());gc()
+Sys.setlocale(,"russian")
+library(data.table)
+library(stringr)
+library(tidyverse)
+library(lubridate)
+library(magrittr)
+library(text2vec)
+library(tokenizers)
+library(stopwords)
+library(xgboost)
+library(Matrix)
+set.seed(0)
+
+tr = read_csv('./data/train.csv')
+setDT(tr)
+te = read_csv('./data/test.csv')
+setDT(te)
+
 tr_active = read_csv('./data/train_active.csv')
 setDT(tr_active)
 te_active = read_csv('./data/test_active.csv')
@@ -55,7 +74,7 @@ all_sample[, pcat_pref_active := user_act_pcat_cnt_active / user_act_cnt_active]
 all_sample[, cat_pref_active := user_act_cat_cnt_active / user_act_cnt_active]
 
 
-aggregated_user_features = unique(all_sample[, .(user_id, avg_days_up_user, avg_times_up_user, avg_days_placed_user, 
+aggregated_user_features = unique(all_sample[, .(user_id, category_name, avg_days_up_user, avg_times_up_user, avg_days_placed_user, 
                                                  avg_item_seq_number_active_log, avg_price_active_log,
                       sd_days_up_user, sd_times_up_user, sd_days_placed_user, sd_item_seq_number_active, sd_price_active,
                       n_user_items_active, user_act_cnt_active, user_act_pcat_cnt_active, user_act_cat_cnt_active, 

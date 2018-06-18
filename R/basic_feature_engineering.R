@@ -25,13 +25,22 @@ setDT(te)
 
 tri <- 1:nrow(tr)
 y <- tr$deal_probability
-# tr$deal_probability = NULL
 te$deal_probability = NA
 dat = rbind(tr, te)
 rm(tr, te)
+# 2011862      18
+
+
+# 5 svd = param123, title, desc
+# label encode ["region", "city", "parent_category_name", "category_name", "user_type", "param_1"]
+# missing_val = 'отсутствует'
+# dat[['description']][is.na(dat[['description']])] = missing_val
 
 
 # Feature engineering -----------------------------------------------------
+dat[, param123 := paste(param_1, param_2, param_3, sep = " ")]
+dat[, city := paste(region, city, sep = " ")]
+
 dat[, is_desc := ifelse(is.na(description), 0, 1)]
 dat[, is_price := ifelse(is.na(price), 0, 1)]
 dat[, is_img := ifelse(is.na(image), 0, 1)]
@@ -39,30 +48,13 @@ dat[, is_p1 := ifelse(is.na(param_1), 0, 1)]
 dat[, is_p2 := ifelse(is.na(param_2), 0, 1)]
 dat[, is_p3 := ifelse(is.na(param_3), 0, 1)]
 
-# missing_val = 'отсутствует'
-# dat[['description']][is.na(dat[['description']])] = missing_val
-
-# hist(log1p(dat$price), 100)
 dat[, price_log := log1p(price) + 0.001]
+dat[, price_mod := (price_log - mean(price_log, na.rm=TRUE)) / sd(price_log, na.rm = T)]
 dat[, itm_seq_log := log1p(item_seq_number)]
+dat[, itm_seq_mod := (itm_seq_log - mean(itm_seq_log, na.rm=TRUE)) / sd(itm_seq_log, na.rm = T)]
 
-# dat[, mon := month(activation_date)]
 dat[, mday := mday(activation_date)]
-# dat[, week := week(activation_date)]
 dat[, wday := wday(activation_date)]
-
-
-# df[cols + '_num_words'] = df[cols].apply(lambda comment: len(comment.split())) # Count number of Words
-# df[cols + '_num_unique_words'] = df[cols].apply(lambda comment: len(set(w for w in comment.split())))
-# df[cols + '_words_vs_unique'] = df[cols+'_num_unique_words'] / df[cols+'_num_words'] * 100 # Count Unique Words
-# ### New Features
-# df[cols + '_num_letters'] = df[cols].apply(lambda comment: len(comment)) # Count number of Letters
-# df[cols + '_num_alphabets'] = df[cols].apply(lambda comment: (comment.count(r'[a-zA-Z]'))) # Count number of Alphabets
-# df[cols + '_num_alphanumeric'] = df[cols].apply(lambda comment: (comment.count(r'[A-Za-z0-9]'))) # Count number of AlphaNumeric
-# Extra Feature Engineering
-# df['title_desc_len_ratio'] = df['title_num_letters']/df['description_num_letters']
-
-# New
 dat[, wend := ifelse(wday %in% c(1, 7), 1, 0)]
 
 # Text Features
@@ -306,104 +298,46 @@ dat[, p1_seq_sd := ifelse(is.na(p1_seq_sd), 0, p1_seq_sd)]
 
 dat$param_1_proxy <- NULL
 
-# dat[, p1_date_cnt := .N, by = .(param_1, activation_date)]
-# 
-# dat[, p1_date_price := mean(price, na.rm = T), by = .(param_1, activation_date)]
-# dat[, p1_date_price_sd := sd(price, na.rm = T), by = .(param_1, activation_date)]
-# dat[, p1_date_price_log := log1p(p1_date_price)]
-# dat[, p1_date_price_ratio := price/p1_date_price]
-# 
-# dat[, p1_date_img := mean(image_top_1, na.rm = T), by = .(param_1, activation_date)]
-# dat[, p1_date_img_sd := sd(image_top_1, na.rm = T), by = .(param_1, activation_date)]
-# dat[, p1_date_img_log := log1p(p1_date_img)]
-# dat[, p1_date_img_ratio := image_top_1/p1_date_img]
-# 
-# dat[, p1_date_seq := mean(item_seq_number, na.rm = T), by = .(param_1, activation_date)]
-# dat[, p1_date_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_1, activation_date)]
-# dat[, p1_date_seq_log := log1p(p1_date_seq)]
-# dat[, p1_date_seq_ratio := item_seq_number/p1_date_seq]
-
-
-# dat[, p2_cnt := .N, by = .(param_2)]
-# 
-# dat[, p2_price := mean(price, na.rm = T), by = .(param_2)]
-# dat[, p2_price_sd := sd(price, na.rm = T), by = .(param_2)]
-# dat[, p2_price_log := log1p(p2_price)]
-# dat[, p2_price_ratio := price/p2_price]
-# 
-# dat[, p2_img := mean(image_top_1, na.rm = T), by = .(param_2)]
-# dat[, p2_img_sd := sd(image_top_1, na.rm = T), by = .(param_2)]
-# dat[, p2_img_log := log1p(p2_img)]
-# dat[, p2_img_ratio := image_top_1/p2_img]
-# 
-# dat[, p2_seq := mean(item_seq_number, na.rm = T), by = .(param_2)]
-# dat[, p2_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_2)]
-# dat[, p2_seq_log := log1p(p2_seq)]
-# dat[, p2_seq_ratio := item_seq_number/p2_seq]
-
-
-# dat[, p2_date_cnt := .N, by = .(param_2, activation_date)]
-# 
-# dat[, p2_date_price := mean(price, na.rm = T), by = .(param_2, activation_date)]
-# dat[, p2_date_price_sd := sd(price, na.rm = T), by = .(param_2, activation_date)]
-# dat[, p2_date_price_log := log1p(p2_date_price)]
-# dat[, p2_date_price_ratio := price/p2_date_price]
-# 
-# dat[, p2_date_img := mean(image_top_1, na.rm = T), by = .(param_2, activation_date)]
-# dat[, p2_date_img_sd := sd(image_top_1, na.rm = T), by = .(param_2, activation_date)]
-# dat[, p2_date_img_log := log1p(p2_date_img)]
-# dat[, p2_date_img_ratio := image_top_1/p2_date_img]
-# 
-# dat[, p2_date_seq := mean(item_seq_number, na.rm = T), by = .(param_2, activation_date)]
-# dat[, p2_date_seq_sd := sd(item_seq_number, na.rm = T), by = .(param_2, activation_date)]
-# dat[, p2_date_seq_log := log1p(p2_date_seq)]
-# dat[, p2_date_seq_ratio := item_seq_number/p2_date_seq]
-
-
 # dat[, txt := paste(city, param_1, param_2, param_3, sep = " ")] # seperate title and description
 # dat[, txt := paste(title, description, sep = " ")]
-dat[, description := str_replace_all(str_replace_all(str_to_lower(description),"[^[:alpha:]]", " "), "\\s+", " ")]
-dat[, title := str_replace_all(str_replace_all(str_to_lower(title),"[^[:alpha:]]", " "), "\\s+", " ")]
-dat[, param_1 := str_replace_all(str_replace_all(str_to_lower(param_1),"[^[:alpha:]]", " "), "\\s+", " ")]
-dat[, param_2 := str_replace_all(str_replace_all(str_to_lower(param_2),"[^[:alpha:]]", " "), "\\s+", " ")]
-dat[, param_3 := str_replace_all(str_replace_all(str_to_lower(param_3),"[^[:alpha:]]", " "), "\\s+", " ")]
 
-
-
-### TODO
-# Param 3 / City
-# Target mean - item_seq_number
-# Percentile
-
-# col_to_drop = c('item_id', 'user_id', 'city', 'param_3', # 'param_1', 'param_2', 
-#                 'activation_date', 'image')
-# dat = dat[, !col_to_drop, with = F]
+##################################################################################################
+# dat[, description := str_replace_all(str_replace_all(str_to_lower(description),"[^[:alpha:]]", " "), "\\s+", " ")]
+# dat[, title := str_replace_all(str_replace_all(str_to_lower(title),"[^[:alpha:]]", " "), "\\s+", " ")]
+# dat[, param_1 := str_replace_all(str_replace_all(str_to_lower(param_1),"[^[:alpha:]]", " "), "\\s+", " ")]
+# dat[, param_2 := str_replace_all(str_replace_all(str_to_lower(param_2),"[^[:alpha:]]", " "), "\\s+", " ")]
+# dat[, param_3 := str_replace_all(str_replace_all(str_to_lower(param_3),"[^[:alpha:]]", " "), "\\s+", " ")]
 
 # Target Mean
 dat[, deal_region_avg := mean(deal_probability, na.rm = T), by = region]
 dat[, deal_region_sd := sd(deal_probability, na.rm = T), by = region]
-# dat[, deal_category_avg := mean(deal_probability, na.rm = T), by = category_name]
-# dat[, deal_category_sd := sd(deal_probability, na.rm = T), by = category_name]
 dat[, deal_pcategory_avg := mean(deal_probability, na.rm = T), by = parent_category_name]
 dat[, deal_pcategory_sd := sd(deal_probability, na.rm = T), by = parent_category_name]
-# dat[, deal_p1_avg := mean(deal_probability, na.rm = T), by = param_1]
-# dat[, deal_p1_sd := sd(deal_probability, na.rm = T), by = param_1]
-# dat[, deal_p2_avg := mean(deal_probability, na.rm = T), by = param_2]
-# dat[, deal_p2_sd := sd(deal_probability, na.rm = T), by = param_2]
+dat[, deal_p1_avg := mean(deal_probability, na.rm = T), by = param_1]
+dat[, deal_p1_sd := sd(deal_probability, na.rm = T), by = param_1]
 dat[, deal_usrtype_avg := mean(deal_probability, na.rm = T), by = user_type]
 dat[, deal_usrtype_sd := sd(deal_probability, na.rm = T), by = user_type]
-# 
-# dat$deal_probability = NULL
-
-# Impute
-# for (j in seq_len(ncol(dat))){
-#   dat[[j]][is.na(dat[[j]])] = -1
-# }
-# gc()
+# 2011862     156
 
 aggregated_user_features <- fread('./data/aggregated_features_entire.csv')
 
-dat = merge(dat, aggregated_user_features, by = 'user_id', all.x = TRUE)
+aggregated_feat_user = unique(aggregated_user_features[, .(user_id, avg_days_up_user, avg_times_up_user, avg_days_placed_user,
+                                                           avg_item_seq_number_active_log, avg_price_active_log, sd_days_up_user,
+                                                           sd_times_up_user, sd_days_placed_user, sd_item_seq_number_active,
+                                                           sd_price_active, n_user_items_active, user_act_cnt_active)])
+# aggregated_feat_user_cat = unique(aggregated_user_features[, .(user_id, category_name, user_act_pcat_cnt_active,
+#                                                                user_act_cat_cnt_active, pcat_pref_active, cat_pref_active)])
+dat = merge(dat, aggregated_feat_user, by = 'user_id', all.x = TRUE)
+
+
+### OHE
+col_ohe = c('region', 'city', 'parent_category_name', 'category_name', 'param_1', 'user_type', 'wday')
+
+library(caret)
+dummies = dummyVars(~ region + city + parent_category_name + category_name + param_1 + user_type + wday, data = dat)
+df_all_ohe <- as.data.frame(predict(dummies, newdata = dat))
+df_all_combined <- cbind(dat,df_all_ohe)
+
 
 # dim(dat)
 # tr = dat[tri]
@@ -412,14 +346,13 @@ dat = merge(dat, aggregated_user_features, by = 'user_id', all.x = TRUE)
 # write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
 
 
-dat[, txt := paste(city, param_1, param_2, param_3, sep = " ")]
-
 
 # Modeling ----------------------------------------------------------------
 
-
-col_to_drop = c('item_id', 'user_id', 'city', 'param_3', # 'param_1', 'param_2', 
-                'activation_date', 'image')
+col_to_drop = c('item_id', 'user_id', 'region', 'city', 'param_3', 'param_1', 'param_2', 'category_name', 'parent_category_name',
+                'activation_date', 'image', 'user_type', 
+                'price', 'item_seq_number') #, 
+# 'param123', 'title', 'description')
 dat = dat[, !col_to_drop, with = F]
 
 dat$deal_probability = NULL
@@ -435,13 +368,13 @@ gc()
 cat("Parsing text...\n")
 # Param123
 it <- dat %$%
-  str_to_lower(txt) %>%
+  str_to_lower(param123) %>%
   str_replace_all("[^[:alpha:]]", " ") %>%
   str_replace_all("\\s+", " ") %>%
   tokenize_word_stems(language = "russian") %>% 
   itoken()
-vect = create_vocabulary(it, ngram = c(1, 3), stopwords = stopwords("ru")) %>%
-  prune_vocabulary(term_count_min = 3, doc_proportion_max = 1, vocab_term_max = 2000) %>% 
+vect = create_vocabulary(it, ngram = c(1, 1), stopwords = stopwords("ru")) %>%
+  prune_vocabulary(term_count_min = 3, doc_proportion_max = 1, vocab_term_max = 1000) %>% 
   vocab_vectorizer()
 
 m_tfidf_p <- TfIdf$new(norm = "l2", sublinear_tf = T)
@@ -493,26 +426,24 @@ gc()
 # Split into Train & Test -------------------------------------------------
 cat("Preparing data...\n")
 
-X = dat[, !c('txt'), with = F] %>% 
+X = dat %>% 
   sparse.model.matrix(~ . - 1, .) %>% 
   cbind(tfidf_p) %>% 
   cbind(tfidf_t) %>% 
-  cbind(tfidf_d) #%>%
-# cbind(as.matrix(tfidf.pca))
+  cbind(tfidf_d)
 gc()
 
-ck = 100000
-for(i in 0:20){
-  idx = (i*ck+1):min((i+1)*ck, 2011862)
-  print(idx)
-  X[idx][X[idx]!=0] = 1  
-  gc()
-}
+# ck = 100000
+# for(i in 0:20){
+#   idx = (i*ck+1):min((i+1)*ck, 2011862)
+#   print(idx)
+#   X[idx][X[idx]!=0] = 1  
+#   gc()
+# }
 
 
 
 # Save dataset ------------------------------------------------------------
-# saveRDS(X, file = './data/tfidf_1_3grams_3_03_50000.rds')
 train = X[tri,]
 test = X[-tri,]
 gc()
@@ -553,6 +484,13 @@ xgb.importance(cols, model=m_xgb) %>%
 # Stopping. Best iteration:
 #   [870] val-rmse:0.218931
 # LB: 0.2244
+
+
+# [1]	val-rmse:0.430293 
+# Will train until val_rmse hasn't improved in 50 rounds.
+# 
+# [51]	val-rmse:0.260480 
+# [101]	val-rmse:0.259025 
 
 # Submissions -------------------------------------------------------------
 cat("Creating submission file...\n")
