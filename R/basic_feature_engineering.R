@@ -334,18 +334,20 @@ dat = merge(dat, aggregated_feat_user, by = 'user_id', all.x = TRUE)
 col_ohe = c('region', 'city', 'parent_category_name', 'category_name', 'param_1', 'user_type', 'wday')
 
 library(caret)
-dummies = dummyVars(~ region + city + parent_category_name + category_name + param_1 + user_type + wday, data = dat)
+dummies = dummyVars(~ region + parent_category_name + category_name + param_1 + user_type + wday, data = dat)
 df_all_ohe <- as.data.frame(predict(dummies, newdata = dat))
-df_all_combined <- cbind(dat,df_all_ohe)
-
+dat <- cbind(dat,df_all_ohe)
 
 # dim(dat)
 # tr = dat[tri]
 # te = dat[-tri]
 # write.csv(tr, file = './data/train_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
 # write.csv(te, file = './data/test_bsc_fe_txt_clean.csv', row.names = F, fileEncoding = "UTF-8")
-
-
+# 
+col_to_drop = c('item_id', 'user_id', 'region', 'city', 'param_3', 'param_1', 'param_2', 'category_name', 'parent_category_name',
+                'activation_date', 'image', 'user_type', 
+                'price', 'item_seq_number', 'param123', 'title', 'description')
+col_to_encode = c('city')
 
 # Modeling ----------------------------------------------------------------
 
