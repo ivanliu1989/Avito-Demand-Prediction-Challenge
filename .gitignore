@@ -2,5 +2,6 @@
 .csv
 data/
 .h5
+pretrained/
 submissions/
 .Rproj.user

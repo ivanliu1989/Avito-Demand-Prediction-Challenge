@@ -334,9 +334,18 @@ dat = merge(dat, aggregated_feat_user, by = 'user_id', all.x = TRUE)
 col_ohe = c('region', 'city', 'parent_category_name', 'category_name', 'param_1', 'user_type', 'wday')
 
 library(caret)
+# dummies with numbers #######################################################################################
 dummies = dummyVars(~ region + parent_category_name + category_name + param_1 + user_type + wday, data = dat)
 df_all_ohe <- as.data.frame(predict(dummies, newdata = dat))
+colnames(df_all_ohe) = paste0('ohe_', 1:ncol(df_all_ohe))
 dat <- cbind(dat,df_all_ohe)
+
+rm(df_all_ohe)
+rm(aggregated_user_features)
+rm(aggregated_feat_user)
+rm(te)
+rm(tr)
+gc()
 
 # dim(dat)
 # tr = dat[tri]
@@ -346,14 +355,14 @@ dat <- cbind(dat,df_all_ohe)
 # 
 col_to_drop = c('item_id', 'user_id', 'region', 'city', 'param_3', 'param_1', 'param_2', 'category_name', 'parent_category_name',
                 'activation_date', 'image', 'user_type', 
-                'price', 'item_seq_number', 'param123', 'title', 'description')
+                'price', 'item_seq_number', 'param123', 'title', 'description', 'wday')
 col_to_encode = c('city')
 
 # Modeling ----------------------------------------------------------------
 
 col_to_drop = c('item_id', 'user_id', 'region', 'city', 'param_3', 'param_1', 'param_2', 'category_name', 'parent_category_name',
                 'activation_date', 'image', 'user_type', 
-                'price', 'item_seq_number') #, 
+                'price', 'item_seq_number', 'wday') #, 
 # 'param123', 'title', 'description')
 dat = dat[, !col_to_drop, with = F]
 
@@ -361,7 +370,7 @@ dat$deal_probability = NULL
 
 # Impute
 for (j in seq_len(ncol(dat))){
-  dat[[j]][is.na(dat[[j]])] = -1
+  dat[[j]][is.na(dat[[j]])] = 0
 }
 gc()
 
@@ -382,6 +391,8 @@ vect = create_vocabulary(it, ngram = c(1, 1), stopwords = stopwords("ru")) %>%
 m_tfidf_p <- TfIdf$new(norm = "l2", sublinear_tf = T)
 tfidf_p <-  create_dtm(it, vect) %>% 
   fit_transform(m_tfidf_p)
+
+dat$param123 = NULL
 gc()
 
 # title
@@ -446,6 +457,7 @@ gc()
 
 
 # Save dataset ------------------------------------------------------------
+rm(dat)
 train = X[tri,]
 test = X[-tri,]
 gc()
