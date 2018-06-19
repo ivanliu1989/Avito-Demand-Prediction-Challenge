@@ -10,7 +10,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.6722581">
+    <splitter split-orientation="horizontal" split-proportion="0.42665434">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
@@ -37,7 +37,7 @@
           <file leaf-file-name="nlp_features.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/util/nlp_features.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-756">
+                <state relative-caret-position="1292">
                   <caret line="80" column="26" selection-start-line="80" selection-start-column="26" selection-end-line="80" selection-end-column="26" />
                   <folding>
                     <element signature="e#0#33#0" expanded="true" />
@@ -58,8 +58,8 @@
           <file leaf-file-name="run_lightGBM.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/model/run_lightGBM.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-320">
-                  <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
+                <state relative-caret-position="17">
+                  <caret line="60" selection-start-line="60" selection-end-line="60" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -83,11 +83,35 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="model_v0_6_1.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="model_v0_6_1.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/model_v0_6_1.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="17">
                   <caret line="51" selection-start-line="51" selection-end-line="51" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Model_v4_VGG16_Train_features.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Model_v4_VGG16_Train_features.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="788">
+                  <caret line="108" column="30" lean-forward="true" selection-start-line="108" selection-start-column="30" selection-end-line="108" selection-end-column="30" />
+                  <folding>
+                    <element signature="e#0#18#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Model_v5_Image_Feature_Engineering.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Model_v5_Image_Feature_Engineering.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1224">
+                  <caret line="72" column="39" lean-forward="true" selection-start-line="72" selection-start-column="39" selection-end-line="72" selection-end-column="39" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -119,6 +143,8 @@
       <find>colum</find>
       <find>stopwords</find>
       <find>get_model_dataset</find>
+      <find>generator</find>
+      <find>generate_files</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -138,6 +164,8 @@
         <option value="$PROJECT_DIR$/model_v0_6_0.py" />
         <option value="$PROJECT_DIR$/model_v0_6_1.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/Model_v4_VGG16_Train_features.py" />
+        <option value="$PROJECT_DIR$/Model_v5_Image_Feature_Engineering.py" />
       </list>
     </option>
   </component>
@@ -148,8 +176,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1913" />
-    <option name="width" value="1934" />
+    <option name="x" value="1222" />
+    <option name="width" value="2625" />
     <option name="height" value="2127" />
   </component>
   <component name="ProjectView">
@@ -157,6 +185,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -169,16 +198,10 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="src" type="b2602c69:ProjectViewProjectNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="util" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -223,19 +246,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1913" y="0" width="1934" height="2127" extended-state="0" />
+    <frame x="1222" y="0" width="2625" height="2127" extended-state="0" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="15" weight="0.32998493" />
       <window_info anchor="bottom" id="Event Log" order="21" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="18" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="17" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Python Console" order="19" visible="true" weight="0.2596685" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="19" visible="true" weight="0.2596685" />
       <window_info anchor="bottom" id="Run" order="4" />
       <window_info anchor="bottom" id="Terminal" order="20" weight="0.32998493" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13859275" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14374757" />
       <window_info anchor="bottom" id="Docker" order="16" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="6" />
-      <window_info anchor="right" id="SciView" order="5" visible="true" weight="0.10021322" />
+      <window_info anchor="right" id="SciView" order="5" visible="true" weight="0.07323724" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="5" weight="0.4" />
@@ -251,24 +274,24 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32958335" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32998493" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Python Console" order="10" visible="true" weight="0.34605727" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32998493" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" weight="0.15128712" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Python Console" order="10" visible="true" weight="0.34605727" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="Favorites" order="2" side_tool="true" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -283,20 +306,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="68" column="15" lean-forward="true" selection-start-line="68" selection-start-column="15" selection-end-line="68" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/util/feature_engineering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1513">
@@ -628,7 +637,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/util/nlp_features.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-756">
+        <state relative-caret-position="1292">
           <caret line="80" column="26" selection-start-line="80" selection-start-column="26" selection-end-line="80" selection-end-column="26" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
@@ -638,10 +647,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model/run_lightGBM.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-320">
-          <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
+        <state relative-caret-position="17">
+          <caret line="60" selection-start-line="60" selection-end-line="60" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model_v4_VGG16_Train_features.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="788">
+          <caret line="108" column="30" lean-forward="true" selection-start-line="108" selection-start-column="30" selection-end-line="108" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model_v5_Image_Feature_Engineering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1224">
+          <caret line="72" column="39" lean-forward="true" selection-start-line="72" selection-start-column="39" selection-end-line="72" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
