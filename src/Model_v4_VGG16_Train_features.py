@@ -13,7 +13,7 @@ from threading import Thread
 from queue import Queue
 import gc
 
-fname = '../data/train_jpg/'
+fname = '../data/test_jpg.zip'
 pool = 'avg'  # one of max of avg
 batch_size = 64
 im_dim = 96
@@ -75,14 +75,14 @@ def generate_files(n_items):
     train_zip = zipfile.ZipFile(fname)
 
     # Open train csv (get only images-ids)
-    ids = pd.read_csv('../data/train.csv', usecols=['image'], nrows=limit)['image'].tolist()
+    ids = pd.read_csv('../data/test.csv', usecols=['image'], nrows=limit)['image'].tolist()
 
     n_items.value = len(ids)
     print("Total items:", n_items.value)
 
     # Iterate over ids
     for im_id in ids:
-        zfile = '../data/train_jpg/{}.jpg'.format(im_id)
+        zfile = '../data/test_jpg/{}.jpg'.format(im_id)
         try:
             zinfo = train_zip.getinfo(zfile)
             zbuf = np.frombuffer(train_zip.read(zinfo), dtype='uint8')
@@ -207,6 +207,6 @@ if __name__ == '__main__':
     features = sparse.vstack(sparse_features)
 
     print('Saving sparse matrix...')
-    sparse.save_npz('features.npz', features, compressed=True)
+    sparse.save_npz('features_test.npz', features, compressed=True)
 
     print('All done! Good luck')
