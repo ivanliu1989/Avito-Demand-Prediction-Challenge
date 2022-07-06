@@ -126,7 +126,7 @@ llvmlite==0.22.0
 locket==0.2.0
 Logbook==1.0.0
 lru-dict==1.1.6
-lxml==4.2.1
+lxml==4.9.1
 mailer==0.8.1
 Mako==1.0.6
 Markdown==2.6.9
